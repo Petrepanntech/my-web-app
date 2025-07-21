@@ -1,0 +1,99 @@
+"use client"
+import React, { useState } from 'react';
+import DashboardAuthWrapper from "@/components/auth/DashboardAuthWrapper";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { personalizedLearningPath } from "@/lib/actions";
+import { useToast } from '@/hooks/use-toast';
+import { Loader2 } from 'lucide-react';
+
+export default function LearningPathPage() {
+    const [interests, setInterests] = useState('');
+    const [goals, setGoals] = useState('');
+    const [learningPath, setLearningPath] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+    const { toast } = useToast();
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!interests || !goals) {
+            toast({
+                variant: 'destructive',
+                title: 'Missing Information',
+                description: 'Please fill out both your interests and goals.',
+            });
+            return;
+        }
+        setIsLoading(true);
+        setLearningPath('');
+        try {
+            const result = await personalizedLearningPath({ interests, goals });
+            setLearningPath(result.learningPath);
+        } catch (error) {
+            toast({
+                variant: 'destructive',
+                title: 'Error',
+                description: 'Could not generate learning path. Please try again.',
+            });
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    return (
+        <DashboardAuthWrapper requiredRole="student">
+            <div className="container mx-auto max-w-4xl py-12">
+                <div className="text-center mb-12">
+                     <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl">Your Personalized Learning Path</h1>
+                    <p className="mt-4 max-w-2xl mx-auto text-xl text-muted-foreground">
+                        Let our AI craft the perfect learning journey based on your unique aspirations.
+                    </p>
+                </div>
+                <div className="grid md:grid-cols-2 gap-8">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Tell Us About Yourself</CardTitle>
+                            <CardDescription>The more details you provide, the better we can tailor your path.</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <form onSubmit={handleSubmit} className="space-y-6">
+                                <div className="space-y-2">
+                                    <Label htmlFor="interests">Your Interests</Label>
+                                    <Input id="interests" value={interests} onChange={e => setInterests(e.target.value)} placeholder="e.g., Web development, mobile apps, AI" />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="goals">Your Goals</Label>
+                                    <Textarea id="goals" value={goals} onChange={e => setGoals(e.target.value)} placeholder="e.g., Get a job as a frontend developer, start my own tech company" />
+                                </div>
+                                <Button type="submit" className="w-full" disabled={isLoading}>
+                                    {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                                    Generate My Path
+                                </Button>
+                            </form>
+                        </CardContent>
+                    </Card>
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Your Custom Path</CardTitle>
+                        </CardHeader>
+                        <CardContent className="prose prose-sm max-w-none dark:prose-invert">
+                            {isLoading && (
+                                <div className="flex justify-center items-center h-40">
+                                    <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                                </div>
+                            )}
+                            {learningPath ? (
+                                <div dangerouslySetInnerHTML={{ __html: learningPath.replace(/\n/g, '<br />') }} />
+                            ) : (
+                                !isLoading && <p className="text-muted-foreground">Your generated learning path will appear here.</p>
+                            )}
+                        </CardContent>
+                    </Card>
+                </div>
+            </div>
+        </DashboardAuthWrapper>
+    );
+}
