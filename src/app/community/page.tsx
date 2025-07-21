@@ -71,10 +71,10 @@ export default function CommunityHubPage() {
 
     return (
         <div className="container mx-auto max-w-3xl py-12 px-4 sm:px-6 lg:px-8">
-            <div className="space-y-8">
+            <div className="space-y-12">
                 <div className="text-center">
                     <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl">Community Hub</h1>
-                    <p className="mt-4 max-w-2xl mx-auto text-xl text-muted-foreground">
+                    <p className="mt-6 max-w-2xl mx-auto text-xl text-muted-foreground">
                         Connect, collaborate, and grow with your peers.
                     </p>
                 </div>
@@ -97,7 +97,7 @@ export default function CommunityHubPage() {
                     </CardContent>
                 </Card>
 
-                <div className="space-y-6">
+                <div className="space-y-8">
                     {posts.map(post => (
                         <Card key={post.id}>
                             <CardContent className="pt-6">

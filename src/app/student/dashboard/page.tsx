@@ -19,9 +19,9 @@ export default function StudentDashboardPage() {
 
     return (
         <DashboardAuthWrapper requiredRole="student">
-            <div className="container py-8 px-4 sm:px-6 lg:px-8">
-                <div className="space-y-8">
-                    <Card className="bg-primary text-primary-foreground">
+            <div className="container px-4 sm:px-6 lg:px-8">
+                <div className="space-y-12">
+                    <Card className="bg-primary text-primary-foreground border-none">
                         <CardHeader>
                             <CardTitle className="text-3xl">Welcome back, {user?.name?.split(' ')[0]}!</CardTitle>
                             <CardDescription className="text-primary-foreground/80">
@@ -30,14 +30,13 @@ export default function StudentDashboardPage() {
                         </CardHeader>
                     </Card>
                     
-                    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                    <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
                         {actionCards.map(card => (
                             <ActionCard key={card.title} {...card} />
                         ))}
                     </div>
 
-                    {/* Placeholder for more dashboard content */}
-                    <div className="grid gap-6 lg:grid-cols-2">
+                    <div className="grid gap-8 lg:grid-cols-2">
                         <Card>
                             <CardHeader><CardTitle>Recent Activity</CardTitle></CardHeader>
                             <CardContent><p className="text-muted-foreground">No recent activity.</p></CardContent>

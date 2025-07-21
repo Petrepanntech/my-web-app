@@ -4,12 +4,12 @@ import Image from "next/image";
 export default function AboutPage() {
   return (
     <div className="container mx-auto max-w-5xl py-12 px-4 sm:px-6 lg:px-8">
-      <div className="space-y-12">
+      <div className="space-y-24">
         <div className="text-center">
           <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl">
             About Alternative Academy
           </h1>
-          <p className="mt-4 max-w-2xl mx-auto text-xl text-muted-foreground">
+          <p className="mt-6 max-w-2xl mx-auto text-xl text-muted-foreground">
             Empowering Nigerian youth through accessible, AI-driven education and economic opportunities.
           </p>
         </div>
@@ -54,7 +54,7 @@ export default function AboutPage() {
             </CardHeader>
             <CardContent>
                 <p className="text-muted-foreground">Have questions or want to partner with us? We'd love to hear from you.</p>
-                <div className="mt-4 space-y-2">
+                <div className="mt-6 space-y-4">
                     <p><strong>Email:</strong> <a href="mailto:info@alternative.academy" className="text-primary hover:underline">info@alternative.academy</a></p>
                     <p><strong>Address:</strong> 123 Innovation Drive, Lagos, Nigeria</p>
                 </div>

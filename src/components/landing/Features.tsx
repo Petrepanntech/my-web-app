@@ -35,9 +35,9 @@ const features = [
 
 export function Features() {
   return (
-    <section id="features" className="w-full py-12 md:py-24 bg-secondary">
+    <section id="features" className="w-full py-16 md:py-28 bg-secondary">
       <div className="container px-4 md:px-6">
-        <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
+        <div className="flex flex-col items-center justify-center space-y-4 text-center mb-16">
           <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">Key Features</div>
           <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">Everything You Need to Succeed</h2>
           <p className="max-w-[700px] text-muted-foreground md:text-lg">
@@ -48,12 +48,12 @@ export function Features() {
           {features.map((feature) => (
             <Card key={feature.title} className="overflow-hidden">
                 <div className="grid md:grid-cols-2 items-center">
-                    <div className="p-6">
-                        <div className="flex items-center gap-4 mb-2">
+                    <div className="p-8">
+                        <div className="flex items-center gap-4 mb-4">
                             <feature.icon className="w-8 h-8 text-primary" />
                             <h3 className="text-xl font-bold">{feature.title}</h3>
                         </div>
-                        <p className="text-sm text-muted-foreground">{feature.description}</p>
+                        <p className="text-muted-foreground">{feature.description}</p>
                     </div>
                     <Image
                         src={feature.image}

@@ -14,8 +14,8 @@ const tasks = [
 export default function MarketplaceTasksPage() {
     return (
     <div className="container mx-auto max-w-5xl py-12 px-4 sm:px-6 lg:px-8">
-      <div className="space-y-8">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+      <div className="space-y-12">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div className="text-center md:text-left">
                 <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl">
                     Freelance Marketplace
@@ -24,14 +24,14 @@ export default function MarketplaceTasksPage() {
                     Apply your skills, gain experience, and earn.
                 </p>
             </div>
-            <div className="mt-4 md:mt-0 text-center">
+            <div className="text-center md:text-left shrink-0">
                  <Button asChild>
                     <Link href="/marketplace/tasks/new">Post a New Task</Link>
                 </Button>
             </div>
         </div>
         
-        <div className="grid gap-6">
+        <div className="grid gap-8">
             {tasks.map(task => (
                 <Card key={task.id}>
                     <CardHeader>

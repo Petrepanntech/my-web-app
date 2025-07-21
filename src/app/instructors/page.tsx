@@ -36,12 +36,12 @@ const featuredInstructors = [
 export default function InstructorsPage() {
   return (
     <div className="container mx-auto max-w-5xl py-12 px-4 sm:px-6 lg:px-8">
-      <div className="space-y-12">
+      <div className="space-y-16">
         <div className="text-center">
           <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl">
             Learn from the Best
           </h1>
-          <p className="mt-4 max-w-2xl mx-auto text-xl text-muted-foreground">
+          <p className="mt-6 max-w-2xl mx-auto text-xl text-muted-foreground">
             Our instructors are industry experts and passionate educators dedicated to your success.
           </p>
         </div>
@@ -50,14 +50,14 @@ export default function InstructorsPage() {
             {featuredInstructors.map(instructor => (
                 <Card key={instructor.name}>
                     <CardHeader>
-                       <div className="flex items-center gap-4">
-                            <Avatar className="h-20 w-20">
+                       <div className="flex items-start gap-6">
+                            <Avatar className="h-24 w-24">
                                 <AvatarImage src={instructor.avatar} alt={instructor.name} />
                                 <AvatarFallback>{instructor.name.split(" ").map(n => n[0]).join("")}</AvatarFallback>
                             </Avatar>
                             <div>
                                 <CardTitle>{instructor.name}</CardTitle>
-                                <CardDescription>{instructor.title}</CardDescription>
+                                <CardDescription className="mt-1">{instructor.title}</CardDescription>
                             </div>
                        </div>
                     </CardHeader>
