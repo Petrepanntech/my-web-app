@@ -38,6 +38,11 @@ export function AuthModal() {
   return (
     <Dialog open={showAuthModal} onOpenChange={setShowAuthModal}>
       <DialogContent className="sm:max-w-[425px]">
+        {/* The DialogTitle is required for accessibility and should be at the top level of content */}
+        <DialogHeader className="sr-only">
+          <DialogTitle>Authentication</DialogTitle>
+          <DialogDescription>Login or create an account to continue.</DialogDescription>
+        </DialogHeader>
         <Tabs defaultValue="login" className="w-full">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="login">Login</TabsTrigger>
