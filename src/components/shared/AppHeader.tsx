@@ -15,8 +15,9 @@ import {
   DropdownMenuGroup,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { allDashboardNavItems, publicNavItems } from "@/lib/constants";
+import { Separator } from "../ui/separator";
 
 export function AppHeader() {
   const { isAuthenticated, user, logout, setShowAuthModal } = useAuth();
@@ -79,7 +80,7 @@ export function AppHeader() {
           ) : (
             <>
               <div className="hidden md:flex items-center gap-2">
-                <Button variant="ghost" onClick={() => setShowAuthModal(true)} className="text-black">
+                <Button variant="ghost" onClick={() => setShowAuthModal(true)}>
                   Login
                 </Button>
                 <Button onClick={() => setShowAuthModal(true)}>Sign Up</Button>
@@ -92,6 +93,10 @@ export function AppHeader() {
                         </Button>
                     </SheetTrigger>
                     <SheetContent side="right">
+                        <SheetHeader className="sr-only">
+                          <SheetTitle>Mobile Menu</SheetTitle>
+                          <SheetDescription>Navigation links for mobile view.</SheetDescription>
+                        </SheetHeader>
                         <nav className="grid gap-6 text-lg font-medium mt-8">
                             {publicNavItems.map((item) => (
                                 <SheetClose key={item.href} asChild>
@@ -115,5 +120,3 @@ export function AppHeader() {
     </header>
   );
 }
-
-const Separator = () => <div className="border-b border-border -mx-6" />;
