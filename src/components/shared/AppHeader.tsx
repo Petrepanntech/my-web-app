@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Menu, GraduationCap } from "lucide-react";
+import { Menu, GraduationCap, Search } from "lucide-react";
 
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
@@ -18,6 +18,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { allDashboardNavItems, publicNavItems } from "@/lib/constants";
 import { Separator } from "../ui/separator";
+import { Input } from "../ui/input";
 
 export function AppHeader() {
   const { isAuthenticated, user, logout, setShowAuthModal } = useAuth();
@@ -36,13 +37,12 @@ export function AppHeader() {
             AA
           </span>
         </Link>
-        <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
-            {publicNavItems.map(item => (
-                <Link key={item.label} href={item.href} className="transition-colors hover:text-foreground/80 text-foreground/60">
-                    {item.label}
-                </Link>
-            ))}
-        </nav>
+        <div className="flex-1">
+            <div className="relative md:max-w-md">
+                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Input placeholder="Search..." className="pl-8" />
+            </div>
+        </div>
         <div className="flex flex-1 items-center justify-end space-x-2">
           {isAuthenticated && user ? (
             <DropdownMenu>
@@ -78,42 +78,12 @@ export function AppHeader() {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <>
-              <div className="hidden md:flex items-center gap-2">
+             <div className="hidden md:flex items-center gap-2">
                 <Button variant="ghost" onClick={() => setShowAuthModal(true)}>
                   Login
                 </Button>
                 <Button onClick={() => setShowAuthModal(true)}>Sign Up</Button>
               </div>
-                <Sheet>
-                    <SheetTrigger asChild>
-                        <Button variant="outline" size="icon" className="md:hidden">
-                            <Menu className="h-5 w-5" />
-                            <span className="sr-only">Open navigation menu</span>
-                        </Button>
-                    </SheetTrigger>
-                    <SheetContent side="right">
-                        <SheetHeader className="sr-only">
-                          <SheetTitle>Mobile Menu</SheetTitle>
-                          <SheetDescription>Navigation links for mobile view.</SheetDescription>
-                        </SheetHeader>
-                        <nav className="grid gap-6 text-lg font-medium mt-8">
-                            {publicNavItems.map((item) => (
-                                <SheetClose key={item.href} asChild>
-                                    <Link href={item.href} className="hover:text-primary">{item.label}</Link>
-                                </SheetClose>
-                            ))}
-                            <Separator />
-                            <SheetClose asChild>
-                                <Button variant="ghost" onClick={() => setShowAuthModal(true)}>Login</Button>
-                            </SheetClose>
-                             <SheetClose asChild>
-                                <Button onClick={() => setShowAuthModal(true)}>Sign Up</Button>
-                            </SheetClose>
-                        </nav>
-                    </SheetContent>
-                </Sheet>
-            </>
           )}
         </div>
       </div>

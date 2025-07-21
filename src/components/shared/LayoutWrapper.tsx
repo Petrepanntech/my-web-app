@@ -5,6 +5,7 @@ import { AppHeader } from "@/components/shared/AppHeader";
 import { AuthModal } from "@/components/auth/AuthModal";
 import { Toaster } from "@/components/ui/toaster";
 import { WelcomeAnimation } from "./WelcomeAnimation";
+import { BottomNavBar } from "./BottomNavBar";
 
 export function LayoutWrapper({ children }: { children: React.ReactNode }) {
     const [isLoading, setIsLoading] = useState(true);
@@ -26,7 +27,8 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
         <>
             <div className="relative flex min-h-screen flex-col">
                 <AppHeader />
-                <div className="flex-1">{children}</div>
+                <main className="flex-1 pb-16 md:pb-0">{children}</main>
+                <BottomNavBar />
             </div>
             <AuthModal />
             <Toaster />
