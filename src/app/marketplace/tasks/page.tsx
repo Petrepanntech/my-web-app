@@ -13,7 +13,7 @@ const tasks = [
 
 export default function MarketplaceTasksPage() {
     return (
-    <div className="container mx-auto max-w-5xl py-12 px-4 sm:px-6 lg:px-8">
+    <div className="container mx-auto py-12 px-4 sm:px-6 lg:px-8">
       <div className="space-y-12">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div className="text-center md:text-left">

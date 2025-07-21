@@ -7,7 +7,6 @@ import { Testimonials } from "@/components/landing/Testimonials";
 import { SocialProof } from "@/components/landing/SocialProof";
 import { Cta } from "@/components/landing/Cta";
 import { Faq } from "@/components/landing/Faq";
-import { Footer } from "@/components/landing/Footer";
 
 export default function Home() {
   return (
@@ -21,7 +20,6 @@ export default function Home() {
       <SocialProof />
       <Cta />
       <Faq />
-      <Footer />
     </main>
   );
 }

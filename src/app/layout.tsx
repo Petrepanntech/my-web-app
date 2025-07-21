@@ -5,6 +5,7 @@ import { AuthProvider } from "@/context/AuthContext";
 import { AppHeader } from "@/components/shared/AppHeader";
 import { AuthModal } from "@/components/auth/AuthModal";
 import { Toaster } from "@/components/ui/toaster";
+import { Footer } from "@/components/landing/Footer";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -24,7 +25,8 @@ export default function RootLayout({
         <AuthProvider>
           <div className="relative flex min-h-screen flex-col">
             <AppHeader />
-            <div className="flex-1 pt-8 md:pt-12">{children}</div>
+            <div className="flex-1">{children}</div>
+            <Footer />
           </div>
           <AuthModal />
           <Toaster />

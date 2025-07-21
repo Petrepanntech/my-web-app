@@ -45,7 +45,7 @@ export default function LearningPathPage() {
 
     return (
         <DashboardAuthWrapper requiredRole="student">
-            <div className="container mx-auto max-w-4xl py-12">
+            <div className="container p-4 sm:p-6 lg:p-8">
                 <div className="text-center mb-12">
                      <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl">Your Personalized Learning Path</h1>
                     <p className="mt-4 max-w-2xl mx-auto text-xl text-muted-foreground">

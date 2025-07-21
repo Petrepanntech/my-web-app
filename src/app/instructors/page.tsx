@@ -35,7 +35,7 @@ const featuredInstructors = [
 
 export default function InstructorsPage() {
   return (
-    <div className="container mx-auto max-w-5xl py-12 px-4 sm:px-6 lg:px-8">
+    <div className="container mx-auto py-12 px-4 sm:px-6 lg:px-8">
       <div className="space-y-16">
         <div className="text-center">
           <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl">

@@ -19,8 +19,8 @@ export default function StudentDashboardPage() {
 
     return (
         <DashboardAuthWrapper requiredRole="student">
-            <div className="container px-4 sm:px-6 lg:px-8">
-                <div className="space-y-12">
+            <div className="container p-4 sm:p-6 lg:p-8">
+                <div className="space-y-8">
                     <Card className="bg-primary text-primary-foreground border-none">
                         <CardHeader>
                             <CardTitle className="text-3xl">Welcome back, {user?.name?.split(' ')[0]}!</CardTitle>
@@ -30,7 +30,7 @@ export default function StudentDashboardPage() {
                         </CardHeader>
                     </Card>
                     
-                    <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                         {actionCards.map(card => (
                             <ActionCard key={card.title} {...card} />
                         ))}
