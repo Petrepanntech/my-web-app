@@ -4,7 +4,7 @@ import DashboardAuthWrapper from "@/components/auth/DashboardAuthWrapper";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { DollarSign, Banknote } from "lucide-react";
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
-import { ChartTooltipContent } from "@/components/ui/chart";
+import { ChartContainer, ChartTooltipContent } from "@/components/ui/chart";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -17,6 +17,13 @@ const earningsData = [
   { date: "May", earnings: 150000 },
   { date: "Jun", earnings: 180000 },
 ];
+
+const chartConfig = {
+  earnings: {
+    label: "Earnings (₦)",
+    color: "hsl(var(--primary))",
+  },
+};
 
 const payoutHistory = [
     { id: "PAYOUT005", date: "2024-07-15", amount: "₦150,000", status: "Completed" },
@@ -65,8 +72,8 @@ export default function Page() {
                             <CardTitle>Earnings this Year</CardTitle>
                         </CardHeader>
                         <CardContent className="h-80">
-                            <ResponsiveContainer width="100%" height="100%">
-                               <AreaChart data={earningsData}>
+                           <ChartContainer config={chartConfig} className="w-full h-full">
+                               <AreaChart data={earningsData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
                                     <defs>
                                         <linearGradient id="colorEarnings" x1="0" y1="0" x2="0" y2="1">
                                         <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.8}/>
@@ -75,11 +82,11 @@ export default function Page() {
                                     </defs>
                                     <CartesianGrid strokeDasharray="3 3" />
                                     <XAxis dataKey="date" />
-                                    <YAxis />
+                                    <YAxis tickFormatter={(value) => `₦${value/1000}k`} />
                                     <Tooltip content={<ChartTooltipContent />} />
                                     <Area type="monotone" dataKey="earnings" stroke="hsl(var(--primary))" fill="url(#colorEarnings)" />
                                 </AreaChart>
-                            </ResponsiveContainer>
+                            </ChartContainer>
                         </CardContent>
                     </Card>
                      <Card>
@@ -114,4 +121,3 @@ export default function Page() {
         </DashboardAuthWrapper>
     );
 }
-
