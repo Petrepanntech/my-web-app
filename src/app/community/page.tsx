@@ -1,3 +1,4 @@
+
 "use client"
 import React, { useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -19,6 +20,11 @@ interface Post {
 const initialPosts: Post[] = [
     { id: 1, author: 'Chinedu Okoro', avatar: 'https://i.pravatar.cc/150?u=chinedu', content: 'Just finished the advanced React module. It was challenging but so rewarding! Anyone else working on their final project?', timestamp: '2h ago' },
     { id: 2, author: 'Adeola Peters', avatar: 'https://i.pravatar.cc/150?u=adeola', content: 'Looking for a collaborator on a freelance UI/UX project. It involves creating a mobile app for a local startup. DM me if interested!', timestamp: '5h ago' },
+    { id: 3, author: 'Samuel Adebayo', avatar: 'https://i.pravatar.cc/150?u=samuel', content: 'The new CBT practice section is amazing for JAMB prep. Highly recommend checking it out if you have exams coming up.', timestamp: '1d ago' },
+    { id: 4, author: 'Aisha Nwosu', avatar: 'https://i.pravatar.cc/150?u=aisha', content: 'Quick question for the design experts: What are your go-to resources for high-quality, free-to-use illustrations?', timestamp: '2d ago' },
+    { id: 5, author: 'Tunde Oladipo', avatar: 'https://i.pravatar.cc/150?u=tunde', content: 'The digital marketing course gave me the confidence to start my own agency. To anyone on the fence, just go for it!', timestamp: '3d ago' },
+    { id: 6, author: 'Fatima Bello', avatar: 'https://i.pravatar.cc/150?u=fatima', content: 'Does anyone have experience with payment gateway integration in Nigeria? Specifically Paystack vs Flutterwave for a small e-commerce site.', timestamp: '4d ago' },
+    { id: 7, author: 'Student User', avatar: 'https://i.pravatar.cc/150?u=student', content: 'My AI-generated learning path suggested I learn Python for data analysis. It feels perfectly tailored to my goal of becoming a data scientist.', timestamp: '5d ago' },
 ];
 
 

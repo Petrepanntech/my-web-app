@@ -1,34 +1,9 @@
 import Link from "next/link";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowRight, Code, Palette, Briefcase, Megaphone } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { ArrowRight, Code, Palette, Briefcase, Megaphone, BrainCircuit, BarChart } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { courseCategories } from "@/lib/courses-data";
 
-const courseCategories = [
-  {
-    title: "Web Development",
-    description: "Master frontend and backend technologies to build modern web applications.",
-    icon: Code,
-    slug: "web-development"
-  },
-  {
-    title: "UI/UX Design",
-    description: "Learn to design intuitive and beautiful user interfaces and experiences.",
-    icon: Palette,
-    slug: "ui-ux-design"
-  },
-  {
-    title: "Business & Entrepreneurship",
-    description: "Acquire the skills to launch and grow your own successful business.",
-    icon: Briefcase,
-    slug: "business"
-  },
-  {
-    title: "Digital Marketing",
-    description: "Understand the strategies to market products and services in the digital age.",
-    icon: Megaphone,
-    slug: "digital-marketing"
-  }
-];
 
 export default function CoursesPage() {
   return (
@@ -43,7 +18,7 @@ export default function CoursesPage() {
           </p>
         </div>
 
-        <div className="grid gap-8 md:grid-cols-2">
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {courseCategories.map((category) => (
             <Card key={category.title} className="flex flex-col">
               <CardHeader>
@@ -51,12 +26,15 @@ export default function CoursesPage() {
                   <category.icon className="w-8 h-8 text-primary" />
                   <CardTitle>{category.title}</CardTitle>
                 </div>
+                 <CardDescription>{category.description}</CardDescription>
               </CardHeader>
               <CardContent className="flex-grow">
-                <p className="text-muted-foreground">{category.description}</p>
+                 <p className="text-sm text-muted-foreground">
+                    {category.courseCount}+ courses available in this category.
+                </p>
               </CardContent>
               <div className="p-6 pt-0">
-                <Button asChild variant="outline">
+                <Button asChild>
                     <Link href={`/courses/${category.slug}`}>
                         View Courses <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
