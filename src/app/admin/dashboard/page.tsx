@@ -3,7 +3,7 @@
 import DashboardAuthWrapper from "@/components/auth/DashboardAuthWrapper";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Bar, BarChart, CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { ChartTooltipContent } from "@/components/ui/chart";
+import { ChartTooltipContent, ChartContainer } from "@/components/ui/chart";
 import { DollarSign, Users, BookOpen, Activity } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
@@ -12,6 +12,13 @@ const chartData = [
   { month: "Jan", signups: 120 }, { month: "Feb", signups: 200 }, { month: "Mar", signups: 180 },
   { month: "Apr", signups: 280 }, { month: "May", signups: 350 }, { month: "Jun", signups: 420 },
 ];
+
+const chartConfig = {
+  signups: {
+    label: "Signups",
+    color: "hsl(var(--primary))",
+  },
+};
 
 const recentTransactions = [
     { id: "TXN123", user: "Adeola Peters", type: "Subscription", amount: "₦25,000", status: "Success" },
@@ -82,15 +89,15 @@ export default function Page() {
                             <CardDescription>Last 6 months</CardDescription>
                         </CardHeader>
                         <CardContent className="h-80">
-                            <ResponsiveContainer width="100%" height="100%">
-                               <LineChart data={chartData}>
+                           <ChartContainer config={chartConfig} className="w-full h-full">
+                               <LineChart data={chartData} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}>
                                     <CartesianGrid strokeDasharray="3 3" />
                                     <XAxis dataKey="month" />
                                     <YAxis />
                                     <Tooltip content={<ChartTooltipContent />} />
                                     <Line type="monotone" dataKey="signups" stroke="hsl(var(--primary))" activeDot={{ r: 8 }} />
                                 </LineChart>
-                            </ResponsiveContainer>
+                            </ChartContainer>
                         </CardContent>
                     </Card>
                     <Card>
