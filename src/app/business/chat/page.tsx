@@ -1,11 +1,10 @@
 import DashboardAuthWrapper from "@/components/auth/DashboardAuthWrapper";
+import { ChatInterface } from "@/components/shared/ChatInterface";
 
 export default function Page() {
     return (
         <DashboardAuthWrapper requiredRole="business">
-            <div className="container py-8">
-                <h1 className="text-3xl font-bold">Chat</h1>
-            </div>
+            <ChatInterface />
         </DashboardAuthWrapper>
     );
 }

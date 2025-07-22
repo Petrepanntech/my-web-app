@@ -15,10 +15,16 @@ import {
   DropdownMenuGroup,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
-import { allDashboardNavItems, publicNavItems } from "@/lib/constants";
-import { Separator } from "../ui/separator";
+import { allDashboardNavItems } from "@/lib/constants";
 import { Input } from "../ui/input";
+import { Card, CardContent } from "../ui/card";
+
+const mockNotifications = [
+    { title: "New Bid Received", description: "You received a new bid on 'Build a Landing Page'.", time: "2m ago" },
+    { title: "Assignment Graded", description: "Your 'State Management' assignment has been graded.", time: "1h ago" },
+    { title: "Message from Aisha N.", description: "Hey, I'm available for a mentorship call this week.", time: "3h ago" },
+    { title: "Welcome to the Community!", description: "Start by introducing yourself in the community hub.", time: "1d ago" },
+];
 
 export function AppHeader() {
   const { isAuthenticated, user, logout, setShowAuthModal } = useAuth();
@@ -46,15 +52,32 @@ export function AppHeader() {
         <div className="flex flex-1 items-center justify-end space-x-2">
           {isAuthenticated && user ? (
             <>
-            <Button variant="ghost" size="icon">
-                <div className="relative">
-                    <Bell className="h-5 w-5" />
-                    <span className="absolute -top-1 -right-1 flex h-3 w-3">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
-                    </span>
-                </div>
-            </Button>
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="icon">
+                        <div className="relative">
+                            <Bell className="h-5 w-5" />
+                            <span className="absolute -top-1 -right-1 flex h-3 w-3">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
+                            </span>
+                        </div>
+                    </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-80" align="end">
+                    <DropdownMenuLabel>Notifications</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <div className="space-y-2 p-2">
+                    {mockNotifications.map((notification, index) => (
+                       <div key={index} className="text-sm">
+                            <p className="font-semibold">{notification.title}</p>
+                            <p className="text-xs text-muted-foreground">{notification.description}</p>
+                            <p className="text-xs text-muted-foreground mt-1">{notification.time}</p>
+                       </div>
+                    ))}
+                    </div>
+                </DropdownMenuContent>
+            </DropdownMenu>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="relative h-8 w-8 rounded-full">
