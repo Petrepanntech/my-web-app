@@ -1,7 +1,9 @@
+
 "use client";
 
 import type { User, Role } from "@/types";
 import React, { createContext, useContext, useState, ReactNode } from "react";
+import { useRouter } from "next/navigation";
 
 interface AuthContextType {
   user: User | null;
@@ -27,16 +29,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [selectedRole, setSelectedRole] = useState<Role>(null);
+  const router = useRouter();
 
   const login = (role: Role) => {
     if (role && mockUsers[role]) {
       setUser(mockUsers[role]);
       setShowAuthModal(false);
+      router.push(`/${role}/dashboard`);
     }
   };
 
   const logout = () => {
     setUser(null);
+    router.push('/');
   };
 
   return (
