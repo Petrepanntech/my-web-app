@@ -7,6 +7,7 @@ import { ChartTooltipContent, ChartContainer } from "@/components/ui/chart";
 import { DollarSign, Users, BookOpen, Activity } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { FloatingChatButton } from "@/components/shared/FloatingChatButton";
 
 const chartData = [
   { month: "Jan", signups: 120 }, { month: "Feb", signups: 200 }, { month: "Mar", signups: 180 },
@@ -132,6 +133,7 @@ export default function Page() {
                     </Card>
                 </div>
             </div>
+            <FloatingChatButton href="/admin/communications" />
         </DashboardAuthWrapper>
     );
 }

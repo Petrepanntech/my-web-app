@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Menu, GraduationCap, Search } from "lucide-react";
+import { Menu, GraduationCap, Search, Bell } from "lucide-react";
 
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
@@ -45,6 +45,16 @@ export function AppHeader() {
         </div>
         <div className="flex flex-1 items-center justify-end space-x-2">
           {isAuthenticated && user ? (
+            <>
+            <Button variant="ghost" size="icon">
+                <div className="relative">
+                    <Bell className="h-5 w-5" />
+                    <span className="absolute -top-1 -right-1 flex h-3 w-3">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
+                    </span>
+                </div>
+            </Button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="relative h-8 w-8 rounded-full">
@@ -77,6 +87,7 @@ export function AppHeader() {
                 <DropdownMenuItem onClick={logout}>Log out</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
+            </>
           ) : (
              <div className="hidden md:flex items-center gap-2">
                 <Button variant="ghost" onClick={() => setShowAuthModal(true)}>

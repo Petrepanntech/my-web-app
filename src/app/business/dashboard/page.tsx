@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { DollarSign, Briefcase, Users, FileText, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { FloatingChatButton } from "@/components/shared/FloatingChatButton";
 
 
 const activeTasks = [
@@ -135,6 +136,7 @@ export default function Page() {
                     </Card>
                 </div>
             </div>
+            <FloatingChatButton href="/business/chat" />
         </DashboardAuthWrapper>
     );
 }

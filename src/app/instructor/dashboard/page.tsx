@@ -7,6 +7,7 @@ import { DollarSign, Users, BookOpen, MessageSquare, Star, ArrowRight } from "lu
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { FloatingChatButton } from "@/components/shared/FloatingChatButton";
 
 
 const myCourses = [
@@ -122,6 +123,7 @@ export default function Page() {
                     </Card>
                 </div>
             </div>
+            <FloatingChatButton href="/instructor/chat" />
         </DashboardAuthWrapper>
     );
 }
