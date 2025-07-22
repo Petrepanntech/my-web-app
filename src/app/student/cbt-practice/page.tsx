@@ -24,7 +24,7 @@ export default function CbtPracticePage() {
                 </div>
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                     {cbtCategories.map(cat => (
-                        <Link href={`/student/cbt-practice/${cat.name.toLowerCase().replace(/\s+/g, '-')}`} key={cat.name}>
+                        <Link href={`/student/cbt-practice/setup/${cat.name.toLowerCase().replace(/\s+/g, '-')}`} key={cat.name}>
                             <Card className="hover:border-primary transition-colors h-full">
                                 <CardHeader>
                                     <CardTitle>{cat.name}</CardTitle>
