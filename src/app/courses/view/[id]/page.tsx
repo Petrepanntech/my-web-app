@@ -5,38 +5,40 @@ import DashboardAuthWrapper from "@/components/auth/DashboardAuthWrapper";
 import { allCourses } from '@/lib/courses-data';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { CheckCircle, Circle, PlayCircle } from 'lucide-react';
+import { CheckCircle, Circle, PlayCircle, Video } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { BackButton } from '@/components/shared/BackButton';
 
 const courseCurriculum = {
     '1': [
-        { title: 'Module 1: Introduction to HTML', completed: true, lessons: ['What is HTML?', 'Basic Tags', 'Lists and Tables'] },
-        { title: 'Module 2: Styling with CSS', completed: true, lessons: ['CSS Selectors', 'The Box Model', 'Flexbox'] },
-        { title: 'Module 3: JavaScript Fundamentals', completed: true, lessons: ['Variables and Data Types', 'Functions', 'DOM Manipulation'] },
-        { title: 'Module 4: Final Project', completed: true, lessons: ['Build a Personal Portfolio'] },
+        { title: 'Module 1: Introduction to HTML', completed: true, lessons: [{type: 'lecture', title: 'What is HTML?'}, {type: 'video', title: 'Curated Video: HTML Basics (YouTube)'}] },
+        { title: 'Module 2: Styling with CSS', completed: true, lessons: [{type: 'lecture', title: 'CSS Selectors'}, {type: 'lecture', title: 'The Box Model'}, {type: 'video', title: 'Curated Video: Flexbox vs. Grid (YouTube)'}] },
+        { title: 'Module 3: JavaScript Fundamentals', completed: true, lessons: [{type: 'lecture', title: 'Variables and Data Types'}, {type: 'video', title: 'Proprietary Lecture: Advanced Functions'}, {type: 'lecture', title: 'DOM Manipulation'}] },
+        { title: 'Module 4: Final Project', completed: true, lessons: [{type: 'lecture', title: 'Build a Personal Portfolio'}] },
     ],
     '2': [
-        { title: 'Module 1: React Basics', completed: true, lessons: ['Components and Props', 'State and Lifecycle', 'Handling Events'] },
-        { title: 'Module 2: Hooks Deep Dive', completed: true, lessons: ['useState', 'useEffect', 'useContext'] },
-        { title: 'Module 3: State Management', completed: true, lessons: ['Introduction to Zustand', 'Creating Stores', 'Async Actions'] },
-        { title: 'Module 4: Final Project', completed: false, lessons: ['Build a Full-Stack E-commerce App'] },
+        { title: 'Module 1: React Basics', completed: true, lessons: [{type: 'lecture', title: 'Components and Props'}, {type: 'video', title: 'Curated Video: Understanding JSX (YouTube)'}, {type: 'lecture', title: 'State and Lifecycle'}, {type: 'lecture', title: 'Handling Events'}] },
+        { title: 'Module 2: Hooks Deep Dive', completed: true, lessons: [{type: 'video', title: 'Proprietary Lecture: Mastering useEffect'}, {type: 'lecture', title: 'useState'}, {type: 'lecture', title: 'useContext'}] },
+        { title: 'Module 3: State Management', completed: true, lessons: [{type: 'lecture', title: 'Introduction to Zustand'}, {type: 'lecture', title: 'Creating Stores'}, {type: 'lecture', title: 'Async Actions'}] },
+        { title: 'Module 4: Final Project', completed: false, lessons: [{type: 'lecture', title: 'Build a Full-Stack E-commerce App'}] },
     ],
     '3': [
-        { title: 'Module 1: Introduction to Node.js', completed: true, lessons: ['Node.js Architecture', 'NPM and Modules'] },
-        { title: 'Module 2: Express.js', completed: true, lessons: ['Routing', 'Middleware', 'Request and Response'] },
-        { title: 'Module 3: Building a RESTful API', completed: true, lessons: ['CRUD Operations', 'Connecting to MongoDB'] },
-        { title: 'Module 4: Authentication', completed: false, lessons: ['JWT and Sessions'] },
+        { title: 'Module 1: Introduction to Node.js', completed: true, lessons: [{type: 'lecture', title: 'Node.js Architecture'}, {type: 'lecture', title: 'NPM and Modules'}] },
+        { title: 'Module 2: Express.js', completed: true, lessons: [{type: 'lecture', title: 'Routing'}, {type: 'video', title: 'Curated Video: Express Middleware Explained (YouTube)'}, {type: 'lecture', title: 'Request and Response'}] },
+        { title: 'Module 3: Building a RESTful API', completed: true, lessons: [{type: 'lecture', title: 'CRUD Operations'}, {type: 'lecture', title: 'Connecting to MongoDB'}] },
+        { title: 'Module 4: Authentication', completed: false, lessons: [{type: 'video', title: 'Proprietary Lecture: JWT vs. Sessions'}] },
     ],
      '16': [
-        { title: 'Module 1: Figma Fundamentals', completed: true, lessons: ['The Editor', 'Frames and Groups', 'Vector Shapes'] },
-        { title: 'Module 2: Design Principles', completed: true, lessons: ['Typography', 'Color Theory', 'Layout and Grid'] },
-        { title: 'Module 3: Prototyping', completed: false, lessons: ['Creating Connections', 'Smart Animate', 'User Testing'] },
-        { title: 'Module 4: Design Systems', completed: false, lessons: ['Components and Variants', 'Styles', 'Team Libraries'] },
+        { title: 'Module 1: Figma Fundamentals', completed: true, lessons: [{type: 'lecture', title: 'The Editor'}, {type: 'video', title: 'Curated Video: Mastering Auto Layout (YouTube)'}, {type: 'lecture', title: 'Frames and Groups'}, {type: 'lecture', title: 'Vector Shapes'}] },
+        { title: 'Module 2: Design Principles', completed: true, lessons: [{type: 'lecture', title: 'Typography'}, {type: 'lecture', title: 'Color Theory'}, {type: 'lecture', title: 'Layout and Grid'}] },
+        { title: 'Module 3: Prototyping', completed: false, lessons: [{type: 'lecture', title: 'Creating Connections'}, {type: 'video', title: 'Proprietary Lecture: Advanced Smart Animate'}, {type: 'lecture', title: 'User Testing'}] },
+        { title: 'Module 4: Design Systems', completed: false, lessons: [{type: 'lecture', title: 'Components and Variants'}, {type: 'lecture', title: 'Styles'}, {type: 'lecture', title: 'Team Libraries'}] },
     ],
 };
 
-type Curriculum = { title: string; completed: boolean; lessons: string[] }[];
+type Lesson = { type: 'lecture' | 'video', title: string };
+type Module = { title: string; completed: boolean; lessons: Lesson[] };
+type Curriculum = Module[];
 
 export default function CourseViewPage() {
     const params = useParams();
@@ -58,7 +60,7 @@ export default function CourseViewPage() {
                 <BackButton className="mb-4" />
                 <div className="mb-8">
                     <h1 className="text-4xl font-bold">{course.title}</h1>
-                    <p className="text-lg text-muted-foreground mt-2">{course.instructor}</p>
+                    <p className="text-lg text-muted-foreground mt-2">Your Mentor: {course.instructor}</p>
                 </div>
                 
                 <Card className="mb-8">
@@ -74,7 +76,7 @@ export default function CourseViewPage() {
                 <Card>
                     <CardHeader>
                         <CardTitle>Course Curriculum</CardTitle>
-                        <CardDescription>Start learning by selecting a lesson.</CardDescription>
+                        <CardDescription>Start learning by selecting a lecture or video.</CardDescription>
                     </CardHeader>
                     <CardContent>
                         <Accordion type="single" collapsible className="w-full">
@@ -89,9 +91,9 @@ export default function CourseViewPage() {
                                     <AccordionContent>
                                         <ul className="space-y-3 pl-8">
                                             {module.lessons.map(lesson => (
-                                                <li key={lesson} className="flex items-center gap-3 text-muted-foreground hover:text-foreground cursor-pointer">
-                                                    <PlayCircle className="h-4 w-4" />
-                                                    <span>{lesson}</span>
+                                                <li key={lesson.title} className="flex items-center gap-3 text-muted-foreground hover:text-foreground cursor-pointer">
+                                                    {lesson.type === 'lecture' ? <PlayCircle className="h-4 w-4" /> : <Video className="h-4 w-4" />}
+                                                    <span>{lesson.title}</span>
                                                 </li>
                                             ))}
                                         </ul>

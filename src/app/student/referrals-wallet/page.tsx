@@ -9,10 +9,10 @@ import { Copy, DollarSign } from "lucide-react";
 const referralLink = "https://alt.academy/join?ref=stud123";
 
 const transactionHistory = [
-    { type: "Referral Bonus", amount: "+ ₦1,000", date: "2024-08-01", details: "From Chinedu Okoro" },
+    { type: "Referral Bonus", amount: "+ ₦1,000", date: "2024-08-01", details: "From Chinedu Okoro (20% commission)" },
     { type: "Task Payment", amount: "+ ₦25,000", date: "2024-07-25", details: "Project: Figma Mockup" },
     { type: "Withdrawal", amount: "- ₦15,000", date: "2024-07-20", details: "To GTBank ******5432" },
-    { type: "Referral Bonus", amount: "+ ₦1,000", date: "2024-07-18", details: "From Adeola Peters" },
+    { type: "Referral Bonus", amount: "+ ₦1,000", date: "2024-07-18", details: "From Adeola Peters (20% commission)" },
 ];
 
 export default function Page() {
@@ -22,7 +22,7 @@ export default function Page() {
                  <div className="mb-12">
                     <h1 className="text-4xl font-extrabold tracking-tight">Wallet & Referrals</h1>
                     <p className="mt-2 text-xl text-muted-foreground">
-                       Manage your earnings and invite friends to join.
+                       Manage your earnings and invite friends to join the platform.
                     </p>
                 </div>
                 
@@ -43,8 +43,8 @@ export default function Page() {
                         </Card>
                          <Card>
                             <CardHeader>
-                                <CardTitle>Refer a Friend</CardTitle>
-                                <CardDescription>Earn ₦1,000 for every friend who signs up and subscribes!</CardDescription>
+                                <CardTitle>Affiliate Referral Program</CardTitle>
+                                <CardDescription>Earn a 20% commission for every friend who signs up and subscribes with your link!</CardDescription>
                             </CardHeader>
                              <CardContent>
                                 <div className="flex gap-2">

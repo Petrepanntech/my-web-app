@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Check, MoreVertical, X } from "lucide-react";
+import { Check, MoreVertical, Upload, X } from "lucide-react";
 
 const courses = [
     {
@@ -49,11 +49,17 @@ export default function Page() {
     return (
         <DashboardAuthWrapper requiredRole="admin">
             <div className="container p-4 sm:p-6 lg:p-8">
-                 <div className="mb-12">
-                    <h1 className="text-4xl font-extrabold tracking-tight">Course Management</h1>
-                    <p className="mt-2 text-xl text-muted-foreground">
-                       Approve, reject, and manage all courses on the platform.
-                    </p>
+                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-12">
+                     <div>
+                        <h1 className="text-4xl font-extrabold tracking-tight">Course Management</h1>
+                        <p className="mt-2 text-xl text-muted-foreground">
+                           Approve, reject, and manage all courses and video lectures on the platform.
+                        </p>
+                     </div>
+                     <Button>
+                        <Upload className="mr-2 h-4 w-4" />
+                        Upload Video Lecture
+                    </Button>
                 </div>
                 
                 <Card>

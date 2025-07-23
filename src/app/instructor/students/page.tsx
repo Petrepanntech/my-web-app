@@ -22,9 +22,9 @@ export default function Page() {
         <DashboardAuthWrapper requiredRole="instructor">
             <div className="container p-4 sm:p-6 lg:p-8">
                  <div className="mb-12">
-                    <h1 className="text-4xl font-extrabold tracking-tight">My Students</h1>
+                    <h1 className="text-4xl font-extrabold tracking-tight">My Mentees</h1>
                     <p className="mt-2 text-xl text-muted-foreground">
-                       View and manage all students enrolled in your courses.
+                       View and manage all students you are mentoring.
                     </p>
                 </div>
                 
@@ -32,8 +32,8 @@ export default function Page() {
                     <CardHeader>
                         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                             <div>
-                                <CardTitle>All Students</CardTitle>
-                                <CardDescription>Total of {students.length} students found across all your courses.</CardDescription>
+                                <CardTitle>All Mentees</CardTitle>
+                                <CardDescription>Total of {students.length} mentees found across all your courses.</CardDescription>
                             </div>
                             <div className="relative">
                                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -45,7 +45,7 @@ export default function Page() {
                         <Table>
                             <TableHeader>
                                 <TableRow>
-                                    <TableHead>Student</TableHead>
+                                    <TableHead>Mentee</TableHead>
                                     <TableHead>Course Enrolled</TableHead>
                                     <TableHead>Progress</TableHead>
                                     <TableHead className="text-right">Actions</TableHead>

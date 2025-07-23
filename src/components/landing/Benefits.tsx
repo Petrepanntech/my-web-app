@@ -4,23 +4,23 @@ import { Zap, BrainCircuit, Users, Briefcase } from "lucide-react";
 const benefits = [
   {
     icon: BrainCircuit,
-    title: "AI-Powered Learning",
-    description: "Personalized learning paths that adapt to your pace and goals, ensuring you master in-demand skills effectively.",
-  },
-  {
-    icon: Briefcase,
-    title: "Earn While You Learn",
-    description: "Access a decentralized marketplace to find freelance gigs, apply your skills, and build your professional portfolio.",
+    title: "AI-Curated Content",
+    description: "Our AI engine sources the best, most relevant learning materials, including video lectures, so you're always up-to-date.",
   },
   {
     icon: Users,
-    title: "Vibrant Community",
-    description: "Connect with peers, mentors, and industry experts. Collaborate on projects and grow your network.",
+    title: "Expert Mentorship",
+    description: "Connect directly with high-caliber mentors for one-on-one guidance and support throughout your learning journey.",
+  },
+  {
+    icon: Briefcase,
+    title: "Earn As You Grow",
+    description: "Utilize our affiliate program and complete promotional tasks to earn money, all managed through your integrated wallet.",
   },
   {
     icon: Zap,
-    title: "Future-Proof Skills",
-    description: "Our curriculum is designed to equip you with the most relevant and future-proof skills for the modern economy.",
+    title: "Community Powered",
+    description: "Join a vibrant community hub to collaborate, ask questions, and build your professional network.",
   },
 ];
 

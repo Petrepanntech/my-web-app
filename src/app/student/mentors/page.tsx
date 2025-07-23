@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { MessageSquare } from "lucide-react";
+import Link from "next/link";
 
 const mentors = [
   {
@@ -12,7 +13,7 @@ const mentors = [
     title: "Senior Full-Stack Engineer",
     specialties: ["React", "Node.js", "GraphQL"],
     avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop",
-    status: "Available"
+    status: "Your Mentor"
   },
   {
     name: "Aisha Nwosu",
@@ -44,7 +45,7 @@ export default function Page() {
                 <div className="text-center mb-12">
                      <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl">Connect with a Mentor</h1>
                     <p className="mt-4 max-w-2xl mx-auto text-xl text-muted-foreground">
-                       Get guidance and support from industry experts.
+                       Get guidance and support from industry experts to accelerate your growth.
                     </p>
                 </div>
                 
@@ -63,16 +64,18 @@ export default function Page() {
                                                 <CardDescription className="mt-1">{mentor.title}</CardDescription>
                                             </div>
                                     </div>
-                                    <Badge variant={mentor.status === 'Available' ? 'secondary' : 'outline'}>{mentor.status}</Badge>
+                                    <Badge variant={mentor.status === 'Your Mentor' ? 'default' : mentor.status === 'Available' ? 'secondary' : 'outline'}>{mentor.status}</Badge>
                                 </div>
                             </CardHeader>
                             <CardContent>
                                 <div className="flex flex-wrap gap-2 mb-4">
                                     {mentor.specialties.map(spec => <Badge key={spec} variant="secondary">{spec}</Badge>)}
                                 </div>
-                                <Button className="w-full" disabled={mentor.status !== 'Available'}>
-                                    <MessageSquare className="mr-2 h-4 w-4" />
-                                    Request Mentorship
+                                <Button asChild className="w-full" disabled={mentor.status === 'Busy'}>
+                                    <Link href="/student/chat">
+                                        <MessageSquare className="mr-2 h-4 w-4" />
+                                        {mentor.status === 'Your Mentor' ? 'Chat Now' : 'Request Mentorship'}
+                                    </Link>
                                 </Button>
                             </CardContent>
                         </Card>

@@ -28,9 +28,9 @@ export default function Page() {
         <DashboardAuthWrapper requiredRole="instructor">
             <div className="container p-4 sm:p-6 lg:p-8">
                 <div className="mb-12">
-                    <h1 className="text-4xl font-extrabold tracking-tight">Welcome, {user?.name?.split(' ')[0]}!</h1>
+                    <h1 className="text-4xl font-extrabold tracking-tight">Welcome, Mentor {user?.name?.split(' ')[0]}!</h1>
                     <p className="mt-2 text-xl text-muted-foreground">
-                       Here's a snapshot of your instructor activity.
+                       Here's a snapshot of your mentorship activity.
                     </p>
                 </div>
                 
@@ -42,12 +42,12 @@ export default function Page() {
                         </CardHeader>
                         <CardContent>
                             <div className="text-2xl font-bold">₦850,000</div>
-                            <p className="text-xs text-muted-foreground">+₦75,000 this month</p>
+                            <p className="text-xs text-muted-foreground">from student support commissions</p>
                         </CardContent>
                     </Card>
                      <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Total Students</CardTitle>
+                            <CardTitle className="text-sm font-medium">Total Mentees</CardTitle>
                             <Users className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
@@ -57,7 +57,7 @@ export default function Page() {
                     </Card>
                      <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Published Courses</CardTitle>
+                            <CardTitle className="text-sm font-medium">Active Courses</CardTitle>
                             <BookOpen className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
@@ -72,7 +72,7 @@ export default function Page() {
                         </CardHeader>
                         <CardContent>
                             <div className="text-2xl font-bold">4.85</div>
-                            <p className="text-xs text-muted-foreground">Based on 300+ ratings</p>
+                            <p className="text-xs text-muted-foreground">From 300+ mentees</p>
                         </CardContent>
                     </Card>
                 </div>
@@ -81,7 +81,7 @@ export default function Page() {
                     <div className="lg:col-span-2">
                         <Card>
                             <CardHeader>
-                                <CardTitle>Recent Student Activity</CardTitle>
+                                <CardTitle>Recent Mentee Activity</CardTitle>
                                 <CardDescription>Latest interactions from your students.</CardDescription>
                             </CardHeader>
                             <CardContent>

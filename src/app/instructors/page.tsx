@@ -34,16 +34,16 @@ const featuredInstructors = [
   }
 ];
 
-export default function InstructorsPage() {
+export default function MentorsPage() {
   return (
     <div className="container mx-auto py-12 px-4 sm:px-6 lg:px-8">
       <div className="space-y-16">
         <div className="text-center">
           <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl">
-            Learn from the Best
+            Learn from the Best Mentors
           </h1>
           <p className="mt-6 max-w-2xl mx-auto text-xl text-muted-foreground">
-            Our instructors are industry experts and passionate educators dedicated to your success.
+            Our mentors are industry experts and passionate educators dedicated to your success.
           </p>
         </div>
         

@@ -16,10 +16,10 @@ const conversations = [
 ]
 
 const messages = [
-    { sender: "other", text: "Hey! I saw your bid for the landing page project. Your portfolio looks great.", time: "10:00 AM" },
-    { sender: "me", text: "Thanks! I'm really excited about the project. I have extensive experience with Next.js and conversion-focused design.", time: "10:01 AM" },
-    { sender: "other", text: "Perfect. We need someone who can start immediately. Are you available?", time: "10:01 AM" },
-    { sender: "me", text: "Yes, I can start as soon as we finalize the details. I've already reviewed the Figma file.", time: "10:02 AM" },
+    { sender: "other", text: "Hey! I'm your assigned mentor, Samuel. I saw you just started the React course. How's it going so far?", time: "10:00 AM" },
+    { sender: "me", text: "Hi Samuel! Thanks for reaching out. It's going well, but I'm a bit confused about the `useEffect` hook.", time: "10:01 AM" },
+    { sender: "other", text: "That's a common sticking point. Think of it as a way to handle side effects, like fetching data or subscribing to events, after the component renders. Have you seen the curated video on it in Module 2?", time: "10:01 AM" },
+    { sender: "me", text: "Oh, I haven't watched that yet. I'll check it out now. Thanks for the tip!", time: "10:02 AM" },
 ]
 
 export function ChatInterface() {
@@ -57,7 +57,7 @@ export function ChatInterface() {
                         <AvatarFallback>SA</AvatarFallback>
                     </Avatar>
                     <div>
-                        <p className="font-semibold">Samuel Adebayo</p>
+                        <p className="font-semibold">Samuel Adebayo (Your Mentor)</p>
                         <p className="text-sm text-muted-foreground">Online</p>
                     </div>
                 </div>
