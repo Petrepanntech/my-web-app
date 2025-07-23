@@ -11,6 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/hooks/use-toast';
+import { BackButton } from '@/components/shared/BackButton';
 
 export default function TaskDetailPage({ params }: { params: { id: string } }) {
     const { isAuthenticated, setShowAuthModal } = useAuth();
@@ -45,6 +46,7 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
 
     return (
         <div className="container mx-auto max-w-4xl py-12 px-4 sm:px-6 lg:px-8">
+            <BackButton className="mb-4" />
             <div className="grid md:grid-cols-3 gap-8">
                 <div className="md:col-span-2 space-y-6">
                     <div>

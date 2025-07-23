@@ -12,6 +12,7 @@ import { allQuestions } from "@/lib/cbt-questions";
 import DashboardAuthWrapper from "@/components/auth/DashboardAuthWrapper";
 import { useToast } from "@/hooks/use-toast";
 import { ArrowRight } from "lucide-react";
+import { BackButton } from "@/components/shared/BackButton";
 
 const availableSubjects = [...new Set(allQuestions.map(q => q.subject))];
 
@@ -75,6 +76,7 @@ export default function CbtSetupPage() {
   return (
     <DashboardAuthWrapper requiredRole="student">
       <div className="container mx-auto max-w-2xl py-12">
+        <BackButton className="mb-4" />
         <Card>
           <CardHeader>
             <CardTitle className="text-3xl capitalize">Configure Your {testType} Test</CardTitle>

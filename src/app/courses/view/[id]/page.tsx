@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { CheckCircle, Circle, PlayCircle } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
+import { BackButton } from '@/components/shared/BackButton';
 
 const courseCurriculum = {
     '1': [
@@ -54,6 +55,7 @@ export default function CourseViewPage() {
     return (
         <DashboardAuthWrapper requiredRole="student">
             <div className="container mx-auto max-w-4xl py-12">
+                <BackButton className="mb-4" />
                 <div className="mb-8">
                     <h1 className="text-4xl font-bold">{course.title}</h1>
                     <p className="text-lg text-muted-foreground mt-2">{course.instructor}</p>
