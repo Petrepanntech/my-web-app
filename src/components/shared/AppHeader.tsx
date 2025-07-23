@@ -52,7 +52,7 @@ export function AppHeader() {
         </Link>
         
         <div className="flex flex-1 items-center justify-end space-x-2 md:space-x-4">
-            <div className="relative w-full max-w-xs sm:max-w-sm hidden sm:block">
+            <div className="relative w-full max-w-xs">
                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input placeholder="Search..." className="pl-8" />
             </div>
