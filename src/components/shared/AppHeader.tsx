@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -43,13 +44,12 @@ export function AppHeader() {
             AA
           </span>
         </Link>
-        <div className="flex-1">
-            <div className="relative md:max-w-md">
+        
+        <div className="flex flex-1 items-center justify-end space-x-4">
+            <div className="relative w-full max-w-sm hidden sm:block">
                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input placeholder="Search..." className="pl-8" />
             </div>
-        </div>
-        <div className="flex flex-1 items-center justify-end space-x-2">
           {isAuthenticated && user ? (
             <>
             <DropdownMenu>
