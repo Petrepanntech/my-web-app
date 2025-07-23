@@ -1,4 +1,5 @@
 "use client"
+import { useState, useEffect } from "react";
 import DashboardAuthWrapper from "@/components/auth/DashboardAuthWrapper";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,14 +8,30 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { useAuth } from "@/context/AuthContext";
 import { useTheme } from "next-themes";
-import { Moon, Sun } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 export default function SettingsPage() {
-    const { user } = useAuth();
+    const { user, updateUser } = useAuth();
     const { theme, setTheme } = useTheme();
+    const { toast } = useToast();
+    
+    const [name, setName] = useState(user?.name || '');
+
+    useEffect(() => {
+        if (user) {
+            setName(user.name);
+        }
+    }, [user]);
+
+    const handleProfileSave = () => {
+        updateUser({ name });
+        toast({
+            title: "Success",
+            description: "Your profile has been updated."
+        });
+    }
     
     // The wrapper will handle auth check and role validation.
-    // For this mock, let's just use the current user's role.
     if (!user) return null; // Or a loading/redirect component
 
   return (
@@ -30,13 +47,13 @@ export default function SettingsPage() {
                     <CardContent className="space-y-4">
                         <div className="space-y-2">
                             <Label htmlFor="name">Name</Label>
-                            <Input id="name" defaultValue={user?.name} />
+                            <Input id="name" value={name} onChange={(e) => setName(e.target.value)} />
                         </div>
                          <div className="space-y-2">
                             <Label htmlFor="email">Email</Label>
                             <Input id="email" type="email" defaultValue={user?.email} disabled />
                         </div>
-                         <Button>Save Changes</Button>
+                         <Button onClick={handleProfileSave}>Save Changes</Button>
                     </CardContent>
                 </Card>
 

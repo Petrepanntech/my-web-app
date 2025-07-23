@@ -10,6 +10,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   login: (role: Role) => void;
   logout: () => void;
+  updateUser: (newDetails: Partial<User>) => void;
   showAuthModal: boolean;
   setShowAuthModal: (show: boolean) => void;
   selectedRole: Role;
@@ -44,6 +45,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     router.push('/');
   };
 
+  const updateUser = (newDetails: Partial<User>) => {
+    if (user) {
+        setUser(prevUser => prevUser ? { ...prevUser, ...newDetails } : null);
+    }
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -51,6 +58,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         isAuthenticated: !!user,
         login,
         logout,
+        updateUser,
         showAuthModal,
         setShowAuthModal,
         selectedRole,
