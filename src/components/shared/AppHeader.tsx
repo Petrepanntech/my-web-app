@@ -26,7 +26,7 @@ import { Input } from "../ui/input";
 import { Card, CardContent } from "../ui/card";
 import { CommandMenu } from "./CommandMenu";
 import React from "react";
-import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 
@@ -209,6 +209,9 @@ function MobileNav() {
             <GraduationCap className="h-6 w-6 text-primary" />
             <span className="font-bold">Alternative Academy</span>
           </Link>
+          <SheetHeader>
+            <SheetTitle className="sr-only">Mobile Navigation</SheetTitle>
+          </SheetHeader>
           <div className="my-4 h-[calc(100vh-8rem)] pb-10 pl-6">
             <div className="flex flex-col space-y-3">
               {navItems.map((item) => (
