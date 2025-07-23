@@ -9,11 +9,11 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { MessageCircle, Search } from "lucide-react";
 
 const students = [
-    { name: "Adeola Peters", email: "adeola@example.com", course: "Senior Full-Stack", progress: 85, avatar: "https://i.pravatar.cc/150?u=adeola" },
-    { name: "Chinedu Okoro", email: "chinedu@example.com", course: "Node.js for Beginners", progress: 100, avatar: "https://i.pravatar.cc/150?u=chinedu" },
-    { name: "Fatima Bello", email: "fatima@example.com", course: "Senior Full-Stack", progress: 40, avatar: "https://i.pravatar.cc/150?u=fatima" },
-    { name: "Tunde Oladipo", email: "tunde@example.com", course: "Node.js for Beginners", progress: 95, avatar: "https://i.pravatar.cc/150?u=tunde" },
-    { name: "Student User", email: "student@example.com", course: "Node.js for Beginners", progress: 20, avatar: "https://i.pravatar.cc/150?u=student" },
+    { name: "Adeola Peters", email: "adeola@example.com", course: "Senior Full-Stack", progress: 85, avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=50&h=50&fit=crop" },
+    { name: "Chinedu Okoro", email: "chinedu@example.com", course: "Node.js for Beginners", progress: 100, avatar: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=50&h=50&fit=crop" },
+    { name: "Fatima Bello", email: "fatima@example.com", course: "Senior Full-Stack", progress: 40, avatar: "https://images.unsplash.com/photo-1554151228-14d9def656e4?w=50&h=50&fit=crop" },
+    { name: "Tunde Oladipo", email: "tunde@example.com", course: "Node.js for Beginners", progress: 95, avatar: "https://images.unsplash.com/photo-1607746882042-944635dfe10e?w=50&h=50&fit=crop" },
+    { name: "Student User", email: "student@example.com", course: "Node.js for Beginners", progress: 20, avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=50&h=50&fit=crop" },
 ];
 
 

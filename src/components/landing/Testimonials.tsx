@@ -1,3 +1,4 @@
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
@@ -5,19 +6,19 @@ const testimonials = [
   {
     name: "Adeola Peters",
     role: "Student, Frontend Developer",
-    avatar: "https://i.pravatar.cc/150?u=adeola",
+    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=50&h=50&fit=crop",
     testimonial: "Alternative Academy transformed my career. The hands-on projects from the marketplace were invaluable. I landed a full-time remote job before I even finished my learning path!",
   },
   {
     name: "Chinedu Okoro",
     role: "Student, UI/UX Designer",
-    avatar: "https://i.pravatar.cc/150?u=chinedu",
+    avatar: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=50&h=50&fit=crop",
     testimonial: "The AI-powered learning path was a game-changer. It kept me focused and motivated. The community is so supportive, and I've made connections that will last a lifetime.",
   },
   {
     name: "Fatima Bello",
     role: "Business Owner",
-    avatar: "https://i.pravatar.cc/150?u=fatima",
+    avatar: "https://images.unsplash.com/photo-1554151228-14d9def656e4?w=50&h=50&fit=crop",
     testimonial: "Finding skilled, reliable talent in Nigeria used to be a challenge. Alternative Academy's marketplace made it easy. We've hired three amazing developers for our projects.",
   },
 ];

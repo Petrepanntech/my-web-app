@@ -19,10 +19,10 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const mockUsers: Record<NonNullable<Role>, User> = {
-  student: { id: "1", name: "Student User", email: "student@example.com", role: "student", avatar: "https://i.pravatar.cc/150?u=student" },
-  instructor: { id: "2", name: "Instructor User", email: "instructor@example.com", role: "instructor", avatar: "https://i.pravatar.cc/150?u=instructor" },
-  admin: { id: "3", name: "Admin User", email: "admin@example.com", role: "admin", avatar: "https://i.pravatar.cc/150?u=admin" },
-  business: { id: "4", name: "Business User", email: "business@example.com", role: "business", avatar: "https://i.pravatar.cc/150?u=business" },
+  student: { id: "1", name: "Student User", email: "student@example.com", role: "student", avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=50&h=50&fit=crop" },
+  instructor: { id: "2", name: "Instructor User", email: "instructor@example.com", role: "instructor", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50&h=50&fit=crop" },
+  admin: { id: "3", name: "Admin User", email: "admin@example.com", role: "admin", avatar: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=50&h=50&fit=crop" },
+  business: { id: "4", name: "Business User", email: "business@example.com", role: "business", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=50&h=50&fit=crop" },
 };
 
 export function AuthProvider({ children }: { children: ReactNode }) {

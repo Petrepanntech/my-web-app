@@ -1,3 +1,4 @@
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,28 +8,28 @@ const featuredInstructors = [
     name: "Dr. Evelyn Reed",
     title: "Lead Data Scientist",
     specialties: ["Machine Learning", "Python", "AI Ethics"],
-    avatar: "https://i.pravatar.cc/150?u=evelyn",
+    avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=100&h=100&fit=crop",
     bio: "Dr. Reed brings over 15 years of industry experience, passionate about making data science accessible to all."
   },
   {
     name: "Samuel Adebayo",
     title: "Senior Full-Stack Engineer",
     specialties: ["React", "Node.js", "GraphQL", "DevOps"],
-    avatar: "https://i.pravatar.cc/150?u=samuel",
+    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop",
     bio: "Samuel is a certified cloud architect and a master of modern web technologies, dedicated to practical, project-based learning."
   },
   {
     name: "Aisha Nwosu",
     title: "Head of Product Design @ Paystack",
     specialties: ["UI/UX", "Figma", "Design Systems", "User Research"],
-    avatar: "https://i.pravatar.cc/150?u=aisha",
+    avatar: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=100&h=100&fit=crop",
     bio: "Aisha is a renowned designer with a flair for creating user-centric products that are both beautiful and functional."
   },
    {
     name: "Tunde Oladipo",
     title: "Growth Marketing Expert",
     specialties: ["SEO", "Content Marketing", "PPC", "Marketing Analytics"],
-    avatar: "https://i.pravatar.cc/150?u=tunde",
+    avatar: "https://images.unsplash.com/photo-1607746882042-944635dfe10e?w=100&h=100&fit=crop",
     bio: "Tunde has helped multiple startups achieve exponential growth through data-driven digital marketing strategies."
   }
 ];

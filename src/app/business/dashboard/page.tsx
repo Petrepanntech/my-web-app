@@ -16,9 +16,9 @@ const activeTasks = [
 ]
 
 const recentFreelancers = [
-    { name: "Samuel Adebayo", specialty: "Full-Stack Dev", avatar: "https://i.pravatar.cc/150?u=samuel" },
-    { name: "Aisha Nwosu", specialty: "UI/UX Designer", avatar: "https://i.pravatar.cc/150?u=aisha" },
-    { name: "Adeola Peters", specialty: "Frontend Dev", avatar: "https://i.pravatar.cc/150?u=adeola" },
+    { name: "Samuel Adebayo", specialty: "Full-Stack Dev", avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=50&h=50&fit=crop" },
+    { name: "Aisha Nwosu", specialty: "UI/UX Designer", avatar: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=50&h=50&fit=crop" },
+    { name: "Adeola Peters", specialty: "Frontend Dev", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=50&h=50&fit=crop" },
 ]
 
 

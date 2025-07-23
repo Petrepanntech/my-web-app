@@ -1,3 +1,4 @@
+
 "use client"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
@@ -7,11 +8,11 @@ import { cn } from "@/lib/utils"
 import { Search, Send, User } from "lucide-react"
 
 const conversations = [
-    { name: "Samuel Adebayo", lastMessage: "Yes, I can help with that. What's the deadline?", time: "2m", avatar: "https://i.pravatar.cc/150?u=samuel" },
-    { name: "Innovate Inc.", lastMessage: "The signed MOU has been uploaded.", time: "1h", avatar: "https://i.pravatar.cc/150?u=innovate" },
-    { name: "Aisha Nwosu", lastMessage: "Great work on the last milestone!", time: "5h", avatar: "https://i.pravatar.cc/150?u=aisha" },
-    { name: "Support Team", lastMessage: "Your payout has been processed.", time: "1d", avatar: "https://i.pravatar.cc/150?u=support" },
-    { name: "Chinedu Okoro", lastMessage: "I have a question about the React course.", time: "2d", avatar: "https://i.pravatar.cc/150?u=chinedu" },
+    { name: "Samuel Adebayo", lastMessage: "Yes, I can help with that. What's the deadline?", time: "2m", avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=50&h=50&fit=crop" },
+    { name: "Innovate Inc.", lastMessage: "The signed MOU has been uploaded.", time: "1h", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=50&h=50&fit=crop" },
+    { name: "Aisha Nwosu", lastMessage: "Great work on the last milestone!", time: "5h", avatar: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=50&h=50&fit=crop" },
+    { name: "Support Team", lastMessage: "Your payout has been processed.", time: "1d", avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=50&h=50&fit=crop" },
+    { name: "Chinedu Okoro", lastMessage: "I have a question about the React course.", time: "2d", avatar: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=50&h=50&fit=crop" },
 ]
 
 const messages = [
@@ -52,7 +53,7 @@ export function ChatInterface() {
             <div className="flex-1 flex flex-col">
                 <div className="p-4 border-b flex items-center gap-4">
                      <Avatar>
-                        <AvatarImage src="https://i.pravatar.cc/150?u=samuel" alt="Samuel Adebayo" />
+                        <AvatarImage src={"https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=50&h=50&fit=crop"} alt="Samuel Adebayo" />
                         <AvatarFallback>SA</AvatarFallback>
                     </Avatar>
                     <div>
@@ -66,7 +67,7 @@ export function ChatInterface() {
                              <div key={index} className={cn("flex items-end gap-2", msg.sender === 'me' ? 'justify-end' : '')}>
                                 {msg.sender === 'other' && (
                                     <Avatar className="h-8 w-8">
-                                        <AvatarImage src="https://i.pravatar.cc/150?u=samuel" />
+                                        <AvatarImage src={"https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=50&h=50&fit=crop"} />
                                         <AvatarFallback>SA</AvatarFallback>
                                     </Avatar>
                                 )}

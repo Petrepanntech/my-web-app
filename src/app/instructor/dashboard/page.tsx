@@ -17,9 +17,9 @@ const myCourses = [
 ];
 
 const recentActivity = [
-    { user: { name: "Adeola Peters", avatar: "https://i.pravatar.cc/150?u=adeola" }, action: "asked a question in 'React Advanced'", time: "2h ago" },
-    { user: { name: "Chinedu Okoro", avatar: "https://i.pravatar.cc/150?u=chinedu" }, action: "completed 'Node.js for Beginners'", time: "5h ago" },
-    { user: { name: "Fatima Bello", avatar: "https://i.pravatar.cc/150?u=fatima" }, action: "left a 5-star review on 'Senior Full-Stack'", time: "1d ago" },
+    { user: { name: "Adeola Peters", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=50&h=50&fit=crop" }, action: "asked a question in 'React Advanced'", time: "2h ago" },
+    { user: { name: "Chinedu Okoro", avatar: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=50&h=50&fit=crop" }, action: "completed 'Node.js for Beginners'", time: "5h ago" },
+    { user: { name: "Fatima Bello", avatar: "https://images.unsplash.com/photo-1554151228-14d9def656e4?w=50&h=50&fit=crop" }, action: "left a 5-star review on 'Senior Full-Stack'", time: "1d ago" },
 ];
 
 export default function Page() {
