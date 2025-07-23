@@ -60,7 +60,7 @@ export default function CourseViewPage() {
                 <BackButton className="mb-4" />
                 <div className="mb-8">
                     <h1 className="text-4xl font-bold">{course.title}</h1>
-                    <p className="text-lg text-muted-foreground mt-2">Your Mentor: {course.instructor}</p>
+                    <p className="text-lg text-muted-foreground mt-2">AI-Curated by Alternative Academy</p>
                 </div>
                 
                 <Card className="mb-8">
@@ -76,7 +76,7 @@ export default function CourseViewPage() {
                 <Card>
                     <CardHeader>
                         <CardTitle>Course Curriculum</CardTitle>
-                        <CardDescription>Start learning by selecting a lecture or video.</CardDescription>
+                        <CardDescription>Start learning by selecting a lecture or a curated video.</CardDescription>
                     </CardHeader>
                     <CardContent>
                         <Accordion type="single" collapsible className="w-full">

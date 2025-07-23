@@ -17,30 +17,22 @@ export default function StudentDashboardPage() {
     const { user } = useAuth();
     
     const actionCards = [
-        { title: "My Courses", description: "View your enrolled courses", href: "/student/courses", Icon: Book },
-        { title: "My Mentor", description: "Chat with your mentor", href: "/student/mentors", Icon: MessageSquare },
+        { title: "My Courses", description: "View your AI-curated courses", href: "/student/courses", Icon: Book },
+        { title: "Learning Path", description: "Generate your learning path", href: "/student/learning-path", Icon: LayoutDashboard },
         { title: "CBT Practice", description: "Prepare for your exams", href: "/student/cbt-practice", Icon: TestTube2 },
-        { title: "Learning Path", description: "See your AI-generated path", href: "/student/learning-path", Icon: LayoutDashboard },
+        { title: "Marketplace", description: "Find freelance projects", href: "/marketplace/tasks", Icon: Briefcase },
     ]
-
-    const mentor = {
-        name: "Samuel Adebayo",
-        title: "Senior Full-Stack Engineer",
-        avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&h=80&fit=crop"
-    }
 
     return (
         <DashboardAuthWrapper requiredRole="student">
             <div className="container p-4 sm:p-6 lg:p-8">
                 <div className="space-y-8">
-                    <Card className="bg-primary text-primary-foreground border-none">
-                        <CardHeader>
-                            <CardTitle className="text-3xl">Welcome back, {user?.name?.split(' ')[0]}!</CardTitle>
-                            <CardDescription className="text-primary-foreground/80">
-                                Ready to continue your learning journey? Let's make today productive.
-                            </CardDescription>
-                        </CardHeader>
-                    </Card>
+                     <div className="mb-12">
+                        <h1 className="text-4xl font-extrabold tracking-tight">Welcome, {user?.name?.split(' ')[0]}!</h1>
+                        <p className="mt-2 text-xl text-muted-foreground">
+                           Ready to continue your learning journey? Let's make today productive.
+                        </p>
+                    </div>
                     
                     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                         {actionCards.map(card => (
@@ -51,24 +43,17 @@ export default function StudentDashboardPage() {
                     <div className="grid gap-8 lg:grid-cols-2">
                         <Card>
                             <CardHeader>
-                                <CardTitle>Your Assigned Mentor</CardTitle>
-                                <CardDescription>Get personalized help and guidance.</CardDescription>
+                                <CardTitle>Community Hub</CardTitle>
+                                <CardDescription>Connect with peers and get help.</CardDescription>
                             </CardHeader>
                             <CardContent>
-                                <div className="flex items-center gap-4">
-                                    <Avatar className="h-20 w-20">
-                                        <AvatarImage src={mentor.avatar} alt={mentor.name} />
-                                        <AvatarFallback>{mentor.name.charAt(0)}</AvatarFallback>
-                                    </Avatar>
-                                    <div>
-                                        <p className="text-lg font-semibold">{mentor.name}</p>
-                                        <p className="text-muted-foreground">{mentor.title}</p>
-                                    </div>
-                                </div>
+                                <p className="text-muted-foreground mb-4">
+                                    Learning is better together. Join the conversation, ask questions, and collaborate with other learners on the same path as you.
+                                </p>
                                 <Button asChild className="mt-4 w-full">
-                                    <Link href="/student/chat">
+                                    <Link href="/community">
                                         <MessageSquare className="mr-2 h-4 w-4" />
-                                        Chat with {mentor.name.split(' ')[0]}
+                                        Go to Community
                                     </Link>
                                 </Button>
                             </CardContent>

@@ -16,11 +16,8 @@ export function Footer() {
                 <Link href="/about" className="text-sm hover:underline underline-offset-4">
                 About
                 </Link>
-                <Link href="#" className="text-sm hover:underline underline-offset-4">
-                Privacy
-                </Link>
-                <Link href="#" className="text-sm hover:underline underline-offset-4">
-                Terms
+                <Link href="/community" className="text-sm hover:underline underline-offset-4">
+                Community
                 </Link>
             </nav>
         </div>

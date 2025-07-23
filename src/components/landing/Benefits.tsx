@@ -4,22 +4,22 @@ import { Zap, BrainCircuit, Users, Briefcase } from "lucide-react";
 const benefits = [
   {
     icon: BrainCircuit,
-    title: "AI-Curated Content",
-    description: "Our AI engine sources the best, most relevant learning materials, including video lectures, so you're always up-to-date.",
-  },
-  {
-    icon: Users,
-    title: "Expert Mentorship",
-    description: "Connect directly with high-caliber mentors for one-on-one guidance and support throughout your learning journey.",
-  },
-  {
-    icon: Briefcase,
-    title: "Earn As You Grow",
-    description: "Utilize our affiliate program and complete promotional tasks to earn money, all managed through your integrated wallet.",
+    title: "AI-Powered Curation",
+    description: "Our AI engine finds the best, most relevant learning materials from across the web, so you're always up-to-date.",
   },
   {
     icon: Zap,
-    title: "Community Powered",
+    title: "Always Free",
+    description: "Quality education shouldn't have a price tag. Our platform is free to use, forever.",
+  },
+  {
+    icon: Briefcase,
+    title: "Real-World Ready",
+    description: "Apply your skills by bidding on freelance projects in our integrated marketplace.",
+  },
+  {
+    icon: Users,
+    title: "Community Driven",
     description: "Join a vibrant community hub to collaborate, ask questions, and build your professional network.",
   },
 ];
@@ -36,7 +36,7 @@ export function Benefits() {
         </div>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {benefits.map((benefit) => (
-            <Card key={benefit.title} className="text-center">
+            <Card key={benefit.title} className="text-center border-0 shadow-none">
               <CardHeader>
                 <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
                   <benefit.icon className="h-6 w-6" />

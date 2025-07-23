@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -58,7 +59,8 @@ export function BottomNavBar() {
   
   // Don't show the nav bar on these pages
   const hiddenPaths = [
-      /^\/student\/cbt-practice\/[^/]+$/, // e.g., /student/cbt-practice/jamb
+      /^\/student\/cbt-practice\/setup\/.*$/, // e.g. /student/cbt-practice/setup/jamb
+      /^\/student\/cbt-practice\/test\/.*$/, // e.g. /student/cbt-practice/test/jamb
       /^\/student\/cbt-practice\/results$/,
       /^\/marketplace\/tasks\/[^/]+$/, // e.g., /marketplace/tasks/1
   ];
@@ -74,8 +76,8 @@ export function BottomNavBar() {
           const isActive = pathname === href;
           return (
             <Link key={href} href={href} className="flex flex-col items-center justify-center flex-1 h-full">
-              <Icon className={cn("h-6 w-6 mb-1", isActive ? "text-primary" : "text-muted-foreground")} />
-              <span className={cn("text-xs", isActive ? "text-primary font-semibold" : "text-muted-foreground")}>
+              <Icon className={cn("h-6 w-6 mb-1", isActive ? "text-primary-foreground bg-primary p-1 rounded-md" : "text-muted-foreground")} />
+              <span className={cn("text-xs", isActive ? "text-primary" : "text-muted-foreground")}>
                 {label}
               </span>
             </Link>

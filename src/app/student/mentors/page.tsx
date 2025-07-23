@@ -43,43 +43,7 @@ export default function Page() {
         <DashboardAuthWrapper requiredRole="student">
             <div className="container p-4 sm:p-6 lg:p-8">
                 <div className="text-center mb-12">
-                     <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl">Connect with a Mentor</h1>
-                    <p className="mt-4 max-w-2xl mx-auto text-xl text-muted-foreground">
-                       Get guidance and support from industry experts to accelerate your growth.
-                    </p>
-                </div>
-                
-                <div className="grid gap-8 md:grid-cols-2">
-                    {mentors.map(mentor => (
-                        <Card key={mentor.name}>
-                             <CardHeader>
-                                <div className="flex items-center justify-between">
-                                    <div className="flex items-start gap-4">
-                                            <Avatar className="h-20 w-20">
-                                                <AvatarImage src={mentor.avatar} alt={mentor.name} />
-                                                <AvatarFallback>{mentor.name.split(" ").map(n => n[0]).join("")}</AvatarFallback>
-                                            </Avatar>
-                                            <div>
-                                                <CardTitle>{mentor.name}</CardTitle>
-                                                <CardDescription className="mt-1">{mentor.title}</CardDescription>
-                                            </div>
-                                    </div>
-                                    <Badge variant={mentor.status === 'Your Mentor' ? 'default' : mentor.status === 'Available' ? 'secondary' : 'outline'}>{mentor.status}</Badge>
-                                </div>
-                            </CardHeader>
-                            <CardContent>
-                                <div className="flex flex-wrap gap-2 mb-4">
-                                    {mentor.specialties.map(spec => <Badge key={spec} variant="secondary">{spec}</Badge>)}
-                                </div>
-                                <Button asChild className="w-full" disabled={mentor.status === 'Busy'}>
-                                    <Link href="/student/chat">
-                                        <MessageSquare className="mr-2 h-4 w-4" />
-                                        {mentor.status === 'Your Mentor' ? 'Chat Now' : 'Request Mentorship'}
-                                    </Link>
-                                </Button>
-                            </CardContent>
-                        </Card>
-                    ))}
+                     <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl">This page has been removed</h1>
                 </div>
             </div>
         </DashboardAuthWrapper>

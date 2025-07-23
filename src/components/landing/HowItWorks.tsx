@@ -1,4 +1,3 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { UserPlus, BookUser, Briefcase, Award } from "lucide-react";
 
 const steps = [
@@ -10,7 +9,7 @@ const steps = [
     {
         icon: BookUser,
         title: "2. Get Your Path",
-        description: "Our AI generates a personalized learning path with courses tailored to you."
+        description: "Our AI generates a personalized learning path and curates a course for you from free online resources."
     },
     {
         icon: Briefcase,

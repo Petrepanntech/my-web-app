@@ -2,7 +2,6 @@ import type { NavItem, NavGroup } from '@/types';
 
 export const publicNavItems: NavItem[] = [
   { href: '/courses', label: 'Courses', roles: null },
-  { href: '/instructors', label: 'Mentors', roles: null },
   { href: '/marketplace/tasks', label: 'Marketplace', roles: null },
   { href: '/community', label: 'Community', roles: null },
   { href: '/about', label: 'About', roles: null },
@@ -19,8 +18,7 @@ export const allDashboardNavItems: NavGroup[] = [
             { href: '/student/cbt-practice', label: 'CBT Practice', roles: ['student'] },
             { href: '/student/achievements', label: 'Achievements', roles: ['student'] },
             { href: '/student/referrals-wallet', label: 'Wallet & Referrals', roles: ['student'] },
-            { href: '/student/mentors', label: 'Mentors', roles: ['student'] },
-            { href: '/student/chat', label: 'Chat', roles: ['student'] },
+            { href: '/student/chat', label: 'Community Chat', roles: ['student'] },
         ]
     },
     {

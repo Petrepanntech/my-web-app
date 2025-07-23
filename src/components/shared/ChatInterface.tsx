@@ -16,13 +16,23 @@ const conversations = [
 ]
 
 const messages = [
-    { sender: "other", text: "Hey! I'm your assigned mentor, Samuel. I saw you just started the React course. How's it going so far?", time: "10:00 AM" },
-    { sender: "me", text: "Hi Samuel! Thanks for reaching out. It's going well, but I'm a bit confused about the `useEffect` hook.", time: "10:01 AM" },
-    { sender: "other", text: "That's a common sticking point. Think of it as a way to handle side effects, like fetching data or subscribing to events, after the component renders. Have you seen the curated video on it in Module 2?", time: "10:01 AM" },
-    { sender: "me", text: "Oh, I haven't watched that yet. I'll check it out now. Thanks for the tip!", time: "10:02 AM" },
+    { sender: "other", text: "Hey! I'm your assigned mentor, Samuel. I saw you just started the React course. How's it going so far?", time: "10:00 AM", avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=50&h=50&fit=crop" },
+    { sender: "me", text: "Hi Samuel! Thanks for reaching out. It's going well, but I'm a bit confused about the `useEffect` hook.", time: "10:01 AM", avatar: "" },
+    { sender: "other", text: "That's a common sticking point. Think of it as a way to handle side effects, like fetching data or subscribing to events, after the component renders. Have you seen the curated video on it in Module 2?", time: "10:01 AM", avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=50&h=50&fit=crop" },
+    { sender: "me", text: "Oh, I haven't watched that yet. I'll check it out now. Thanks for the tip!", time: "10:02 AM", avatar: "" },
 ]
 
-export function ChatInterface() {
+const communityMessages = [
+    { sender: "other", name: "Chinedu Okoro", text: "Just finished the advanced React module. It was challenging but so rewarding! Anyone else working on their final project?", time: "10:30 AM", avatar: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=50&h=50&fit=crop" },
+    { sender: "other", name: "Adeola Peters", text: "Looking for a collaborator on a freelance UI/UX project. It involves creating a mobile app for a local startup. DM me if interested!", time: "10:32 AM", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=50&h=50&fit=crop" },
+    { sender: "me", text: "I'm interested in the UI/UX project! What's the scope?", time: "10:33 AM", avatar: "" },
+    { sender: "other", name: "Samuel Adebayo", text: "The new CBT practice section is amazing for JAMB prep. Highly recommend checking it out if you have exams coming up.", time: "10:35 AM", avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=50&h=50&fit=crop" },
+]
+
+export function ChatInterface({ isCommunity = false }: { isCommunity?: boolean }) {
+    const currentMessages = isCommunity ? communityMessages : messages;
+    const currentTarget = isCommunity ? { name: "Community Chat", online: true, avatar: "https://images.unsplash.com/photo-1543269865-cbf427effbad?w=50&h=50&fit=crop"} : { name: "Samuel Adebayo (Your Mentor)", online: true, avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=50&h=50&fit=crop"}
+
     return (
         <div className="h-[calc(100vh-4rem)] flex">
             <div className="hidden md:flex flex-col w-1/4 border-r">
@@ -53,25 +63,26 @@ export function ChatInterface() {
             <div className="flex-1 flex flex-col">
                 <div className="p-4 border-b flex items-center gap-4">
                      <Avatar>
-                        <AvatarImage src={"https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=50&h=50&fit=crop"} alt="Samuel Adebayo" />
-                        <AvatarFallback>SA</AvatarFallback>
+                        <AvatarImage src={currentTarget.avatar} alt={currentTarget.name} />
+                        <AvatarFallback>{currentTarget.name.charAt(0)}</AvatarFallback>
                     </Avatar>
                     <div>
-                        <p className="font-semibold">Samuel Adebayo (Your Mentor)</p>
-                        <p className="text-sm text-muted-foreground">Online</p>
+                        <p className="font-semibold">{currentTarget.name}</p>
+                        {currentTarget.online && <p className="text-sm text-muted-foreground">Online</p>}
                     </div>
                 </div>
                 <ScrollArea className="flex-1 p-6">
                     <div className="space-y-6">
-                        {messages.map((msg, index) => (
+                        {currentMessages.map((msg, index) => (
                              <div key={index} className={cn("flex items-end gap-2", msg.sender === 'me' ? 'justify-end' : '')}>
                                 {msg.sender === 'other' && (
                                     <Avatar className="h-8 w-8">
-                                        <AvatarImage src={"https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=50&h=50&fit=crop"} />
-                                        <AvatarFallback>SA</AvatarFallback>
+                                        <AvatarImage src={msg.avatar} />
+                                        <AvatarFallback>{(msg as any).name?.charAt(0) || 'U'}</AvatarFallback>
                                     </Avatar>
                                 )}
                                  <div className={cn("rounded-lg p-3 max-w-xs lg:max-w-md", msg.sender === 'me' ? 'bg-primary text-primary-foreground' : 'bg-muted')}>
+                                    {isCommunity && msg.sender === 'other' && <p className="text-xs font-bold mb-1">{(msg as any).name}</p>}
                                     <p className="text-sm">{msg.text}</p>
                                     <p className="text-xs text-right mt-1 opacity-70">{msg.time}</p>
                                 </div>

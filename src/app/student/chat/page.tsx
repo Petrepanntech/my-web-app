@@ -4,7 +4,7 @@ import { ChatInterface } from "@/components/shared/ChatInterface";
 export default function Page() {
     return (
         <DashboardAuthWrapper requiredRole="student">
-           <ChatInterface />
+           <ChatInterface isCommunity={true} />
         </DashboardAuthWrapper>
     );
 }

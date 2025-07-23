@@ -21,11 +21,14 @@ import {
   DropdownMenuSubTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { allDashboardNavItems } from "@/lib/constants";
+import { publicNavItems, allDashboardNavItems } from "@/lib/constants";
 import { Input } from "../ui/input";
 import { Card, CardContent } from "../ui/card";
 import { CommandMenu } from "./CommandMenu";
 import React from "react";
+import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
+import { cn } from "@/lib/utils";
+import { usePathname } from "next/navigation";
 
 const mockNotifications = [
     { title: "New Bid Received", description: "You received a new bid on 'Build a Landing Page'.", time: "2m ago" },
@@ -36,26 +39,38 @@ const mockNotifications = [
 
 export function AppHeader() {
   const { isAuthenticated, user, logout, setShowAuthModal } = useAuth();
-  const { setTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
   const [open, setOpen] = React.useState(false);
 
 
   const userNavItems = user?.role ? allDashboardNavItems.find(group => group.label.toLowerCase() === user.role)?.items || [] : [];
+  const navItems = isAuthenticated && user ? userNavItems : publicNavItems;
 
   return (
     <>
     <CommandMenu open={open} setOpen={setOpen} />
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center">
-        <Link href="/" className="mr-4 flex items-center space-x-2">
-          <GraduationCap className="h-6 w-6 text-primary" />
-          <span className="font-bold hidden sm:inline-block">
-            Alternative Academy
-          </span>
-           <span className="font-bold inline-block sm:hidden">
-            AA
-          </span>
-        </Link>
+        <div className="mr-4 hidden md:flex">
+            <Link href="/" className="mr-6 flex items-center space-x-2">
+            <GraduationCap className="h-6 w-6 text-primary" />
+            <span className="font-bold hidden sm:inline-block">
+                Alternative Academy
+            </span>
+            </Link>
+            <nav className="flex items-center gap-6 text-sm">
+                {navItems.map((item) => (
+                    <Link
+                        key={item.href}
+                        href={item.href}
+                        className="transition-colors hover:text-foreground/80 text-foreground/60"
+                    >
+                        {item.label}
+                    </Link>
+                ))}
+            </nav>
+        </div>
+        <MobileNav />
         
         <div className="flex flex-1 items-center justify-end space-x-1 sm:space-x-2 md:space-x-4">
             <div className="flex-1 sm:flex-none sm:w-auto">
@@ -65,8 +80,8 @@ export function AppHeader() {
                     onClick={() => setOpen(true)}
                 >
                     <Search className="h-4 w-4 mr-2" />
-                    <span className="hidden sm:inline-flex">Search...</span>
-                     <span className="inline-flex sm:hidden">Search...</span>
+                    <span className="hidden lg:inline-flex">Search anything...</span>
+                     <span className="inline-flex lg:hidden">Search...</span>
                     <kbd className="pointer-events-none absolute right-[0.3rem] top-[0.3rem] hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex">
                         <span className="text-xs">⌘</span>K
                     </kbd>
@@ -120,16 +135,13 @@ export function AppHeader() {
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                    <DropdownMenuLabel>Navigation</DropdownMenuLabel>
-                    {userNavItems.map((item) => (
-                        <DropdownMenuItem key={item.href} asChild>
-                            <Link href={item.href}>{item.label}</Link>
-                        </DropdownMenuItem>
-                    ))}
+                    <DropdownMenuItem asChild>
+                        <Link href={`/${user.role}/dashboard`}>Dashboard</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild><Link href="/settings">Profile</Link></DropdownMenuItem>
+                    <DropdownMenuItem asChild><Link href="/settings">Settings</Link></DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem asChild><Link href="/settings">Profile</Link></DropdownMenuItem>
-                <DropdownMenuItem asChild><Link href="/settings">Settings</Link></DropdownMenuItem>
                  <DropdownMenuSub>
                     <DropdownMenuSubTrigger>
                         <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
@@ -151,6 +163,7 @@ export function AppHeader() {
                     </DropdownMenuPortal>
                 </DropdownMenuSub>
 
+                <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={logout}>Log out</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -168,4 +181,52 @@ export function AppHeader() {
     </header>
     </>
   );
+}
+
+function MobileNav() {
+    const [open, setOpen] = React.useState(false)
+    const pathname = usePathname()
+    const { isAuthenticated, user } = useAuth();
+    const navItems = isAuthenticated && user ? allDashboardNavItems.find(group => group.label.toLowerCase() === user.role)?.items || [] : publicNavItems;
+
+    return (
+        <Sheet open={open} onOpenChange={setOpen}>
+        <SheetTrigger asChild>
+          <Button
+            variant="ghost"
+            className="mr-2 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden"
+          >
+            <Menu className="h-5 w-5" />
+            <span className="sr-only">Toggle Menu</span>
+          </Button>
+        </SheetTrigger>
+        <SheetContent side="left" className="pr-0">
+          <Link
+            href="/"
+            className="mr-6 flex items-center space-x-2"
+            onClick={() => setOpen(false)}
+            >
+            <GraduationCap className="h-6 w-6 text-primary" />
+            <span className="font-bold">Alternative Academy</span>
+          </Link>
+          <div className="my-4 h-[calc(100vh-8rem)] pb-10 pl-6">
+            <div className="flex flex-col space-y-3">
+              {navItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setOpen(false)}
+                  className={cn(
+                    "text-muted-foreground",
+                    pathname === item.href && "text-foreground"
+                  )}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+        </SheetContent>
+      </Sheet>
+    )
 }
