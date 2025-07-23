@@ -73,7 +73,7 @@ export default function StudentDashboardPage() {
                             </CardContent>
                         </Card>
                          <Card>
-                            <CardHeader className="flex justify-between items-center">
+                            <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                                <div>
                                  <CardTitle>Recent Achievements</CardTitle>
                                  <CardDescription>Keep up the great work!</CardDescription>
