@@ -1,6 +1,6 @@
 
 "use client"
-import React from 'react';
+import React, { useState } from 'react';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -12,10 +12,16 @@ import { Textarea } from '@/components/ui/textarea';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { BackButton } from '@/components/shared/BackButton';
+import { generateMOU } from '@/lib/actions';
+import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescription, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
+import { Loader2 } from 'lucide-react';
 
 export default function TaskDetailPage({ params }: { params: { id: string } }) {
-    const { isAuthenticated, setShowAuthModal } = useAuth();
+    const { isAuthenticated, user, setShowAuthModal } = useAuth();
     const { toast } = useToast();
+    const [mouContent, setMouContent] = useState('');
+    const [isGeneratingMOU, setIsGeneratingMOU] = useState(false);
+    const [isMouAlertOpen, setIsMouAlertOpen] = useState(false);
 
     // In a real app, you would fetch this data based on params.id
     const task = { 
@@ -44,6 +50,36 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
         }
     }
 
+    const handleGenerateMOU = async () => {
+        if (user?.role !== 'business') {
+            toast({
+                variant: 'destructive',
+                title: 'Permission Denied',
+                description: 'Only business clients can generate MOUs.',
+            });
+            return;
+        }
+        setIsGeneratingMOU(true);
+        try {
+            const result = await generateMOU({
+                clientName: task.postedBy.name,
+                freelancerName: 'Adeola Peters (Sample)', // In a real app, this would be the selected freelancer
+                projectScope: task.description,
+                budget: '80000', // In a real app, this would be the agreed-upon amount
+            });
+            setMouContent(result.mou);
+            setIsMouAlertOpen(true);
+        } catch (error) {
+            toast({
+                variant: 'destructive',
+                title: 'MOU Generation Failed',
+                description: 'There was an error generating the MOU. Please try again.',
+            });
+        } finally {
+            setIsGeneratingMOU(false);
+        }
+    };
+
     return (
         <div className="container mx-auto max-w-4xl py-12 px-4 sm:px-6 lg:px-8">
             <BackButton className="mb-4" />
@@ -69,7 +105,7 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
                         <CardHeader><CardTitle>Activity</CardTitle></CardHeader>
                         <CardContent className="space-y-4">
                            <p className="text-muted-foreground">There are currently <span className="font-bold text-foreground">{task.bids} bids</span> on this project.</p>
-                           <p className="text-sm text-muted-foreground">You must be logged in as a student or instructor to view bid details and place your own bid.</p>
+                           <p className="text-sm text-muted-foreground">You must be logged in as a student or mentor to view bid details and place your own bid.</p>
                         </CardContent>
                     </Card>
                 </div>
@@ -85,7 +121,7 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
                         </CardContent>
                     </Card>
                     
-                    {isAuthenticated ? (
+                    {isAuthenticated && (user?.role === 'student' || user?.role === 'instructor') ? (
                          <Dialog>
                             <DialogTrigger asChild>
                                 <Button size="lg" className="w-full">Place Your Bid</Button>
@@ -114,12 +150,29 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
                                 </form>
                             </DialogContent>
                         </Dialog>
+                    ) : isAuthenticated && user?.role === 'business' ? (
+                        <Button size="lg" className="w-full" onClick={handleGenerateMOU} disabled={isGeneratingMOU}>
+                            {isGeneratingMOU ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+                            Generate MOU
+                        </Button>
                     ) : (
                         <Button size="lg" className="w-full" onClick={handlePlaceBidClick}>Place Your Bid</Button>
                     )}
                    
                 </div>
             </div>
+
+            <AlertDialog open={isMouAlertOpen} onOpenChange={setIsMouAlertOpen}>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>AI-Generated MOU</AlertDialogTitle>
+                        <AlertDialogDescription className="max-h-[60vh] overflow-y-auto whitespace-pre-wrap">
+                            {mouContent}
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogAction>Close</AlertDialogAction>
+                </AlertDialogContent>
+            </AlertDialog>
         </div>
     );
 }

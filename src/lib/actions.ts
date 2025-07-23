@@ -13,6 +13,10 @@ import {
   moderateText as moderateTextFlow,
   type ModerateTextInput,
 } from '@/ai/flows/moderate-text-flow';
+import {
+  generateMOU as generateMOUFlow,
+  type GenerateMOUInput,
+} from '@/ai/flows/generate-mou-flow';
 
 export async function personalizedLearningPath(
   input: PersonalizedLearningPathInput
@@ -22,4 +26,8 @@ export async function personalizedLearningPath(
 
 export async function moderateText(input: ModerateTextInput) {
   return await moderateTextFlow(input);
+}
+
+export async function generateMOU(input: GenerateMOUInput) {
+    return await generateMOUFlow(input);
 }
