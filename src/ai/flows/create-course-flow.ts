@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -23,7 +24,11 @@ const CourseModuleSchema = z.object({
 });
 
 const CreateCourseOutputSchema = z.object({
+    id: z.string().describe("A unique ID for the course, perhaps using a slug of the title."),
     title: z.string().describe("A compelling title for the entire course."),
+    instructor: z.string().describe("The instructor for this course, which should always be 'AI Curator'."),
+    image: z.string().url().describe("A placeholder image URL for the course. Use an Unsplash URL related to the course topic."),
+    aiHint: z.string().describe("A one or two-word hint for the AI to find a relevant image."),
     curriculum: z.array(CourseModuleSchema).describe("The full curriculum for the course."),
 });
 export type CreateCourseOutput = z.infer<typeof CreateCourseOutputSchema>;
@@ -42,7 +47,7 @@ const prompt = ai.definePrompt({
   prompt: `You are an expert curriculum designer for the online learning platform "Alternative Academy".
 Your task is to take a structured learning path and transform it into a full course curriculum.
 
-The learning path is provided below as a JSON object:
+The learning path is provided below as a JSON object. Parse this JSON to understand the student's learning goals.
 {{{jsonStringify input}}}
 
 For each module in the learning path, you must:
@@ -52,8 +57,12 @@ For each module in the learning path, you must:
 4.  Write a brief, one-sentence description for each lesson that summarizes its content.
 5.  Assign the type 'video' to all lessons.
 6.  Create a compelling overall title for the course based on the learning path.
+7.  The instructor should always be "AI Curator".
+8.  Generate a unique ID for the course, which should be a URL-friendly slug of the course title (e.g., "introduction-to-react").
+9.  Provide a relevant placeholder image URL from Unsplash (e.g., https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=400&h=225&fit=crop).
+10. Provide a one or two-word aiHint for the image (e.g., "react logo").
 
-Respond with a single JSON object that matches the output schema.
+Respond with a single JSON object that matches the output schema. Ensure your response is a valid JSON.
 `,
 });
 

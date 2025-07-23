@@ -10,33 +10,38 @@ import { BackButton } from '@/components/shared/BackButton';
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Skeleton } from '@/components/ui/skeleton';
+import type { CreateCourseOutput } from '@/ai/flows/create-course-flow';
 
-type Lesson = { type: 'lecture' | 'video', title: string, url?: string, description: string };
-type Module = { title: string; lessons: Lesson[] };
-type Course = { title: string, curriculum: Module[] };
-
+type Course = CreateCourseOutput;
 
 export default function CourseViewPage() {
+    const params = useParams();
+    const courseId = Array.isArray(params.id) ? params.id[0] : params.id;
+    
     const [course, setCourse] = useState<Course | null>(null);
     const [completedLessons, setCompletedLessons] = useState<string[]>([]);
     
     useEffect(() => {
-        const storedCourse = localStorage.getItem('aiGeneratedCourse');
-        if (storedCourse) {
-            setCourse(JSON.parse(storedCourse));
+        if (courseId) {
+            const storedCourse = localStorage.getItem(`course_${courseId}`);
+            if (storedCourse) {
+                setCourse(JSON.parse(storedCourse));
+            }
+
+            const storedProgress = localStorage.getItem(`lessonProgress_${courseId}`);
+            if (storedProgress) {
+                setCompletedLessons(JSON.parse(storedProgress));
+            }
         }
-        const storedProgress = localStorage.getItem('lessonProgress');
-        if (storedProgress) {
-            setCompletedLessons(JSON.parse(storedProgress));
-        }
-    }, []);
+    }, [courseId]);
 
     const toggleLessonComplete = (lessonTitle: string) => {
+        if (!courseId) return;
         setCompletedLessons(prev => {
             const newProgress = prev.includes(lessonTitle)
                 ? prev.filter(t => t !== lessonTitle)
                 : [...prev, lessonTitle];
-            localStorage.setItem('lessonProgress', JSON.stringify(newProgress));
+            localStorage.setItem(`lessonProgress_${courseId}`, JSON.stringify(newProgress));
             return newProgress;
         });
     }
@@ -123,9 +128,9 @@ export default function CourseViewPage() {
                                                     </button>
                                                     
                                                     {lesson.url ? (
-                                                        <Link href={lesson.url} target="_blank" rel="noopener noreferrer" className='flex-1'>
+                                                        <a href={lesson.url} target="_blank" rel="noopener noreferrer" className='flex-1 flex'>
                                                            {content}
-                                                        </Link>
+                                                        </a>
                                                     ) : (
                                                         <div className="flex-1 cursor-pointer" onClick={() => { /* Could open a modal here for lecture content */ }}>
                                                             {content}

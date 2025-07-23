@@ -1,3 +1,4 @@
+
 "use client"
 import React, { useState } from 'react';
 import DashboardAuthWrapper from "@/components/auth/DashboardAuthWrapper";
@@ -11,6 +12,7 @@ import { useToast } from '@/hooks/use-toast';
 import { ArrowRight, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import type { PersonalizedLearningPathOutput } from '@/ai/flows/personalized-learning-path';
+import type { CreateCourseOutput } from '@/ai/flows/create-course-flow';
 
 
 export default function LearningPathPage() {
@@ -52,10 +54,26 @@ export default function LearningPathPage() {
         if (!learningPath) return;
         setIsCreatingCourse(true);
         try {
-            const course = await createCourse(learningPath);
-            // Store the course in localStorage to pass it to the view page
-            localStorage.setItem('aiGeneratedCourse', JSON.stringify(course));
-            router.push('/courses/view/ai-generated');
+            const newCourse = await createCourse(learningPath);
+            
+            // Get existing courses from localStorage
+            const existingCoursesStr = localStorage.getItem('userCourses');
+            const existingCourses: CreateCourseOutput[] = existingCoursesStr ? JSON.parse(existingCoursesStr) : [];
+            
+            // Add new course to the beginning of the list
+            const updatedCourses = [newCourse, ...existingCourses];
+
+            // Store the updated list in localStorage
+            localStorage.setItem('userCourses', JSON.stringify(updatedCourses));
+            // Store the full details of the just-created course for the view page
+            localStorage.setItem(`course_${newCourse.id}`, JSON.stringify(newCourse));
+            
+            toast({
+                title: 'Course Created!',
+                description: 'Your new course has been added to "My Courses".',
+            });
+            router.push('/student/courses');
+
         } catch (error) {
              toast({
                 variant: 'destructive',
