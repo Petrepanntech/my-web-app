@@ -1,4 +1,5 @@
 
+
 import { Code, Palette, Briefcase, Megaphone, BrainCircuit, BarChart, type LucideIcon } from "lucide-react";
 
 export interface Course {
