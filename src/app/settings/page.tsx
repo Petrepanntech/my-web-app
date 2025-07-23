@@ -6,14 +6,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { useAuth } from "@/context/AuthContext";
+import { useTheme } from "next-themes";
+import { Moon, Sun } from "lucide-react";
 
 export default function SettingsPage() {
     const { user } = useAuth();
+    const { theme, setTheme } = useTheme();
     
     // The wrapper will handle auth check and role validation.
-    // For a global settings page, we just need to ensure the user is logged in.
-    // We can pass `null` to allow any authenticated user, but that breaks Role type.
-    // Let's assume a user must exist, and the wrapper just checks for any valid role.
     // For this mock, let's just use the current user's role.
     if (!user) return null; // Or a loading/redirect component
 
@@ -34,11 +34,32 @@ export default function SettingsPage() {
                         </div>
                          <div className="space-y-2">
                             <Label htmlFor="email">Email</Label>
-                            <Input id="email" type="email" defaultValue={user?.email} />
+                            <Input id="email" type="email" defaultValue={user?.email} disabled />
                         </div>
                          <Button>Save Changes</Button>
                     </CardContent>
                 </Card>
+
+                 <Card>
+                    <CardHeader>
+                        <CardTitle>Theme</CardTitle>
+                        <CardDescription>Customize the look and feel of the app.</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="flex items-center justify-between">
+                             <div>
+                                <Label htmlFor="dark-mode">Dark Mode</Label>
+                                <p className="text-sm text-muted-foreground">Toggle between light and dark themes.</p>
+                            </div>
+                           <Switch
+                                id="dark-mode"
+                                checked={theme === 'dark'}
+                                onCheckedChange={(checked) => setTheme(checked ? 'dark' : 'light')}
+                            />
+                        </div>
+                    </CardContent>
+                </Card>
+
                 <Card>
                     <CardHeader>
                         <CardTitle>Notifications</CardTitle>
@@ -59,6 +80,39 @@ export default function SettingsPage() {
                             </div>
                             <Switch id="community-updates" />
                        </div>
+                    </CardContent>
+                </Card>
+
+                 <Card>
+                    <CardHeader>
+                        <CardTitle>Security</CardTitle>
+                        <CardDescription>Manage your account security settings.</CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        <div className="space-y-2">
+                            <Label htmlFor="current-password">Current Password</Label>
+                            <Input id="current-password" type="password" />
+                        </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="new-password">New Password</Label>
+                            <Input id="new-password" type="password" />
+                        </div>
+                         <Button>Change Password</Button>
+                    </CardContent>
+                </Card>
+
+                 <Card className="border-destructive">
+                    <CardHeader>
+                        <CardTitle className="text-destructive">Danger Zone</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <p className="font-semibold">Delete Account</p>
+                                <p className="text-sm text-muted-foreground">Permanently delete your account and all associated data. This action cannot be undone.</p>
+                            </div>
+                             <Button variant="destructive">Delete My Account</Button>
+                        </div>
                     </CardContent>
                 </Card>
             </div>

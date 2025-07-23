@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
 import { LayoutWrapper } from "@/components/shared/LayoutWrapper";
+import { ThemeProvider } from "@/components/shared/ThemeProvider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -23,11 +24,18 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className={inter.variable}>
       <body className="font-sans antialiased">
-        <AuthProvider>
-            <LayoutWrapper>
-              {children}
-            </LayoutWrapper>
-        </AuthProvider>
+        <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+        >
+            <AuthProvider>
+                <LayoutWrapper>
+                {children}
+                </LayoutWrapper>
+            </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -2,7 +2,8 @@
 "use client";
 
 import Link from "next/link";
-import { Menu, GraduationCap, Search, Bell } from "lucide-react";
+import { Menu, GraduationCap, Search, Bell, Moon, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
 
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
@@ -14,6 +15,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
   DropdownMenuGroup,
+  DropdownMenuPortal,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { allDashboardNavItems } from "@/lib/constants";
@@ -29,6 +34,7 @@ const mockNotifications = [
 
 export function AppHeader() {
   const { isAuthenticated, user, logout, setShowAuthModal } = useAuth();
+  const { setTheme } = useTheme();
 
   const userNavItems = user?.role ? allDashboardNavItems.find(group => group.label.toLowerCase() === user.role)?.items || [] : [];
 
@@ -46,7 +52,7 @@ export function AppHeader() {
         </Link>
         
         <div className="flex flex-1 items-center justify-end space-x-2 md:space-x-4">
-            <div className="relative w-full max-w-xs sm:max-w-sm">
+            <div className="relative w-full max-w-xs sm:max-w-sm hidden sm:block">
                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input placeholder="Search..." className="pl-8" />
             </div>
@@ -107,6 +113,27 @@ export function AppHeader() {
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild><Link href="/settings">Settings</Link></DropdownMenuItem>
+                 <DropdownMenuSub>
+                    <DropdownMenuSubTrigger>
+                        <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+                        <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+                        <span className="ml-2">Toggle theme</span>
+                    </DropdownMenuSubTrigger>
+                    <DropdownMenuPortal>
+                        <DropdownMenuSubContent>
+                        <DropdownMenuItem onClick={() => setTheme("light")}>
+                            Light
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => setTheme("dark")}>
+                            Dark
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => setTheme("system")}>
+                            System
+                        </DropdownMenuItem>
+                        </DropdownMenuSubContent>
+                    </DropdownMenuPortal>
+                </DropdownMenuSub>
+
                 <DropdownMenuItem onClick={logout}>Log out</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
