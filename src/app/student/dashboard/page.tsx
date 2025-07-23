@@ -23,9 +23,9 @@ export default function StudentDashboardPage() {
     ]
 
     const achievements = [
-        { title: "Course Completist", image: "https://placehold.co/100x100.png", aiHint: "gold medal" },
-        { title: "First Gig", image: "https://placehold.co/100x100.png", aiHint: "first place" },
-        { title: "Top Rated", image: "https://placehold.co/100x100.png", aiHint: "gold star" },
+        { title: "Course Completist", image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=80&h=80&fit=crop", aiHint: "gold medal" },
+        { title: "First Gig", image: "https://images.unsplash.com/photo-1556740758-90de374c12ad?q=80&w=80&h=80&fit=crop", aiHint: "first place" },
+        { title: "Top Rated", image: "https://images.unsplash.com/photo-1611162617213-6d22e4f133d4?q=80&w=80&h=80&fit=crop", aiHint: "gold star" },
     ];
 
     return (
@@ -90,7 +90,7 @@ export default function StudentDashboardPage() {
                                             alt={`${ach.title} badge`}
                                             width={80}
                                             height={80}
-                                            className="rounded-full mb-2 border-4 border-primary"
+                                            className="rounded-full mb-2 border-4 border-primary object-cover"
                                             data-ai-hint={ach.aiHint}
                                         />
                                         <p className="text-xs font-semibold">{ach.title}</p>

@@ -22,7 +22,7 @@ export default function AboutPage() {
                 </p>
             </div>
              <Image
-                src="https://placehold.co/600x400.png"
+                src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=600&h=400&fit=crop"
                 alt="Our Mission"
                 width={600}
                 height={400}
@@ -33,7 +33,7 @@ export default function AboutPage() {
 
         <div className="grid md:grid-cols-2 gap-16 items-center">
             <Image
-                src="https://placehold.co/600x400.png"
+                src="https://images.unsplash.com/photo-1531545514256-b1400bc00f31?q=80&w=600&h=400&fit=crop"
                 alt="Our Vision"
                 width={600}
                 height={400}

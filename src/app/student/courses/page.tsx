@@ -12,7 +12,7 @@ const enrolledCourses = [
         title: 'React: From Beginner to Advanced', 
         instructor: 'Adeola Peters',
         progress: 75,
-        image: 'https://placehold.co/400x225.png',
+        image: 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=400&h=225&fit=crop',
         aiHint: 'react logo',
     },
     { 
@@ -20,7 +20,7 @@ const enrolledCourses = [
         title: 'Figma for UI/UX: From Zero to Hero', 
         instructor: 'Aisha Nwosu',
         progress: 40,
-        image: 'https://placehold.co/400x225.png',
+        image: 'https://images.unsplash.com/photo-1611790449237-9366e637181c?q=80&w=400&h=225&fit=crop',
         aiHint: 'figma logo'
     },
     { 
@@ -28,7 +28,7 @@ const enrolledCourses = [
         title: 'Node.js & Express Masterclass', 
         instructor: 'Samuel Adebayo',
         progress: 95,
-        image: 'https://placehold.co/400x225.png',
+        image: 'https://images.unsplash.com/photo-1630563443369-15d48a9792a6?q=80&w=400&h=225&fit=crop',
         aiHint: 'server code'
     },
      { 
@@ -36,7 +36,7 @@ const enrolledCourses = [
         title: 'The Complete SEO Guide', 
         instructor: 'Tunde Oladipo',
         progress: 15,
-        image: 'https://placehold.co/400x225.png',
+        image: 'https://images.unsplash.com/photo-1554042301-0a68da401738?q=80&w=400&h=225&fit=crop',
         aiHint: 'seo ranking'
     },
     { 
@@ -44,7 +44,7 @@ const enrolledCourses = [
         title: 'HTML, CSS, & JavaScript for Beginners', 
         instructor: 'Samuel Adebayo',
         progress: 100,
-        image: 'https://placehold.co/400x225.png',
+        image: 'https://images.unsplash.com/photo-1542831371-29b0f74f9713?q=80&w=400&h=225&fit=crop',
         aiHint: 'code editor'
     },
      { 
@@ -52,7 +52,7 @@ const enrolledCourses = [
         title: 'Python for Data Science Bootcamp', 
         instructor: 'Dr. Evelyn Reed',
         progress: 5,
-        image: 'https://placehold.co/400x225.png',
+        image: 'https://images.unsplash.com/photo-1526379095098-d400fd0bf935?q=80&w=400&h=225&fit=crop',
         aiHint: 'python chart'
     }
 ];

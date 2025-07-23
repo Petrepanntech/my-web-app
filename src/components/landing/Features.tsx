@@ -7,28 +7,28 @@ const features = [
     title: "Personalized Learning Paths",
     description: "Our AI analyzes your skills and aspirations to build a unique learning roadmap just for you.",
     icon: BarChart,
-    image: "https://placehold.co/500x300.png",
+    image: "https://images.unsplash.com/photo-1546410531-bb4daa6b4485?q=80&w=500&h=300&fit=crop",
     aiHint: "learning path"
   },
   {
     title: "Hands-On Projects",
     description: "Apply what you learn with real-world projects from our freelance marketplace.",
     icon: Code,
-    image: "https://placehold.co/500x300.png",
+    image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=500&h=300&fit=crop",
     aiHint: "coding project"
   },
   {
     title: "Expert-Led Courses",
     description: "Learn from the best in the industry with our comprehensive and up-to-date course catalog.",
     icon: BookOpen,
-    image: "https://placehold.co/500x300.png",
+    image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=500&h=300&fit=crop",
     aiHint: "online course"
   },
   {
     title: "Mentorship & Community",
     description: "Get guidance from experienced mentors and collaborate with a vibrant community of learners.",
     icon: MessageCircle,
-    image: "https://placehold.co/500x300.png",
+    image: "https://images.unsplash.com/photo-1531545514256-b1400bc00f31?q=80&w=500&h=300&fit=crop",
     aiHint: "community mentor"
   },
 ];
