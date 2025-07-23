@@ -95,7 +95,7 @@ export default function LearningPathPage() {
                          {learningPath && !isLoading && (
                             <div className="p-6 pt-0">
                                 <Button asChild className="w-full">
-                                    <Link href="/student/courses">
+                                    <Link href="/courses/view/1">
                                        Start Your AI-Curated Course
                                        <ArrowRight className="ml-2 h-4 w-4" />
                                     </Link>

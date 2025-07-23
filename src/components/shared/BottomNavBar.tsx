@@ -18,7 +18,7 @@ const baseNavItems = [
 const studentNavItems = [
   { href: "/student/dashboard", label: "Home", icon: LayoutDashboard },
   { href: "/student/courses", label: "Courses", icon: BookOpen },
-  { href: "/marketplace/tasks", label: "Jobs", icon: Briefcase },
+  { href: "/marketplace/tasks", label: "Tasks", icon: Briefcase },
   { href: "/student/cbt-practice", label: "CBT", icon: TestTube2 },
 ];
 
