@@ -8,6 +8,7 @@
 import {
   personalizedLearningPath as personalizedLearningPathFlow,
   type PersonalizedLearningPathInput,
+  type PersonalizedLearningPathOutput,
 } from '@/ai/flows/personalized-learning-path';
 import {
   moderateText as moderateTextFlow,
@@ -17,6 +18,9 @@ import {
   generateMOU as generateMOUFlow,
   type GenerateMOUInput,
 } from '@/ai/flows/generate-mou-flow';
+import {
+    createCourse as createCourseFlow,
+} from '@/ai/flows/create-course-flow';
 
 export async function personalizedLearningPath(
   input: PersonalizedLearningPathInput
@@ -30,4 +34,8 @@ export async function moderateText(input: ModerateTextInput) {
 
 export async function generateMOU(input: GenerateMOUInput) {
     return await generateMOUFlow(input);
+}
+
+export async function createCourse(input: PersonalizedLearningPathOutput) {
+    return await createCourseFlow(input);
 }
