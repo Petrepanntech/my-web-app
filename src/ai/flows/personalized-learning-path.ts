@@ -42,10 +42,27 @@ const prompt = ai.definePrompt({
   name: 'personalizedLearningPathPrompt',
   input: {schema: PersonalizedLearningPathInputSchema},
   output: {schema: PersonalizedLearningPathOutputSchema},
-  prompt: `You are an expert learning path generator. Based on the student's interests and goals, create a personalized learning path.
+  prompt: `You are an expert learning path generator for a platform called Alternative Academy.
+Your task is to create a personalized learning path based on a student's interests and goals.
+The platform will use this path to generate a course with curated videos from free sources like YouTube.
 
 Student Interests: {{{interests}}}
 Student Goals: {{{goals}}}
+
+Please generate a structured and encouraging learning path.
+Format the output using Markdown. It should include:
+1.  A main title for the learning path (e.g., using a H2 tag: ## Your Path to Becoming a...").
+2.  A brief, encouraging introductory paragraph.
+3.  A numbered or bulleted list of learning modules or steps.
+4.  Use bolding for key concepts.
+
+Example Format:
+## Your Frontend Developer Journey
+Welcome to your personalized path! This journey is designed to take you from the basics to building modern web applications. Let's get started!
+1.  **Foundation**: Master **HTML**, **CSS**, and **JavaScript**.
+2.  **Frameworks**: Dive deep into a modern framework like **React** or **Next.js**.
+3.  **Advanced Topics**: Explore state management, testing, and performance optimization.
+...and so on.
 
 Personalized Learning Path:`,
 });

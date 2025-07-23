@@ -8,7 +8,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { personalizedLearningPath } from "@/lib/actions";
 import { useToast } from '@/hooks/use-toast';
-import { Loader2 } from 'lucide-react';
+import { ArrowRight, Loader2 } from 'lucide-react';
+import Link from 'next/link';
 
 export default function LearningPathPage() {
     const [interests, setInterests] = useState('');
@@ -75,13 +76,13 @@ export default function LearningPathPage() {
                             </form>
                         </CardContent>
                     </Card>
-                    <Card>
+                    <Card className="flex flex-col">
                         <CardHeader>
                             <CardTitle>Your Custom Path</CardTitle>
                         </CardHeader>
-                        <CardContent className="prose prose-sm max-w-none dark:prose-invert">
+                        <CardContent className="prose prose-sm max-w-none dark:prose-invert flex-grow">
                             {isLoading && (
-                                <div className="flex justify-center items-center h-40">
+                                <div className="flex justify-center items-center h-full">
                                     <Loader2 className="h-8 w-8 animate-spin text-primary" />
                                 </div>
                             )}
@@ -91,6 +92,16 @@ export default function LearningPathPage() {
                                 !isLoading && <p className="text-muted-foreground">Your generated learning path will appear here.</p>
                             )}
                         </CardContent>
+                         {learningPath && !isLoading && (
+                            <div className="p-6 pt-0">
+                                <Button asChild className="w-full">
+                                    <Link href="/student/courses">
+                                       Start Your AI-Curated Course
+                                       <ArrowRight className="ml-2 h-4 w-4" />
+                                    </Link>
+                                </Button>
+                            </div>
+                        )}
                     </Card>
                 </div>
             </div>
