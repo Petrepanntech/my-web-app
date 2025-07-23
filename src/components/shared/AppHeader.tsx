@@ -52,9 +52,11 @@ export function AppHeader() {
         </Link>
         
         <div className="flex flex-1 items-center justify-end space-x-2 md:space-x-4">
-            <div className="relative w-full max-w-xs">
+           <div className="w-full max-w-sm sm:max-w-xs block">
+              <div className="relative">
                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input placeholder="Search..." className="pl-8" />
+              </div>
             </div>
           {isAuthenticated && user ? (
             <>
@@ -112,6 +114,7 @@ export function AppHeader() {
                     ))}
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
+                <DropdownMenuItem asChild><Link href="/settings">Profile</Link></DropdownMenuItem>
                 <DropdownMenuItem asChild><Link href="/settings">Settings</Link></DropdownMenuItem>
                  <DropdownMenuSub>
                     <DropdownMenuSubTrigger>
