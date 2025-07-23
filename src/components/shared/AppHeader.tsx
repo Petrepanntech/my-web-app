@@ -24,6 +24,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { allDashboardNavItems } from "@/lib/constants";
 import { Input } from "../ui/input";
 import { Card, CardContent } from "../ui/card";
+import { CommandMenu } from "./CommandMenu";
+import React from "react";
 
 const mockNotifications = [
     { title: "New Bid Received", description: "You received a new bid on 'Build a Landing Page'.", time: "2m ago" },
@@ -35,10 +37,14 @@ const mockNotifications = [
 export function AppHeader() {
   const { isAuthenticated, user, logout, setShowAuthModal } = useAuth();
   const { setTheme } = useTheme();
+  const [open, setOpen] = React.useState(false);
+
 
   const userNavItems = user?.role ? allDashboardNavItems.find(group => group.label.toLowerCase() === user.role)?.items || [] : [];
 
   return (
+    <>
+    <CommandMenu open={open} setOpen={setOpen} />
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center">
         <Link href="/" className="mr-6 flex items-center space-x-2">
@@ -52,12 +58,18 @@ export function AppHeader() {
         </Link>
         
         <div className="flex flex-1 items-center justify-end space-x-2 md:space-x-4">
-           <div className="w-full max-w-sm sm:max-w-xs block">
-              <div className="relative">
-                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Input placeholder="Search..." className="pl-8" />
-              </div>
-            </div>
+            <Button
+                variant="outline"
+                className="relative h-9 w-full justify-start rounded-[0.5rem] text-sm text-muted-foreground sm:w-64 sm:pr-12"
+                onClick={() => setOpen(true)}
+            >
+                <Search className="h-4 w-4 mr-2" />
+                <span className="hidden lg:inline-flex">Search anything...</span>
+                <span className="inline-flex lg:hidden">Search...</span>
+                <kbd className="pointer-events-none absolute right-[0.3rem] top-[0.3rem] hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex">
+                    <span className="text-xs">⌘</span>K
+                </kbd>
+            </Button>
           {isAuthenticated && user ? (
             <>
             <DropdownMenu>
@@ -152,5 +164,6 @@ export function AppHeader() {
         </div>
       </div>
     </header>
+    </>
   );
 }
