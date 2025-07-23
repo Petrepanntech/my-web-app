@@ -80,7 +80,7 @@ export default function CourseCategoryPage() {
                                     src={course.image}
                                     alt={course.title}
                                     width={400}
-                                    height={200}
+                                    height={225}
                                     className="w-full h-48 object-cover rounded-t-lg"
                                     data-ai-hint={course.aiHint}
                                 />

@@ -12,7 +12,7 @@ const enrolledCourses = [
         title: 'React: From Beginner to Advanced', 
         instructor: 'Adeola Peters',
         progress: 75,
-        image: 'https://placehold.co/400x200.png',
+        image: 'https://placehold.co/400x225.png',
         aiHint: 'react logo',
     },
     { 
@@ -20,7 +20,7 @@ const enrolledCourses = [
         title: 'Figma for UI/UX: From Zero to Hero', 
         instructor: 'Aisha Nwosu',
         progress: 40,
-        image: 'https://placehold.co/400x200.png',
+        image: 'https://placehold.co/400x225.png',
         aiHint: 'figma logo'
     },
     { 
@@ -28,7 +28,7 @@ const enrolledCourses = [
         title: 'Node.js & Express Masterclass', 
         instructor: 'Samuel Adebayo',
         progress: 95,
-        image: 'https://placehold.co/400x200.png',
+        image: 'https://placehold.co/400x225.png',
         aiHint: 'server code'
     },
      { 
@@ -36,7 +36,7 @@ const enrolledCourses = [
         title: 'The Complete SEO Guide', 
         instructor: 'Tunde Oladipo',
         progress: 15,
-        image: 'https://placehold.co/400x200.png',
+        image: 'https://placehold.co/400x225.png',
         aiHint: 'seo ranking'
     },
     { 
@@ -44,7 +44,7 @@ const enrolledCourses = [
         title: 'HTML, CSS, & JavaScript for Beginners', 
         instructor: 'Samuel Adebayo',
         progress: 100,
-        image: 'https://placehold.co/400x200.png',
+        image: 'https://placehold.co/400x225.png',
         aiHint: 'code editor'
     },
      { 
@@ -52,7 +52,7 @@ const enrolledCourses = [
         title: 'Python for Data Science Bootcamp', 
         instructor: 'Dr. Evelyn Reed',
         progress: 5,
-        image: 'https://placehold.co/400x200.png',
+        image: 'https://placehold.co/400x225.png',
         aiHint: 'python chart'
     }
 ];
@@ -75,7 +75,7 @@ export default function Page() {
                                 src={course.image}
                                 alt={course.title}
                                 width={400}
-                                height={200}
+                                height={225}
                                 className="w-full h-48 object-cover rounded-t-lg"
                                 data-ai-hint={course.aiHint}
                             />
