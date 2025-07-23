@@ -1,3 +1,4 @@
+
 "use client"
 import { useState, useEffect } from "react";
 import DashboardAuthWrapper from "@/components/auth/DashboardAuthWrapper";
@@ -15,7 +16,7 @@ export default function SettingsPage() {
     const { theme, setTheme } = useTheme();
     const { toast } = useToast();
     
-    const [name, setName] = useState(user?.name || '');
+    const [name, setName] = useState('');
 
     useEffect(() => {
         if (user) {
@@ -31,8 +32,11 @@ export default function SettingsPage() {
         });
     }
     
-    // The wrapper will handle auth check and role validation.
-    if (!user) return null; // Or a loading/redirect component
+    // The wrapper will handle auth check and role validation, but we need to ensure user exists before rendering.
+    if (!user) {
+        // Render nothing or a loading spinner while user data is being fetched by the context
+        return null;
+    }
 
   return (
     <DashboardAuthWrapper requiredRole={user.role}>
