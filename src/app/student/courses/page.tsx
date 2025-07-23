@@ -20,7 +20,7 @@ const enrolledCourses = [
         title: 'Figma for UI/UX: From Zero to Hero', 
         instructor: 'Aisha Nwosu',
         progress: 40,
-        image: 'https://images.unsplash.com/photo-1611790449237-9366e637181c?q=80&w=400&h=225&fit=crop',
+        image: 'https://images.unsplash.com/photo-1600132806370-bf17e65e93e0?q=80&w=400&h=225&fit=crop',
         aiHint: 'figma logo'
     },
     { 
@@ -28,7 +28,7 @@ const enrolledCourses = [
         title: 'Node.js & Express Masterclass', 
         instructor: 'Samuel Adebayo',
         progress: 95,
-        image: 'https://images.unsplash.com/photo-1630563443369-15d48a9792a6?q=80&w=400&h=225&fit=crop',
+        image: 'https://images.unsplash.com/photo-1565034946487-077786996e27?q=80&w=400&h=225&fit=crop',
         aiHint: 'server code'
     },
      { 
@@ -36,7 +36,7 @@ const enrolledCourses = [
         title: 'The Complete SEO Guide', 
         instructor: 'Tunde Oladipo',
         progress: 15,
-        image: 'https://images.unsplash.com/photo-1554042301-0a68da401738?q=80&w=400&h=225&fit=crop',
+        image: 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?q=80&w=400&h=225&fit=crop',
         aiHint: 'seo ranking'
     },
     { 

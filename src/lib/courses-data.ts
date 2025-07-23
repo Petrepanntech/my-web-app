@@ -74,7 +74,7 @@ export const allCourses: Course[] = [
         id: 2, title: 'React: From Beginner to Advanced', description: 'A deep dive into the most popular frontend library.', instructor: 'Adeola Peters', price: 25000, category: 'Web Development', level: 'Intermediate', image: 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=400&h=225&fit=crop', aiHint: 'react logo'
     },
     {
-        id: 3, title: 'Node.js & Express Masterclass', description: 'Build powerful, scalable backend APIs with Node.js.', instructor: 'Samuel Adebayo', price: 30000, category: 'Web Development', level: 'Intermediate', image: 'https://images.unsplash.com/photo-1630563443369-15d48a9792a6?q=80&w=400&h=225&fit=crop', aiHint: 'server code'
+        id: 3, title: 'Node.js & Express Masterclass', description: 'Build powerful, scalable backend APIs with Node.js.', instructor: 'Samuel Adebayo', price: 30000, category: 'Web Development', level: 'Intermediate', image: 'https://images.unsplash.com/photo-1565034946487-077786996e27?q=80&w=400&h=225&fit=crop', aiHint: 'server code'
     },
     {
         id: 4, title: 'Full-Stack Next.js Development', description: 'Master the leading React framework for production.', instructor: 'Adeola Peters', price: 45000, category: 'Web Development', level: 'Advanced', image: 'https://images.unsplash.com/photo-1605379399642-870262d3d051?q=80&w=400&h=225&fit=crop', aiHint: 'nextjs logo'
@@ -115,7 +115,7 @@ export const allCourses: Course[] = [
 
     // UI/UX Design
     {
-        id: 16, title: 'Figma for UI/UX: From Zero to Hero', description: 'Master the most popular tool for interface design.', instructor: 'Aisha Nwosu', price: 20000, category: 'UI/UX Design', level: 'Beginner', image: 'https://images.unsplash.com/photo-1611790449237-9366e637181c?q=80&w=400&h=225&fit=crop', aiHint: 'figma logo'
+        id: 16, title: 'Figma for UI/UX: From Zero to Hero', description: 'Master the most popular tool for interface design.', instructor: 'Aisha Nwosu', price: 20000, category: 'UI/UX Design', level: 'Beginner', image: 'https://images.unsplash.com/photo-1600132806370-bf17e65e93e0?q=80&w=400&h=225&fit=crop', aiHint: 'figma logo'
     },
     {
         id: 17, title: 'User Research and Persona Creation', description: 'Understand your users to build products they love.', instructor: 'Aisha Nwosu', price: 25000, category: 'UI/UX Design', level: 'Intermediate', image: 'https://images.unsplash.com/photo-1557862921-37829c790f19?q=80&w=400&h=225&fit=crop', aiHint: 'user research'
@@ -187,7 +187,7 @@ export const allCourses: Course[] = [
     
     // Digital Marketing
     {
-        id: 38, title: 'The Complete SEO Guide', description: 'Rank number 1 on Google and drive organic traffic.', instructor: 'Tunde Oladipo', price: 25000, category: 'Digital Marketing', level: 'Intermediate', image: 'https://images.unsplash.com/photo-1554042301-0a68da401738?q=80&w=400&h=225&fit=crop', aiHint: 'seo ranking'
+        id: 38, title: 'The Complete SEO Guide', description: 'Rank number 1 on Google and drive organic traffic.', instructor: 'Tunde Oladipo', price: 25000, category: 'Digital Marketing', level: 'Intermediate', image: 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?q=80&w=400&h=225&fit=crop', aiHint: 'seo ranking'
     },
     {
         id: 39, title: 'Social Media Marketing Masterclass', description: 'Master Facebook, Instagram, TikTok, and more.', instructor: 'Tunde Oladipo', price: 22000, category: 'Digital Marketing', level: 'Beginner', image: 'https://images.unsplash.com/photo-1611162617213-6d22e4f133d4?q=80&w=400&h=225&fit=crop', aiHint: 'social media'
