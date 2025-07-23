@@ -45,8 +45,8 @@ export function AppHeader() {
           </span>
         </Link>
         
-        <div className="flex flex-1 items-center justify-end space-x-4">
-            <div className="relative w-full max-w-sm hidden sm:block">
+        <div className="flex flex-1 items-center justify-end space-x-2 md:space-x-4">
+            <div className="relative w-full max-w-xs sm:max-w-sm">
                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input placeholder="Search..." className="pl-8" />
             </div>
@@ -69,7 +69,7 @@ export function AppHeader() {
                     <DropdownMenuSeparator />
                     <div className="space-y-2 p-2">
                     {mockNotifications.map((notification, index) => (
-                       <div key={index} className="text-sm">
+                       <div key={index} className="text-sm p-2 rounded-md hover:bg-muted">
                             <p className="font-semibold">{notification.title}</p>
                             <p className="text-xs text-muted-foreground">{notification.description}</p>
                             <p className="text-xs text-muted-foreground mt-1">{notification.time}</p>
