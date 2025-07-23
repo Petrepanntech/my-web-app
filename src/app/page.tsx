@@ -1,12 +1,15 @@
 import { Hero } from "@/components/landing/Hero";
-import { Benefits } from "@/components/landing/Benefits";
-import { Features } from "@/components/landing/Features";
-import { HowItWorks } from "@/components/landing/HowItWorks";
-import { Pricing } from "@/components/landing/Pricing";
-import { Testimonials } from "@/components/landing/Testimonials";
-import { SocialProof } from "@/components/landing/SocialProof";
-import { Cta } from "@/components/landing/Cta";
-import { Faq } from "@/components/landing/Faq";
+import dynamic from 'next/dynamic';
+
+const Benefits = dynamic(() => import('@/components/landing/Benefits').then(mod => mod.Benefits));
+const Features = dynamic(() => import('@/components/landing/Features').then(mod => mod.Features));
+const HowItWorks = dynamic(() => import('@/components/landing/HowItWorks').then(mod => mod.HowItWorks));
+const Pricing = dynamic(() => import('@/components/landing/Pricing').then(mod => mod.Pricing));
+const Testimonials = dynamic(() => import('@/components/landing/Testimonials').then(mod => mod.Testimonials));
+const SocialProof = dynamic(() => import('@/components/landing/SocialProof').then(mod => mod.SocialProof));
+const Cta = dynamic(() => import('@/components/landing/Cta').then(mod => mod.Cta));
+const Faq = dynamic(() => import('@/components/landing/Faq').then(mod => mod.Faq));
+
 
 export default function Home() {
   return (

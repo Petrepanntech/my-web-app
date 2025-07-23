@@ -2,12 +2,20 @@
 "use client"
 import DashboardAuthWrapper from "@/components/auth/DashboardAuthWrapper";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Bar, BarChart, CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { ChartTooltipContent, ChartContainer } from "@/components/ui/chart";
 import { DollarSign, Users, BookOpen, Activity } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { FloatingChatButton } from "@/components/shared/FloatingChatButton";
+import dynamic from 'next/dynamic';
+
+const LineChart = dynamic(() => import('recharts').then(mod => mod.LineChart), { ssr: false });
+const CartesianGrid = dynamic(() => import('recharts').then(mod => mod.CartesianGrid), { ssr: false });
+const XAxis = dynamic(() => import('recharts').then(mod => mod.XAxis), { ssr: false });
+const YAxis = dynamic(() => import('recharts').then(mod => mod.YAxis), { ssr: false });
+const Tooltip = dynamic(() => import('recharts').then(mod => mod.Tooltip), { ssr: false });
+const Line = dynamic(() => import('recharts').then(mod => mod.Line), { ssr: false });
+
 
 const chartData = [
   { month: "Jan", signups: 120 }, { month: "Feb", signups: 200 }, { month: "Mar", signups: 180 },
