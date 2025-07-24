@@ -7,22 +7,25 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { createCourse, personalizedLearningPath } from "@/lib/actions";
 import { useToast } from '@/hooks/use-toast';
 import { ArrowRight, Loader2 } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import type { PersonalizedLearningPathOutput } from '@/ai/flows/personalized-learning-path';
-import type { CreateCourseOutput } from '@/ai/flows/create-course-flow';
 
+const sampleLearningPath = {
+    path: [
+        { title: "Introduction to Web Development", description: "Understand the fundamentals of how the web works, including HTML, CSS, and JavaScript." },
+        { title: "React Fundamentals", description: "Learn the core concepts of React, including components, props, state, and hooks." },
+        { title: "Advanced React Concepts", description: "Dive deeper into state management, context API, and performance optimization." },
+        { title: "Building with Next.js", description: "Explore server-side rendering, routing, and API routes with the Next.js framework." },
+        { title: "Final Project: Full-Stack Application", description: "Apply your knowledge to build a complete project from scratch." }
+    ]
+}
 
 export default function LearningPathPage() {
     const [interests, setInterests] = useState('');
     const [goals, setGoals] = useState('');
-    const [learningPath, setLearningPath] = useState<PersonalizedLearningPathOutput | null>(null);
-    const [isGeneratingPath, setIsGeneratingPath] = useState(false);
-    const [isCreatingCourse, setIsCreatingCourse] = useState(false);
+    const [learningPath, setLearningPath] = useState<typeof sampleLearningPath | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
     const { toast } = useToast();
-    const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -34,54 +37,13 @@ export default function LearningPathPage() {
             });
             return;
         }
-        setIsGeneratingPath(true);
-        setLearningPath(null);
-        try {
-            const result = await personalizedLearningPath({ interests, goals });
-            setLearningPath(result);
-        } catch (error) {
-            console.error(error);
-            toast({
-                variant: 'destructive',
-                title: 'Error Generating Path',
-                description: 'Could not generate learning path. Please check the console and try again.',
-            });
-        } finally {
-            setIsGeneratingPath(false);
-        }
+        setIsLoading(true);
+        // Simulate AI generation
+        setTimeout(() => {
+            setLearningPath(sampleLearningPath);
+            setIsLoading(false);
+        }, 1500);
     };
-
-    const handleCreateCourse = async () => {
-        if (!learningPath) return;
-        setIsCreatingCourse(true);
-        try {
-            const newCourse = await createCourse(learningPath);
-            
-            const existingCoursesStr = localStorage.getItem('userCourses');
-            const existingCourses: CreateCourseOutput[] = existingCoursesStr ? JSON.parse(existingCoursesStr) : [];
-            
-            const updatedCourses = [newCourse, ...existingCourses];
-
-            localStorage.setItem('userCourses', JSON.stringify(updatedCourses));
-            localStorage.setItem(`course_${newCourse.id}`, JSON.stringify(newCourse));
-            
-            toast({
-                title: 'Course Created!',
-                description: 'Your new course has been added to "My Courses".',
-            });
-            router.push(`/courses/view/${newCourse.id}`);
-
-        } catch (error) {
-             console.error(error);
-             toast({
-                variant: 'destructive',
-                title: 'Error Creating Course',
-                description: 'Could not create your course. Please check the console and try again.',
-            });
-        } finally {
-            setIsCreatingCourse(false);
-        }
-    }
 
     return (
         <DashboardAuthWrapper requiredRole="student">
@@ -108,53 +70,35 @@ export default function LearningPathPage() {
                                     <Label htmlFor="goals">Your Goals</Label>
                                     <Textarea id="goals" value={goals} onChange={e => setGoals(e.target.value)} placeholder="e.g., Get a job as a frontend developer, start my own tech company" />
                                 </div>
-                                <Button type="submit" className="w-full" disabled={isGeneratingPath}>
-                                    {isGeneratingPath && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                                <Button type="submit" className="w-full" disabled={isLoading}>
+                                    {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                                     Generate My Path
                                 </Button>
                             </form>
                         </CardContent>
                     </Card>
-                    <Card className="flex flex-col">
+                    <Card>
                         <CardHeader>
                             <CardTitle>Your Custom Path</CardTitle>
                         </CardHeader>
-                        <CardContent className="prose prose-sm max-w-none dark:prose-invert flex-grow">
-                            {isGeneratingPath && (
+                        <CardContent className="prose prose-sm max-w-none dark:prose-invert">
+                            {isLoading && (
                                 <div className="flex justify-center items-center h-full">
                                     <Loader2 className="h-8 w-8 animate-spin text-primary" />
                                 </div>
                             )}
                             {learningPath?.path ? (
-                                <ul className='space-y-4'>
+                                <ul>
                                     {learningPath.path.map((module, index) => (
                                         <li key={index}>
-                                            <h3 className="font-bold text-lg mb-1">{index + 1}. {module.title}</h3>
-                                            <p className="text-muted-foreground">{module.description}</p>
+                                            <strong>{module.title}</strong>: {module.description}
                                         </li>
                                     ))}
                                 </ul>
                             ) : (
-                                !isGeneratingPath && <p className="text-muted-foreground">Your generated learning path will appear here.</p>
+                                !isLoading && <p>Your generated learning path will appear here.</p>
                             )}
                         </CardContent>
-                         {learningPath && !isGeneratingPath && (
-                            <div className="p-6 pt-0">
-                                <Button onClick={handleCreateCourse} className="w-full" disabled={isCreatingCourse}>
-                                    {isCreatingCourse ? (
-                                        <>
-                                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                            Building Your Course...
-                                        </>
-                                    ) : (
-                                        <>
-                                           Start Your AI-Curated Course
-                                           <ArrowRight className="ml-2 h-4 w-4" />
-                                        </>
-                                    )}
-                                </Button>
-                            </div>
-                        )}
                     </Card>
                 </div>
             </div>

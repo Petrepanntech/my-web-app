@@ -11,14 +11,14 @@ import type { Role } from "@/types";
 const baseNavItems = [
   { href: "/", label: "Home", icon: Home, roles: null },
   { href: "/courses", label: "Courses", icon: BookOpen, roles: null },
-  { href: "/marketplace/tasks", label: "Marketplace", icon: Briefcase, roles: null },
+  { href: "/marketplace/tasks", label: "Jobs", icon: Briefcase, roles: null },
   { href: "/community", label: "Community", icon: Users, roles: null },
 ];
 
 const studentNavItems = [
   { href: "/student/dashboard", label: "Home", icon: LayoutDashboard },
   { href: "/student/courses", label: "Courses", icon: BookOpen },
-  { href: "/marketplace/tasks", label: "Tasks", icon: Briefcase },
+  { href: "/marketplace/tasks", label: "Jobs", icon: Briefcase },
   { href: "/student/cbt-practice", label: "CBT", icon: TestTube2 },
 ];
 
@@ -62,7 +62,6 @@ export function BottomNavBar() {
       /^\/student\/cbt-practice\/setup\/.*$/, // e.g. /student/cbt-practice/setup/jamb
       /^\/student\/cbt-practice\/test\/.*$/, // e.g. /student/cbt-practice/test/jamb
       /^\/student\/cbt-practice\/results$/,
-      /^\/marketplace\/tasks\/[^/]+$/, // e.g., /marketplace/tasks/1
   ];
 
   if(hiddenPaths.some(path => path.test(pathname))) return null;
@@ -76,7 +75,7 @@ export function BottomNavBar() {
           const isActive = pathname === href;
           return (
             <Link key={href} href={href} className="flex flex-col items-center justify-center flex-1 h-full">
-              <Icon className={cn("h-6 w-6 mb-1", isActive ? "text-primary-foreground bg-primary p-1 rounded-md" : "text-muted-foreground")} />
+              <Icon className={cn("h-6 w-6 mb-1", isActive ? "text-primary" : "text-muted-foreground")} />
               <span className={cn("text-xs", isActive ? "text-primary" : "text-muted-foreground")}>
                 {label}
               </span>

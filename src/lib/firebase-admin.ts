@@ -1,4 +1,3 @@
-
 import { initializeApp, getApps, cert, App } from 'firebase-admin/app';
 import { getAuth, Auth } from 'firebase-admin/auth';
 import { getFirestore, Firestore } from 'firebase-admin/firestore';
@@ -13,11 +12,16 @@ try {
     ? JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY)
     : null;
 
+  // Add these console logs for debugging
+  console.log("FIREBASE_SERVICE_ACCOUNT_KEY (first 50 chars):", process.env.FIREBASE_SERVICE_ACCOUNT_KEY?.substring(0, 50) + '...');
+  console.log("Parsed serviceAccount:", serviceAccount);
+
   if (!getApps().length) {
     if (serviceAccount) {
       app = initializeApp({
         credential: cert(serviceAccount),
       });
+      console.log("Firebase Admin SDK initialized with credentials.");
     } else {
       // In a server-side environment where credentials might not be available (like local dev without env var),
       // we can initialize without credentials, though some admin actions will be limited.
@@ -27,16 +31,19 @@ try {
     }
   } else {
     app = getApps()[0];
+    console.log("Firebase Admin SDK already initialized.");
   }
 
   adminAuth = getAuth(app);
   adminDb = getFirestore(app);
+  console.log("Firebase Admin Auth and Firestore instances obtained.");
 
 } catch (error: any) {
     console.error("Failed to initialize Firebase Admin SDK:", error);
     // Create mock instances to prevent app from crashing when functionality is accessed
     adminAuth = {} as Auth;
     adminDb = {} as Firestore;
+    console.error("Firebase Admin SDK initialization failed. Mock instances created.");
 }
 
 

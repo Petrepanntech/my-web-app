@@ -1,8 +1,10 @@
+
 import type { NavItem, NavGroup } from '@/types';
 
 export const publicNavItems: NavItem[] = [
   { href: '/courses', label: 'Courses', roles: null },
-  { href: '/marketplace/tasks', label: 'Marketplace', roles: null },
+  { href: '/mentors', label: 'Mentors', roles: null },
+  { href: '/marketplace/tasks', label: 'Jobs', roles: null },
   { href: '/community', label: 'Community', roles: null },
   { href: '/about', label: 'About', roles: null },
 ];
@@ -18,7 +20,7 @@ export const allDashboardNavItems: NavGroup[] = [
             { href: '/student/cbt-practice', label: 'CBT Practice', roles: ['student'] },
             { href: '/student/achievements', label: 'Achievements', roles: ['student'] },
             { href: '/student/referrals-wallet', label: 'Wallet & Referrals', roles: ['student'] },
-            { href: '/student/chat', label: 'Community Chat', roles: ['student'] },
+            { href: '/student/mentors', label: 'My Mentors', roles: ['student'] },
         ]
     },
     {
@@ -26,10 +28,9 @@ export const allDashboardNavItems: NavGroup[] = [
         items: [
             { href: '/instructor/dashboard', label: 'Dashboard', roles: ['instructor'] },
             { href: '/instructor/courses', label: 'My Courses', roles: ['instructor'] },
-            { href: '/instructor/students', label: 'My Mentees', roles: ['instructor'] },
+            { href: '/instructor/students', label: 'My Students', roles: ['instructor'] },
             { href: '/instructor/earnings', label: 'Earnings', roles: ['instructor'] },
             { href: '/instructor/analytics', label: 'Analytics', roles: ['instructor'] },
-            { href: '/instructor/chat', label: 'Chat', roles: ['instructor'] },
         ]
     },
     {
@@ -53,7 +54,6 @@ export const allDashboardNavItems: NavGroup[] = [
             { href: '/business/tasks', label: 'My Tasks/Bids', roles: ['business'] },
             { href: '/business/mou', label: 'MOU Management', roles: ['business'] },
             { href: '/business/consultancy', label: 'Consultancy', roles: ['business'] },
-            { href: '/business/chat', label: 'Chat', roles: ['business'] },
         ]
     }
 ]

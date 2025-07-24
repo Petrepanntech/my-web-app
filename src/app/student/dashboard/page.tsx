@@ -5,22 +5,18 @@ import DashboardAuthWrapper from "@/components/auth/DashboardAuthWrapper";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ActionCard } from "@/components/shared/ActionCard";
 import { useAuth } from "@/context/AuthContext";
-import { LayoutDashboard, Book, Briefcase, TestTube2, Star, ArrowRight, MessageSquare } from "lucide-react";
-import { FloatingChatButton } from "@/components/shared/FloatingChatButton";
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
-import Link from "next/link";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-
+import { LayoutDashboard, Book, Briefcase, TestTube2, Star, ArrowRight } from "lucide-react";
 
 export default function StudentDashboardPage() {
     const { user } = useAuth();
     
     const actionCards = [
-        { title: "My Courses", description: "View your AI-curated courses", href: "/student/courses", Icon: Book },
+        { title: "My Courses", description: "View your enrolled courses", href: "/student/courses", Icon: Book },
         { title: "Learning Path", description: "Generate your learning path", href: "/student/learning-path", Icon: LayoutDashboard },
         { title: "CBT Practice", description: "Prepare for your exams", href: "/student/cbt-practice", Icon: TestTube2 },
         { title: "Marketplace", description: "Find freelance projects", href: "/marketplace/tasks", Icon: Briefcase },
+        { title: "Achievements", description: "Track your progress", href: "/student/achievements", Icon: Star },
+        { title: "Wallet & Referrals", description: "Manage your earnings", href: "/student/referrals-wallet", Icon: ArrowRight },
     ]
 
     return (
@@ -34,7 +30,7 @@ export default function StudentDashboardPage() {
                         </p>
                     </div>
                     
-                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                         {actionCards.map(card => (
                             <ActionCard key={card.title} {...card} />
                         ))}
@@ -43,40 +39,30 @@ export default function StudentDashboardPage() {
                     <div className="grid gap-8 lg:grid-cols-2">
                         <Card>
                             <CardHeader>
-                                <CardTitle>Community Hub</CardTitle>
-                                <CardDescription>Connect with peers and get help.</CardDescription>
+                                <CardTitle>Continue Learning</CardTitle>
+                                <CardDescription>Pick up where you left off.</CardDescription>
                             </CardHeader>
                             <CardContent>
-                                <p className="text-muted-foreground mb-4">
-                                    Learning is better together. Join the conversation, ask questions, and collaborate with other learners on the same path as you.
+                                <p className="text-muted-foreground">
+                                    Your last active course was{" "}
+                                    <span className="font-semibold text-foreground">Advanced React & Next.js</span>.
                                 </p>
-                                <Button asChild className="mt-4 w-full">
-                                    <Link href="/community">
-                                        <MessageSquare className="mr-2 h-4 w-4" />
-                                        Go to Community
-                                    </Link>
-                                </Button>
                             </CardContent>
                         </Card>
                          <Card>
-                            <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                               <div>
-                                 <CardTitle>Affiliate Earnings</CardTitle>
-                                 <CardDescription>Earn 20% commission on referrals!</CardDescription>
-                               </div>
-                               <Button variant="ghost" size="sm" asChild>
-                                   <Link href="/student/referrals-wallet">View Wallet <ArrowRight className="ml-2 h-4 w-4" /></Link>
-                               </Button>
+                            <CardHeader>
+                                <CardTitle>Upcoming Assignment</CardTitle>
+                                 <CardDescription>Due in 3 days.</CardDescription>
                             </CardHeader>
-                            <CardContent className="text-center">
-                                <p className="text-sm text-muted-foreground">Current Balance</p>
-                                <p className="text-5xl font-bold text-green-600 mt-2">₦12,000</p>
+                            <CardContent>
+                                <p className="text-muted-foreground">
+                                    <span className="font-semibold text-foreground">Final Project: E-commerce App</span> from your Next.js course.
+                                </p>
                             </CardContent>
                         </Card>
                     </div>
                 </div>
             </div>
-            <FloatingChatButton href="/student/chat" />
         </DashboardAuthWrapper>
     );
 }

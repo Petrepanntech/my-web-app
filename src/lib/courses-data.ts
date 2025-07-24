@@ -1,5 +1,4 @@
 
-
 import { Code, Palette, Briefcase, Megaphone, BrainCircuit, BarChart, type LucideIcon } from "lucide-react";
 
 export interface Course {
@@ -68,4 +67,37 @@ export const courseCategories: {
 export const allCourses: Course[] = [
     // This data is now for placeholder purposes, as courses are meant to be AI-generated.
     // It is used on pages that haven't been fully migrated to the AI flow yet.
+    {
+        id: 1,
+        title: 'Advanced React & Next.js',
+        description: 'Master the most powerful features of React and Next.js to build enterprise-grade applications.',
+        instructor: 'Samuel Adebayo',
+        price: 15000,
+        category: 'Web Development',
+        level: 'Advanced',
+        image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=400&h=225&fit=crop",
+        aiHint: "react logo"
+    },
+    {
+        id: 2,
+        title: 'UI/UX Design Fundamentals',
+        description: 'Learn the principles of user-centered design, from wireframing to high-fidelity prototypes.',
+        instructor: 'Aisha Nwosu',
+        price: 12000,
+        category: 'UI/UX Design',
+        level: 'Beginner',
+        image: "https://images.unsplash.com/photo-1607703752089-1169ae7269b6?q=80&w=400&h=225&fit=crop",
+        aiHint: "design wireframe"
+    },
+    {
+        id: 3,
+        title: 'Node.js & Express Masterclass',
+        description: 'Build scalable and efficient backend services and APIs with Node.js and the Express framework.',
+        instructor: 'Samuel Adebayo',
+        price: 15000,
+        category: 'Web Development',
+        level: 'Intermediate',
+        image: "https://images.unsplash.com/photo-1561736778-92e5e8a27793?q=80&w=400&h=225&fit=crop",
+        aiHint: "code server"
+    },
 ];

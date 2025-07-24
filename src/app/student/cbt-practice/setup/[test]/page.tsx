@@ -11,8 +11,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { allQuestions } from "@/lib/cbt-questions";
 import DashboardAuthWrapper from "@/components/auth/DashboardAuthWrapper";
 import { useToast } from "@/hooks/use-toast";
-import { ArrowRight } from "lucide-react";
-import { BackButton } from "@/components/shared/BackButton";
 
 const availableSubjects = [...new Set(allQuestions.map(q => q.subject))];
 
@@ -70,13 +68,12 @@ export default function CbtSetupPage() {
       count: numQuestions
     });
 
-    router.push(`/student/cbt-practice/test/${testType}?${queryParams.toString()}`);
+    router.push(`/student/cbt-practice/${testType}?${queryParams.toString()}`);
   };
 
   return (
     <DashboardAuthWrapper requiredRole="student">
       <div className="container mx-auto max-w-2xl py-12">
-        <BackButton className="mb-4" />
         <Card>
           <CardHeader>
             <CardTitle className="text-3xl capitalize">Configure Your {testType} Test</CardTitle>
@@ -121,9 +118,7 @@ export default function CbtSetupPage() {
                 </Select>
             </div>
             
-            <Button size="lg" className="w-full" onClick={handleStartTest}>
-              Start Test <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
+            <Button size="lg" className="w-full" onClick={handleStartTest}>Start Test</Button>
           </CardContent>
         </Card>
       </div>

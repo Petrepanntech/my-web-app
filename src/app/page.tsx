@@ -1,22 +1,26 @@
+
 import { Hero } from "@/components/landing/Hero";
-import dynamic from 'next/dynamic';
-
-const Benefits = dynamic(() => import('@/components/landing/Benefits').then(mod => mod.Benefits));
-const Features = dynamic(() => import('@/components/landing/Features').then(mod => mod.Features));
-const HowItWorks = dynamic(() => import('@/components/landing/HowItWorks').then(mod => mod.HowItWorks));
-const Cta = dynamic(() => import('@/components/landing/Cta').then(mod => mod.Cta));
-const Faq = dynamic(() => import('@/components/landing/Faq').then(mod => mod.Faq));
-
+import { SocialProof } from "@/components/landing/SocialProof";
+import { Features } from "@/components/landing/Features";
+import { HowItWorks } from "@/components/landing/HowItWorks";
+import { Testimonials } from "@/components/landing/Testimonials";
+import { Cta } from "@/components/landing/Cta";
+import { Faq } from "@/components/landing/Faq";
+import { Pricing } from "@/components/landing/Pricing";
+import { Footer } from "@/components/landing/Footer";
 
 export default function Home() {
   return (
     <main className="flex flex-col min-h-screen">
       <Hero />
-      <Benefits />
+      <SocialProof />
       <Features />
       <HowItWorks />
-      <Cta />
+      <Testimonials />
+      <Pricing />
       <Faq />
+      <Cta />
+      <Footer />
     </main>
   );
 }
