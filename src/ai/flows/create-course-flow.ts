@@ -9,8 +9,16 @@
 
 import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
-import type { PersonalizedLearningPathOutput } from './personalized-learning-path';
-import { PersonalizedLearningPathOutputSchema } from './personalized-learning-path';
+
+export const PersonalizedLearningPathOutputSchema = z.object({
+  path: z.array(z.object({
+      title: z.string().describe("The title of the learning module."),
+      description: z.string().describe("A brief description of the module."),
+  })).describe("A structured learning path with modules.")
+});
+export type PersonalizedLearningPathOutput = z.infer<
+  typeof PersonalizedLearningPathOutputSchema
+>;
 
 const CourseLessonSchema = z.object({
     type: z.enum(['video', 'lecture']),
@@ -74,7 +82,7 @@ const createCourseFlow = ai.defineFlow(
     outputSchema: CreateCourseOutputSchema,
   },
   async (learningPath) => {
-    const { output } = await createCoursePrompt(learningPath);
+    const { output } = await createCoursePrompt({ path: learningPath.path });
     return output!;
   }
 );

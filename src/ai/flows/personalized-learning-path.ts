@@ -11,6 +11,9 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
+import type { PersonalizedLearningPathOutput } from './create-course-flow';
+import { PersonalizedLearningPathOutputSchema } from './create-course-flow';
+
 
 const PersonalizedLearningPathInputSchema = z.object({
   interests: z
@@ -20,16 +23,6 @@ const PersonalizedLearningPathInputSchema = z.object({
 });
 export type PersonalizedLearningPathInput = z.infer<
   typeof PersonalizedLearningPathInputSchema
->;
-
-export const PersonalizedLearningPathOutputSchema = z.object({
-  path: z.array(z.object({
-      title: z.string().describe("The title of the learning module."),
-      description: z.string().describe("A brief description of the module."),
-  })).describe("A structured learning path with modules.")
-});
-export type PersonalizedLearningPathOutput = z.infer<
-  typeof PersonalizedLearningPathOutputSchema
 >;
 
 export async function personalizedLearningPath(
@@ -49,7 +42,7 @@ The platform will use this path to generate a course with curated videos from fr
 Student Interests: {{{interests}}}
 Student Goals: {{{goals}}}
 
-Please generate a structured and encouraging learning path broken down into logical modules. Each module should have a clear title and a short description.
+Please generate a structured and encouraging learning path broken down into 3-5 logical modules. Each module should have a clear title and a short description.
 
 Respond with a JSON object containing a "path" array, where each object in the array has a "title" and a "description" for the module.
 `,
