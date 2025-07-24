@@ -40,10 +40,11 @@ export default function LearningPathPage() {
             const result = await personalizedLearningPath({ interests, goals });
             setLearningPath(result);
         } catch (error) {
+            console.error(error);
             toast({
                 variant: 'destructive',
-                title: 'Error',
-                description: 'Could not generate learning path. Please try again.',
+                title: 'Error Generating Path',
+                description: 'Could not generate learning path. Please check the console and try again.',
             });
         } finally {
             setIsGeneratingPath(false);
@@ -56,29 +57,26 @@ export default function LearningPathPage() {
         try {
             const newCourse = await createCourse(learningPath);
             
-            // Get existing courses from localStorage
             const existingCoursesStr = localStorage.getItem('userCourses');
             const existingCourses: CreateCourseOutput[] = existingCoursesStr ? JSON.parse(existingCoursesStr) : [];
             
-            // Add new course to the beginning of the list
             const updatedCourses = [newCourse, ...existingCourses];
 
-            // Store the updated list in localStorage
             localStorage.setItem('userCourses', JSON.stringify(updatedCourses));
-            // Store the full details of the just-created course for the view page
             localStorage.setItem(`course_${newCourse.id}`, JSON.stringify(newCourse));
             
             toast({
                 title: 'Course Created!',
                 description: 'Your new course has been added to "My Courses".',
             });
-            router.push('/student/courses');
+            router.push(`/courses/view/${newCourse.id}`);
 
         } catch (error) {
+             console.error(error);
              toast({
                 variant: 'destructive',
-                title: 'Error',
-                description: 'Could not create your course. Please try again.',
+                title: 'Error Creating Course',
+                description: 'Could not create your course. Please check the console and try again.',
             });
         } finally {
             setIsCreatingCourse(false);

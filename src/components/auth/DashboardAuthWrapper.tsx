@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import type { Role } from "@/types";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Loader2 } from "lucide-react";
 
 interface DashboardAuthWrapperProps {
   children: React.ReactNode;
@@ -12,29 +13,38 @@ interface DashboardAuthWrapperProps {
 }
 
 export default function DashboardAuthWrapper({ children, requiredRole }: DashboardAuthWrapperProps) {
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, loading } = useAuth();
   const router = useRouter();
-  
-  const [isLoading, setIsLoading] = React.useState(true);
 
   useEffect(() => {
-    // This effect runs on the client after hydration.
-    // We can safely check auth state and redirect.
-    if (!isAuthenticated) {
-      router.push("/");
-    } else if (user?.role !== requiredRole) {
-      // Redirect to their own dashboard or a generic home page if role doesn't match
-      router.push(`/${user?.role}/dashboard`);
-    } else {
-        setIsLoading(false);
+    // We only want to perform checks after the initial loading is done
+    if (!loading) {
+      if (!isAuthenticated) {
+        // If not authenticated, show the auth modal
+        router.push("/");
+      } else if (user?.role !== requiredRole) {
+        // If role doesn't match, redirect to their own dashboard
+        router.push(`/${user?.role}/dashboard`);
+      }
     }
-  }, [isAuthenticated, user, requiredRole, router]);
+  }, [loading, isAuthenticated, user, requiredRole, router]);
 
-  if (isLoading) {
-    return <DashboardSkeleton />;
+  // Use the loading state from the AuthContext
+  if (loading) {
+    return (
+        <div className="flex items-center justify-center h-screen">
+            <Loader2 className="h-8 w-8 animate-spin" />
+        </div>
+    );
+  }
+
+  // If authenticated and the role matches, render the children
+  if (isAuthenticated && user?.role === requiredRole) {
+    return <>{children}</>;
   }
   
-  return <>{children}</>;
+  // If the logic above is still processing or redirecting, show a skeleton
+  return <DashboardSkeleton />;
 }
 
 function DashboardSkeleton() {

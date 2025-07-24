@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -21,7 +22,7 @@ export type PersonalizedLearningPathInput = z.infer<
   typeof PersonalizedLearningPathInputSchema
 >;
 
-const PersonalizedLearningPathOutputSchema = z.object({
+export const PersonalizedLearningPathOutputSchema = z.object({
   path: z.array(z.object({
       title: z.string().describe("The title of the learning module."),
       description: z.string().describe("A brief description of the module."),

@@ -10,6 +10,7 @@
 import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
 import type { PersonalizedLearningPathOutput } from './personalized-learning-path';
+import { PersonalizedLearningPathOutputSchema } from './personalized-learning-path';
 
 const CourseLessonSchema = z.object({
     type: z.enum(['video', 'lecture']),
@@ -42,13 +43,13 @@ export async function createCourse(
 
 const createCoursePrompt = ai.definePrompt({
   name: 'createCoursePrompt',
-  input: { schema: z.object({ path: z.string() }) },
+  input: { schema: PersonalizedLearningPathOutputSchema },
   output: { schema: CreateCourseOutputSchema },
   prompt: `You are an expert curriculum designer for the online learning platform "Alternative Academy".
 Your task is to take a structured learning path and transform it into a full course curriculum.
 
-The learning path is provided below as a JSON string. Parse this JSON to understand the student's learning goals.
-{{{path}}}
+The learning path is provided below as a JSON object. Parse this JSON to understand the student's learning goals.
+{{{json path}}}
 
 For each module in the learning path, you must:
 1.  Come up with 2-3 specific, actionable lesson titles that fit the module's theme.
@@ -69,13 +70,11 @@ Respond with a single JSON object that matches the output schema. Ensure your re
 const createCourseFlow = ai.defineFlow(
   {
     name: 'createCourseFlow',
-    inputSchema: z.any(),
+    inputSchema: PersonalizedLearningPathOutputSchema,
     outputSchema: CreateCourseOutputSchema,
   },
-  async (path) => {
-    const { output } = await createCoursePrompt({
-        path: JSON.stringify(path, null, 2),
-    });
+  async (learningPath) => {
+    const { output } = await createCoursePrompt(learningPath);
     return output!;
   }
 );
