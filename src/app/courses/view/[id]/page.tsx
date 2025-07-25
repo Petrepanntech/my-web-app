@@ -8,7 +8,7 @@ import { CheckCircle, Circle, PlayCircle, Type, FileQuestion, PencilRuler } from
 import { Progress } from '@/components/ui/progress';
 import { BackButton } from '@/components/shared/BackButton';
 import type { CreateCourseOutput, CourseLesson } from '@/types/ai-schemas';
-import { useEffect, useState, useMemo, useCallback } from 'react';
+import { useEffect, useState, useMemo, useCallback, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 
@@ -43,8 +43,10 @@ export default function CourseViewPage() {
     const id = Array.isArray(params.id) ? params.id[0] : params.id;
     const [course, setCourse] = useState<CreateCourseOutput | null>(null);
     const [completedLessons, setCompletedLessons] = useState<Set<string>>(new Set());
+    const scrollRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
+        // Load course data
         const storedCourse = localStorage.getItem('newlyCreatedCourse');
         if (storedCourse) {
             const parsedCourse: CreateCourseOutput = JSON.parse(storedCourse);
@@ -53,10 +55,19 @@ export default function CourseViewPage() {
             }
         }
         
+        // Load progress
         const storedProgress = localStorage.getItem(`courseProgress_${id}`);
         if (storedProgress) {
             setCompletedLessons(new Set(JSON.parse(storedProgress)));
         }
+
+        // Restore scroll position
+        const savedScrollPosition = sessionStorage.getItem(`scrollPos_${id}`);
+        if (savedScrollPosition && scrollRef.current) {
+            scrollRef.current.scrollTop = parseInt(savedScrollPosition, 10);
+            sessionStorage.removeItem(`scrollPos_${id}`); // Clean up
+        }
+
     }, [id]);
 
     const updateProgress = useCallback((lessonTitle: string) => {
@@ -82,7 +93,11 @@ export default function CourseViewPage() {
         };
     }, [id, updateProgress]);
     
-    const handleLessonClick = (lesson: CourseLesson, moduleIndex: number, lessonIndex: number) => {
+    const handleLessonClick = (moduleIndex: number, lessonIndex: number) => {
+        // Save current scroll position before navigating
+        if (scrollRef.current) {
+            sessionStorage.setItem(`scrollPos_${id}`, scrollRef.current.scrollTop.toString());
+        }
         router.push(`/courses/view/${id}/lesson?module=${moduleIndex}&lesson=${lessonIndex}`);
     }
 
@@ -105,7 +120,7 @@ export default function CourseViewPage() {
     
     return (
         <DashboardAuthWrapper requiredRole="student">
-             <div className="container mx-auto max-w-4xl py-12">
+             <div ref={scrollRef} className="container mx-auto max-w-4xl py-12 overflow-y-auto h-[calc(100vh-4rem)]">
                  <BackButton className="mb-4" />
                 <div className="mb-8">
                     <h1 className="text-4xl font-bold">{course.title}</h1>
@@ -154,7 +169,7 @@ export default function CourseViewPage() {
                                                     <LessonItem 
                                                         lesson={lesson} 
                                                         isCompleted={completedLessons.has(lesson.title)}
-                                                        onLessonClick={() => handleLessonClick(lesson, moduleIndex, lessonIndex)}
+                                                        onLessonClick={() => handleLessonClick(moduleIndex, lessonIndex)}
                                                     />
                                                 </li>
                                             ))}
