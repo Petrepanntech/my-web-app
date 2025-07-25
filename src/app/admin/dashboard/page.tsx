@@ -8,8 +8,12 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { FloatingChatButton } from "@/components/shared/FloatingChatButton";
 import dynamic from 'next/dynamic';
+import { Skeleton } from "@/components/ui/skeleton";
 
-const LineChart = dynamic(() => import('recharts').then(mod => mod.LineChart), { ssr: false });
+const LineChart = dynamic(() => import('recharts').then(mod => mod.LineChart), { 
+    ssr: false,
+    loading: () => <Skeleton className="h-full w-full" /> 
+});
 const CartesianGrid = dynamic(() => import('recharts').then(mod => mod.CartesianGrid), { ssr: false });
 const XAxis = dynamic(() => import('recharts').then(mod => mod.XAxis), { ssr: false });
 const YAxis = dynamic(() => import('recharts').then(mod => mod.YAxis), { ssr: false });
