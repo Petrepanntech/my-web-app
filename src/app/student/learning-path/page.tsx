@@ -9,15 +9,18 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from '@/hooks/use-toast';
 import { ArrowRight, Loader2 } from 'lucide-react';
-import { personalizedLearningPath } from '@/lib/actions';
-import type { PersonalizedLearningPathOutput } from '@/ai/flows/create-course-flow';
+import { createCourse, personalizedLearningPath } from '@/lib/actions';
+import type { PersonalizedLearningPathOutput } from '@/types/ai-schemas';
+import { useRouter } from 'next/navigation';
 
 export default function LearningPathPage() {
     const [interests, setInterests] = useState('');
     const [goals, setGoals] = useState('');
     const [learningPath, setLearningPath] = useState<PersonalizedLearningPathOutput | null>(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [isCreatingCourse, setIsCreatingCourse] = useState(false);
     const { toast } = useToast();
+    const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -35,6 +38,10 @@ export default function LearningPathPage() {
         try {
             const result = await personalizedLearningPath({ interests, goals });
             setLearningPath(result);
+            toast({
+                title: 'Success!',
+                description: 'Your personalized learning path has been generated.',
+            });
         } catch (error) {
             console.error("Failed to generate learning path:", error);
             toast({
@@ -46,6 +53,33 @@ export default function LearningPathPage() {
             setIsLoading(false);
         }
     };
+
+    const handleCreateCourse = async () => {
+        if (!learningPath) return;
+
+        setIsCreatingCourse(true);
+        try {
+            const course = await createCourse(learningPath);
+            toast({
+                title: 'Course Created!',
+                description: 'Your new course is ready. Redirecting you now...'
+            });
+            // In a real app, you would save the course to a database.
+            // For now, we'll pass it to the view page via localStorage.
+            localStorage.setItem('newlyCreatedCourse', JSON.stringify(course));
+            router.push(`/courses/view/${course.id}`);
+
+        } catch(error) {
+             console.error("Failed to create course:", error);
+            toast({
+                variant: 'destructive',
+                title: 'Error Creating Course',
+                description: 'Could not create your course. Please try again.',
+            });
+        } finally {
+            setIsCreatingCourse(false);
+        }
+    }
 
     return (
         <DashboardAuthWrapper requiredRole="student">
@@ -90,14 +124,21 @@ export default function LearningPathPage() {
                                 </div>
                             )}
                             {learningPath?.path ? (
-                                <ul className="space-y-4">
-                                    {learningPath.path.map((module, index) => (
-                                        <li key={index} className="p-4 bg-muted/50 rounded-lg">
-                                            <p className="font-bold">{module.title}</p>
-                                            <p>{module.description}</p>
-                                        </li>
-                                    ))}
-                                </ul>
+                                <div className="space-y-4">
+                                    <ul className="space-y-4">
+                                        {learningPath.path.map((module, index) => (
+                                            <li key={index} className="p-4 bg-muted/50 rounded-lg not-prose">
+                                                <p className="font-bold">{module.title}</p>
+                                                <p>{module.description}</p>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                    <Button onClick={handleCreateCourse} className="w-full mt-6" disabled={isCreatingCourse}>
+                                         {isCreatingCourse && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                                        Start Your AI-Curated Course
+                                        <ArrowRight className="ml-2 h-4 w-4" />
+                                    </Button>
+                                </div>
                             ) : (
                                 !isLoading && <p>Your generated learning path will appear here.</p>
                             )}

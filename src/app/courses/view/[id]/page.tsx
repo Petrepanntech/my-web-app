@@ -1,54 +1,44 @@
 
 "use client"
-import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { allCourses } from '@/lib/courses-data';
 import Image from 'next/image';
 import DashboardAuthWrapper from "@/components/auth/DashboardAuthWrapper";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Button } from '@/components/ui/button';
 import { CheckCircle, Circle, PlayCircle, Type } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { BackButton } from '@/components/shared/BackButton';
-
-const courseCurriculum = {
-    modules: [
-        {
-            title: "Module 1: Introduction to React",
-            lectures: [
-                { title: "What is React?", type: "lecture", completed: true },
-                { title: "Setting up your environment", type: "lecture", completed: true },
-                { title: "Curated Video: React in 100 Seconds", type: "video", completed: false },
-                { title: "JSX Explained", type: "lecture", completed: false },
-            ]
-        },
-        {
-            title: "Module 2: Components and Props",
-            lectures: [
-                { title: "Functional Components", type: "lecture", completed: false },
-                { title: "Passing Props", type: "lecture", completed: false },
-                { title: "Understanding Children Props", type: "lecture", completed: false },
-            ]
-        },
-         {
-            title: "Module 3: State and Hooks",
-            lectures: [
-                { title: "The useState Hook", type: "lecture", completed: false },
-                { title: "Curated Video: The useEffect Hook explained", type: "video", completed: false },
-                { title: "Managing Complex State with useReducer", type: "lecture", completed: false },
-            ]
-        }
-    ]
-};
+import type { CreateCourseOutput } from '@/types/ai-schemas';
+import { useEffect, useState } from 'react';
 
 export default function CourseViewPage() {
     const params = useParams();
     const id = Array.isArray(params.id) ? params.id[0] : params.id;
-    const course = allCourses.find(c => c.id === parseInt(id, 10));
+    const [course, setCourse] = useState<CreateCourseOutput | null>(null);
+
+    useEffect(() => {
+        const storedCourse = localStorage.getItem('newlyCreatedCourse');
+        if (storedCourse) {
+            const parsedCourse: CreateCourseOutput = JSON.parse(storedCourse);
+            // Check if the stored course matches the current URL
+            if (parsedCourse.id === id) {
+                setCourse(parsedCourse);
+            }
+        }
+    }, [id]);
 
     if (!course) {
-        return <div className="container py-12 text-center">Course not found.</div>;
+        // You might want to show a loading state or a "course not found" message
+        // This will show if the user navigates directly to this URL without creating a course first
+        return (
+             <DashboardAuthWrapper requiredRole="student">
+                <div className="container py-12 text-center">
+                    <BackButton />
+                    <p className="mt-4">Course not found. Please generate a course from your learning path first.</p>
+                </div>
+             </DashboardAuthWrapper>
+        )
     }
     
     return (
@@ -60,13 +50,24 @@ export default function CourseViewPage() {
                     <p className="text-lg text-muted-foreground mt-2">Taught by {course.instructor}</p>
                 </div>
                 
+                 <div className="mb-8">
+                     <Image
+                        src={course.image}
+                        alt={course.title}
+                        width={800}
+                        height={450}
+                        className="w-full rounded-lg object-cover"
+                        data-ai-hint={course.aiHint}
+                    />
+                </div>
+
                 <Card className="mb-8">
                     <CardHeader>
                         <CardTitle>Your Progress</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <Progress value={25} className="h-4" />
-                        <p className="text-center mt-2 text-muted-foreground">25% Complete (2 of 8 lectures)</p>
+                        <Progress value={0} className="h-4" />
+                        <p className="text-center mt-2 text-muted-foreground">0% Complete</p>
                     </CardContent>
                 </Card>
 
@@ -77,7 +78,7 @@ export default function CourseViewPage() {
                     </CardHeader>
                     <CardContent>
                         <Accordion type="single" collapsible className="w-full" defaultValue="item-0">
-                            {courseCurriculum.modules.map((module, index) => (
+                            {course.curriculum.map((module, index) => (
                                 <AccordionItem key={module.title} value={`item-${index}`}>
                                     <AccordionTrigger>
                                         <div className='flex items-center gap-4'>
@@ -86,13 +87,13 @@ export default function CourseViewPage() {
                                     </AccordionTrigger>
                                     <AccordionContent>
                                         <ul className="space-y-3 pl-8">
-                                            {module.lectures.map(lecture => {
-                                                const LessonIcon = lecture.type === 'lecture' ? Type : PlayCircle;
+                                            {module.lessons.map(lesson => {
+                                                const LessonIcon = lesson.type === 'lecture' ? Type : PlayCircle;
                                                 return (
-                                                <li key={lecture.title} className="flex items-center gap-3 text-muted-foreground hover:text-foreground">
-                                                    {lecture.completed ? <CheckCircle className="h-5 w-5 text-green-500" /> : <Circle className="h-5 w-5 text-muted-foreground" />}
+                                                <li key={lesson.title} className="flex items-center gap-3 text-muted-foreground hover:text-foreground cursor-pointer">
+                                                    <Circle className="h-5 w-5 text-muted-foreground" />
                                                     <LessonIcon className="h-5 w-5" />
-                                                    <span className="flex-1">{lecture.title}</span>
+                                                    <span className="flex-1">{lesson.title}</span>
                                                 </li>
                                             )})}
                                         </ul>
