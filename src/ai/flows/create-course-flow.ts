@@ -43,7 +43,10 @@ Based on the learning path, you must generate the following:
 For the curriculum itself:
 For each module in the learning path, you must:
 1.  Create a mix of 'video' and 'lecture' lessons. Aim for 3-5 lessons per module to ensure comprehensive coverage.
-2.  For 'video' lessons, find a real, high-quality, and relevant educational video from YouTube. Provide the full YouTube URL. Write a brief, one-sentence description for the video.
+2.  For 'video' lessons:
+    a. Find a real, high-quality, and relevant educational video from YouTube. Provide the full YouTube URL.
+    b. Write a brief, one-sentence description for the video.
+    c. IMPORTANT: Generate a concise summary or a bulleted list of key takeaways from the video's content and add it to the 'notes' field. This should be detailed enough to serve as a study guide.
 3.  For 'lecture' lessons, write detailed, informative content of at least 3-5 paragraphs. This text will be the primary content for the lesson and should be thorough enough to be a standalone piece of learning material. It should not be a simple description but a proper lesson.
 4.  Ensure the lessons within each module build upon each other logically.
 5.  Assign the correct type ('video' or 'lecture') to each lesson.

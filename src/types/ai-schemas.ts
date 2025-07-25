@@ -23,6 +23,7 @@ export const CourseLessonSchema = z.object({
     title: z.string().describe("The title of the lesson."),
     url: z.string().optional().describe("The URL of the YouTube video, required if type is 'video'."),
     description: z.string().describe("For 'video', a short description. For 'lecture', the full text content of the lesson (at least 3-5 paragraphs)."),
+    notes: z.string().optional().describe("For 'video', a summary or key takeaways from the video content. For 'lecture', this can be null."),
 });
 export type CourseLesson = z.infer<typeof CourseLessonSchema>;
 
@@ -66,3 +67,22 @@ export const AIBuddyInputSchema = z.object({
   photoDataUri: z.string().optional().describe("A photo, as a data URI that must include a MIME type and use Base64 encoding. Expected format: 'data:<mimetype>;base64,<encoded_data>'."),
 });
 export type AIBuddyInput = z.infer<typeof AIBuddyInputSchema>;
+
+
+// Schema for AI Tutor (obsolete, replaced by AI Buddy but kept for reference if needed)
+export const AITutorInputSchema = z.object({
+  personality: z.string().describe("The desired personality for the AI tutor."),
+  gender: z.string().describe("The desired gender for the AI tutor."),
+  name: z.string().describe("The chosen name for the AI tutor."),
+  conversationHistory: z.array(z.object({
+    role: z.enum(['user', 'model']),
+    text: z.string(),
+  })).describe("The history of the conversation so far."),
+  currentMessage: z.string().describe("The user's latest message."),
+});
+export type AITutorInput = z.infer<typeof AITutorInputSchema>;
+
+export const AITutorResponseSchema = z.object({
+    response: z.string().describe("The AI tutor's response to the user's message."),
+});
+export type AITutorResponse = z.infer<typeof AITutorResponseSchema>;

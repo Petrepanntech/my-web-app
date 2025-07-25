@@ -97,16 +97,24 @@ export default function LessonPage() {
                 </header>
                 <main className="flex-1 overflow-y-auto">
                     {lesson.type === 'video' && lesson.url && getYouTubeEmbedUrl(lesson.url) && (
-                         <div className="aspect-video">
-                            <iframe 
-                                 key={lesson.title}
-                                 className="w-full h-full"
-                                 src={getYouTubeEmbedUrl(lesson.url)!}
-                                 title="YouTube video player" 
-                                 frameBorder="0" 
-                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                                 allowFullScreen
-                             ></iframe>
+                         <div className="w-full max-w-4xl mx-auto">
+                            <div className="aspect-video mt-4">
+                                <iframe 
+                                    key={lesson.title}
+                                    className="w-full h-full"
+                                    src={getYouTubeEmbedUrl(lesson.url)!}
+                                    title="YouTube video player" 
+                                    frameBorder="0" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                    allowFullScreen
+                                ></iframe>
+                            </div>
+                            {lesson.notes && (
+                                <div className="p-4 md:p-8">
+                                    <h2 className="text-2xl font-bold mb-4">Key Takeaways</h2>
+                                    <div className="prose max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: lesson.notes.replace(/\n/g, '<br />') }}></div>
+                                </div>
+                            )}
                          </div>
                     )}
                     {lesson.type === 'video' && lesson.url && !getYouTubeEmbedUrl(lesson.url) && (
