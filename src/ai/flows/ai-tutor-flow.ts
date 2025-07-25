@@ -8,24 +8,13 @@
  */
 
 import { ai } from '@/ai/genkit';
-import { z } from 'zod';
+import {
+    AITutorInputSchema,
+    AITutorResponseSchema,
+    type AITutorInput,
+    type AITutorResponse
+} from '@/types/ai-schemas';
 
-const HistoryItemSchema = z.object({
-    role: z.enum(['user', 'model']),
-    content: z.string(),
-});
-
-export const AITutorInputSchema = z.object({
-  personality: z.enum(['Analytical', 'Creative', 'Encouraging']).describe('The personality of the AI tutor.'),
-  tutorName: z.string().describe('The name of the AI tutor.'),
-  history: z.array(HistoryItemSchema).describe('The conversation history.'),
-});
-export type AITutorInput = z.infer<typeof AITutorInputSchema>;
-
-export const AITutorResponseSchema = z.object({
-  history: z.array(HistoryItemSchema).describe('The updated conversation history including the model\'s response.'),
-});
-export type AITutorResponse = z.infer<typeof AITutorResponseSchema>;
 
 export async function aiTutor(
   input: AITutorInput

@@ -12,7 +12,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Send, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import DashboardAuthWrapper from '@/components/auth/DashboardAuthWrapper';
-import type { AITutorResponse, AITutorInput } from '@/ai/flows/ai-tutor-flow';
+import type { AITutorResponse, AITutorInput } from '@/types/ai-schemas';
 import { aiTutor } from '@/lib/actions';
 import { cn } from '@/lib/utils';
 
@@ -31,7 +31,7 @@ export default function AITutorPage() {
     const [gender, setGender] = useState<Gender>('Female');
     const [tutorName, setTutorName] = useState('Nia');
     const [isConfigured, setIsConfigured] = useState(false);
-    const [messages, setMessages] = useState<AITutorResponse['history']>([]);
+    const [messages, setMessages] = useState<AITutorInput['history']>([]);
     const [currentMessage, setCurrentMessage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const { toast } = useToast();
@@ -41,7 +41,7 @@ export default function AITutorPage() {
     }, [personality, gender]);
 
     const handleStartChatting = () => {
-        const initialGreeting: AITutorResponse['history'][0] = {
+        const initialGreeting: AITutorInput['history'][0] = {
             role: 'model',
             content: `Hello! I'm ${tutorName}, your ${personality.toLowerCase()} AI tutor. How can I help you on your learning journey today?`
         };
@@ -53,7 +53,7 @@ export default function AITutorPage() {
         e.preventDefault();
         if (!currentMessage.trim()) return;
 
-        const userMessage: AITutorResponse['history'][0] = { role: 'user', content: currentMessage };
+        const userMessage: AITutorInput['history'][0] = { role: 'user', content: currentMessage };
         const newMessages = [...messages, userMessage];
         setMessages(newMessages);
         setCurrentMessage('');

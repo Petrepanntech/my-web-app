@@ -58,3 +58,22 @@ export const GenerateMOUOutputSchema = z.object({
   mou: z.string().describe('The full text of the generated Memorandum of Understanding.'),
 });
 export type GenerateMOUOutput = z.infer<typeof GenerateMOUOutputSchema>;
+
+
+// Schema for AI Tutor
+const HistoryItemSchema = z.object({
+    role: z.enum(['user', 'model']),
+    content: z.string(),
+});
+
+export const AITutorInputSchema = z.object({
+  personality: z.enum(['Analytical', 'Creative', 'Encouraging']).describe('The personality of the AI tutor.'),
+  tutorName: z.string().describe('The name of the AI tutor.'),
+  history: z.array(HistoryItemSchema).describe('The conversation history.'),
+});
+export type AITutorInput = z.infer<typeof AITutorInputSchema>;
+
+export const AITutorResponseSchema = z.object({
+  history: z.array(HistoryItemSchema).describe('The updated conversation history including the model\'s response.'),
+});
+export type AITutorResponse = z.infer<typeof AITutorResponseSchema>;
