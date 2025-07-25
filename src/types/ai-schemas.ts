@@ -60,20 +60,9 @@ export const GenerateMOUOutputSchema = z.object({
 export type GenerateMOUOutput = z.infer<typeof GenerateMOUOutputSchema>;
 
 
-// Schema for AI Tutor
-const HistoryItemSchema = z.object({
-    role: z.enum(['user', 'model']),
-    content: z.string(),
+// Schema for AI Buddy (replaces AI Tutor)
+export const AIBuddyInputSchema = z.object({
+  prompt: z.string().describe('The user\'s text prompt.'),
+  photoDataUri: z.string().optional().describe("A photo, as a data URI that must include a MIME type and use Base64 encoding. Expected format: 'data:<mimetype>;base64,<encoded_data>'."),
 });
-
-export const AITutorInputSchema = z.object({
-  personality: z.enum(['Analytical', 'Creative', 'Encouraging']).describe('The personality of the AI tutor.'),
-  tutorName: z.string().describe('The name of the AI tutor.'),
-  history: z.array(HistoryItemSchema).describe('The conversation history.'),
-});
-export type AITutorInput = z.infer<typeof AITutorInputSchema>;
-
-export const AITutorResponseSchema = z.object({
-  history: z.array(HistoryItemSchema).describe('The updated conversation history including the model\'s response.'),
-});
-export type AITutorResponse = z.infer<typeof AITutorResponseSchema>;
+export type AIBuddyInput = z.infer<typeof AIBuddyInputSchema>;

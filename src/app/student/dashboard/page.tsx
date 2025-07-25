@@ -5,7 +5,9 @@ import DashboardAuthWrapper from "@/components/auth/DashboardAuthWrapper";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ActionCard } from "@/components/shared/ActionCard";
 import { useAuth } from "@/context/AuthContext";
-import { LayoutDashboard, Book, Briefcase, TestTube2, Star, ArrowRight } from "lucide-react";
+import { LayoutDashboard, Book, Briefcase, TestTube2, Star, MessageCircle, ArrowRight } from "lucide-react";
+import { FloatingChatButton } from "@/components/shared/FloatingChatButton";
+
 
 export default function StudentDashboardPage() {
     const { user } = useAuth();
@@ -16,7 +18,7 @@ export default function StudentDashboardPage() {
         { title: "CBT Practice", description: "Prepare for your exams", href: "/student/cbt-practice", Icon: TestTube2 },
         { title: "Marketplace", description: "Find freelance projects", href: "/marketplace/tasks", Icon: Briefcase },
         { title: "Achievements", description: "Track your progress", href: "/student/achievements", Icon: Star },
-        { title: "Wallet & Referrals", description: "Manage your earnings", href: "/student/referrals-wallet", Icon: ArrowRight },
+        { title: "AI Buddy", description: "Chat with your AI assistant", href: "/student/ai-buddy", Icon: MessageCircle },
     ]
 
     return (
@@ -63,6 +65,7 @@ export default function StudentDashboardPage() {
                     </div>
                 </div>
             </div>
+            <FloatingChatButton href="/student/ai-buddy" />
         </DashboardAuthWrapper>
     );
 }

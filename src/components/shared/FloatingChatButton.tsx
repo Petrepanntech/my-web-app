@@ -1,15 +1,36 @@
 
+"use client"
 import Link from "next/link";
 import { Button } from "../ui/button";
 import { MessageCircle } from "lucide-react";
+import { usePathname } from "next/navigation";
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+} from "@/components/ui/sheet"
+import AIBuddyPage from "@/app/student/ai-buddy/page";
+
 
 export function FloatingChatButton({ href }: { href: string }) {
+    const pathname = usePathname();
+
+    // Don't render the chat button on the chat page itself
+    if (pathname === href) {
+        return null;
+    }
+
     return (
-        <Button asChild className="fixed bottom-20 right-4 md:bottom-8 md:right-8 h-16 w-16 rounded-full shadow-lg z-40" size="icon">
-            <Link href={href}>
-                <MessageCircle className="h-8 w-8" />
-                <span className="sr-only">Open Chat</span>
-            </Link>
-        </Button>
+        <Sheet>
+            <SheetTrigger asChild>
+                 <Button className="fixed bottom-20 right-4 md:bottom-8 md:right-8 h-16 w-16 rounded-full shadow-lg z-40" size="icon">
+                    <MessageCircle className="h-8 w-8" />
+                    <span className="sr-only">Open Chat</span>
+                </Button>
+            </SheetTrigger>
+            <SheetContent className="w-full sm:w-3/4 lg:w-1/2 xl:w-1/3 p-0 border-none">
+                <AIBuddyPage />
+            </SheetContent>
+        </Sheet>
     )
 }

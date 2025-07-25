@@ -1,7 +1,6 @@
 
 "use client"
-import { useParams } from 'next/navigation';
-import Image from 'next/image';
+import { useParams, useRouter } from 'next/navigation';
 import DashboardAuthWrapper from "@/components/auth/DashboardAuthWrapper";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
@@ -11,6 +10,7 @@ import { BackButton } from '@/components/shared/BackButton';
 import type { CreateCourseOutput, CourseLesson } from '@/types/ai-schemas';
 import { useEffect, useState, useMemo } from 'react';
 import { cn } from '@/lib/utils';
+import Image from 'next/image';
 
 
 const LessonItem = ({ lesson, isCompleted, onLessonClick }: { lesson: CourseLesson, isCompleted: boolean, onLessonClick: () => void }) => {
@@ -18,7 +18,7 @@ const LessonItem = ({ lesson, isCompleted, onLessonClick }: { lesson: CourseLess
     const CompletionIcon = isCompleted ? CheckCircle : Circle;
     
     return (
-        <div onClick={onLessonClick} className="flex items-center gap-3 text-muted-foreground hover:text-foreground cursor-pointer">
+        <div onClick={onLessonClick} className="flex items-center gap-3 text-muted-foreground hover:text-foreground cursor-pointer p-2 rounded-md hover:bg-muted">
             <CompletionIcon className={cn("h-5 w-5", isCompleted ? "text-green-500" : "text-muted-foreground")} />
             <LessonIcon className="h-5 w-5" />
             <span className="flex-1">{lesson.title}</span>
@@ -29,9 +29,9 @@ const LessonItem = ({ lesson, isCompleted, onLessonClick }: { lesson: CourseLess
 
 export default function CourseViewPage() {
     const params = useParams();
+    const router = useRouter();
     const id = Array.isArray(params.id) ? params.id[0] : params.id;
     const [course, setCourse] = useState<CreateCourseOutput | null>(null);
-    const [selectedContent, setSelectedContent] = useState<CourseLesson | null>(null);
     const [completedLessons, setCompletedLessons] = useState<Set<string>>(new Set());
 
     useEffect(() => {
@@ -40,23 +40,13 @@ export default function CourseViewPage() {
             const parsedCourse: CreateCourseOutput = JSON.parse(storedCourse);
             if (parsedCourse.id === id) {
                 setCourse(parsedCourse);
-                // Set the overview as the initial selected content
-                const initialContent: CourseLesson = {
-                    type: 'lecture',
-                    title: 'Course Overview',
-                    description: parsedCourse.overview,
-                };
-                setSelectedContent(initialContent);
             }
         }
     }, [id]);
-
-    const handleLessonClick = (lesson: CourseLesson) => {
-        setSelectedContent(lesson);
-        // Only mark actual lessons as completed, not the overview
-        if(lesson.title !== 'Course Overview') {
-            setCompletedLessons(prev => new Set(prev).add(lesson.title));
-        }
+    
+    const handleLessonClick = (lesson: CourseLesson, moduleIndex: number, lessonIndex: number) => {
+        setCompletedLessons(prev => new Set(prev).add(lesson.title));
+        router.push(`/courses/view/${id}/lesson?module=${moduleIndex}&lesson=${lessonIndex}`);
     }
 
     const totalLessons = useMemo(() => {
@@ -64,26 +54,6 @@ export default function CourseViewPage() {
     }, [course]);
     
     const progressPercentage = totalLessons > 0 ? (completedLessons.size / totalLessons) * 100 : 0;
-
-    const getYouTubeEmbedUrl = (url: string) => {
-        if (!url) return null;
-        let videoId = null;
-        try {
-            const urlObj = new URL(url);
-            if (urlObj.hostname === 'www.youtube.com' || urlObj.hostname === 'youtube.com') {
-                videoId = urlObj.searchParams.get('v');
-            } else if (urlObj.hostname === 'youtu.be') {
-                videoId = urlObj.pathname.slice(1);
-            }
-            return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
-        } catch (error) {
-            console.error("Invalid YouTube URL:", url);
-            const match = url.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
-            videoId = match && match[1];
-            return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
-        }
-    };
-
 
     if (!course) {
         return (
@@ -98,91 +68,64 @@ export default function CourseViewPage() {
     
     return (
         <DashboardAuthWrapper requiredRole="student">
-            <div className="container mx-auto max-w-7xl py-12 grid lg:grid-cols-3 gap-8">
-                <div className="lg:col-span-2">
-                    <BackButton className="mb-4" />
-                    <div className="mb-8">
-                        <h1 className="text-4xl font-bold">{course.title}</h1>
-                        <p className="text-lg text-muted-foreground mt-2">Taught by {course.instructor}</p>
-                    </div>
-                    
-                    <div className="aspect-video w-full rounded-lg overflow-hidden bg-muted flex items-center justify-center">
-                        {!selectedContent && (
-                             <Image
-                                src={course.image}
-                                alt={course.title}
-                                width={800}
-                                height={450}
-                                className="w-full h-full object-cover"
-                                data-ai-hint={course.aiHint}
-                            />
-                        )}
-                        {selectedContent?.type === 'video' && selectedContent.url && getYouTubeEmbedUrl(selectedContent.url) && (
-                             <iframe 
-                                 key={selectedContent.title}
-                                 width="100%" 
-                                 height="100%" 
-                                 src={getYouTubeEmbedUrl(selectedContent.url)!}
-                                 title="YouTube video player" 
-                                 frameBorder="0" 
-                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                                 allowFullScreen
-                             ></iframe>
-                        )}
-                        {selectedContent?.type === 'video' && selectedContent.url && !getYouTubeEmbedUrl(selectedContent.url) && (
-                            <div className="p-6 h-full w-full bg-background overflow-y-auto text-center flex flex-col justify-center items-center">
-                                <h2 className="text-2xl font-bold mb-4">Video Unavailable</h2>
-                                <p className="text-muted-foreground">This video could not be embedded. The URL may be invalid or private.</p>
-                                <p className="text-muted-foreground text-sm mt-2">URL: {selectedContent.url}</p>
-                           </div>
-                        )}
-                         {selectedContent?.type === 'lecture' && (
-                             <div className="p-6 h-full w-full bg-background overflow-y-auto">
-                                <h2 className="text-2xl font-bold mb-4">{selectedContent.title}</h2>
-                                <div className="prose prose-sm max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: selectedContent.description?.replace(/\n/g, '<br />') || '' }}></div>
-                            </div>
-                        )}
-                    </div>
+             <div className="container mx-auto max-w-4xl py-12">
+                 <BackButton className="mb-4" />
+                <div className="mb-8">
+                    <h1 className="text-4xl font-bold">{course.title}</h1>
+                    <p className="text-lg text-muted-foreground mt-2">Taught by {course.instructor}</p>
+                    <Image
+                        src={course.image}
+                        alt={course.title}
+                        width={800}
+                        height={450}
+                        className="w-full h-auto object-cover rounded-lg mt-4"
+                        data-ai-hint={course.aiHint}
+                    />
                 </div>
-
-                <div className="lg:col-span-1">
-                    <Card className="sticky top-20">
-                        <CardHeader>
-                            <CardTitle>Course Curriculum</CardTitle>
-                            <CardDescription>Start learning by selecting a lesson.</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                             <div className="mb-4">
-                                 <Progress value={progressPercentage} className="h-2" />
-                                 <p className="text-center mt-2 text-xs text-muted-foreground">{Math.round(progressPercentage)}% Complete</p>
-                            </div>
-                            <Accordion type="single" collapsible className="w-full max-h-[60vh] overflow-y-auto" defaultValue="item-0">
-                                {course.curriculum.map((module, index) => (
-                                    <AccordionItem key={module.title} value={`item-${index}`}>
-                                        <AccordionTrigger>
-                                            <div className='flex items-center gap-4 text-left'>
-                                                <span>{module.title}</span>
-                                            </div>
-                                        </AccordionTrigger>
-                                        <AccordionContent>
-                                            <ul className="space-y-3 pl-4">
-                                                {module.lessons.map(lesson => (
-                                                    <li key={lesson.title}>
-                                                        <LessonItem 
-                                                            lesson={lesson} 
-                                                            isCompleted={completedLessons.has(lesson.title)}
-                                                            onLessonClick={() => handleLessonClick(lesson)}
-                                                        />
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </AccordionContent>
-                                    </AccordionItem>
-                                ))}
-                            </Accordion>
-                        </CardContent>
-                    </Card>
-                </div>
+                 <Card className="mb-8">
+                    <CardHeader>
+                        <CardTitle>Course Overview</CardTitle>
+                    </CardHeader>
+                    <CardContent className="prose prose-sm max-w-none dark:prose-invert">
+                        <p>{course.overview}</p>
+                    </CardContent>
+                </Card>
+                 <Card>
+                    <CardHeader>
+                        <CardTitle>Course Curriculum</CardTitle>
+                        <CardDescription>Start learning by selecting a lesson.</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                         <div className="mb-4">
+                             <Progress value={progressPercentage} className="h-2" />
+                             <p className="text-center mt-2 text-xs text-muted-foreground">{Math.round(progressPercentage)}% Complete ({completedLessons.size}/{totalLessons})</p>
+                        </div>
+                        <Accordion type="single" collapsible className="w-full" defaultValue="item-0">
+                            {course.curriculum.map((module, moduleIndex) => (
+                                <AccordionItem key={module.title} value={`item-${moduleIndex}`}>
+                                    <AccordionTrigger>
+                                        <div className='flex items-center gap-4 text-left'>
+                                            <span>{module.title}</span>
+                                        </div>
+                                    </AccordionTrigger>
+                                    <AccordionContent>
+                                        <ul className="space-y-1 pl-4">
+                                            {module.lessons.map((lesson, lessonIndex) => (
+                                                <li key={lesson.title}>
+                                                    <LessonItem 
+                                                        lesson={lesson} 
+                                                        isCompleted={completedLessons.has(lesson.title)}
+                                                        onLessonClick={() => handleLessonClick(lesson, moduleIndex, lessonIndex)}
+                                                    />
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </AccordionContent>
+                                </AccordionItem>
+                            ))}
+                        </Accordion>
+                    </CardContent>
+                </Card>
             </div>
         </DashboardAuthWrapper>
     )

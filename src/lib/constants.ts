@@ -19,7 +19,7 @@ export const allDashboardNavItems: NavGroup[] = [
             { href: '/student/assignments', label: 'Assignments', roles: ['student'] },
             { href: '/student/cbt-practice', label: 'CBT Practice', roles: ['student'] },
             { href: '/student/achievements', label: 'Achievements', roles: ['student'] },
-            { href: '/student/ai-tutor', label: 'AI Tutor', roles: ['student'] },
+            { href: '/student/ai-buddy', label: 'AI Buddy', roles: ['student'] },
         ]
     },
     {
