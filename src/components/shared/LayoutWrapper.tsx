@@ -7,6 +7,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { BottomNavBar } from "./BottomNavBar";
 import { ChatProvider } from "@/context/ChatContext";
 import { ChatWindow } from "./ChatWindow";
+import { FloatingChatButton } from "./FloatingChatButton";
 
 export function LayoutWrapper({ children }: { children: React.ReactNode }) {
     return (
@@ -16,6 +17,7 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
                 <main className="flex-1 pb-16 md:pb-0">{children}</main>
                 <BottomNavBar />
                 <ChatWindow />
+                <FloatingChatButton />
             </div>
             <AuthModal />
             <Toaster />

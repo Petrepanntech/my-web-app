@@ -6,7 +6,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { ActionCard } from "@/components/shared/ActionCard";
 import { useAuth } from "@/context/AuthContext";
 import { LayoutDashboard, Book, Briefcase, TestTube2, Star, MessageCircle, ArrowRight } from "lucide-react";
-import { FloatingChatButton } from "@/components/shared/FloatingChatButton";
 
 
 export default function StudentDashboardPage() {
@@ -65,7 +64,6 @@ export default function StudentDashboardPage() {
                     </div>
                 </div>
             </div>
-            <FloatingChatButton />
         </DashboardAuthWrapper>
     );
 }

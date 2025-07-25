@@ -139,7 +139,7 @@ export default function CourseViewPage() {
                         <CardTitle>Course Overview</CardTitle>
                     </CardHeader>
                     <CardContent className="prose prose-sm max-w-none dark:prose-invert">
-                        {course.overview.split('\n\n').map((paragraph, index) => (
+                        {course.overview.split('\n').filter(p => p.trim() !== '').map((paragraph, index) => (
                             <p key={index}>{paragraph}</p>
                         ))}
                     </CardContent>
@@ -184,5 +184,3 @@ export default function CourseViewPage() {
         </DashboardAuthWrapper>
     )
 }
-
-    
