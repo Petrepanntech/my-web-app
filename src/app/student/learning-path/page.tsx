@@ -9,21 +9,13 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from '@/hooks/use-toast';
 import { ArrowRight, Loader2 } from 'lucide-react';
-
-const sampleLearningPath = {
-    path: [
-        { title: "Introduction to Web Development", description: "Understand the fundamentals of how the web works, including HTML, CSS, and JavaScript." },
-        { title: "React Fundamentals", description: "Learn the core concepts of React, including components, props, state, and hooks." },
-        { title: "Advanced React Concepts", description: "Dive deeper into state management, context API, and performance optimization." },
-        { title: "Building with Next.js", description: "Explore server-side rendering, routing, and API routes with the Next.js framework." },
-        { title: "Final Project: Full-Stack Application", description: "Apply your knowledge to build a complete project from scratch." }
-    ]
-}
+import { personalizedLearningPath } from '@/lib/actions';
+import type { PersonalizedLearningPathOutput } from '@/ai/flows/create-course-flow';
 
 export default function LearningPathPage() {
     const [interests, setInterests] = useState('');
     const [goals, setGoals] = useState('');
-    const [learningPath, setLearningPath] = useState<typeof sampleLearningPath | null>(null);
+    const [learningPath, setLearningPath] = useState<PersonalizedLearningPathOutput | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const { toast } = useToast();
 
@@ -38,11 +30,21 @@ export default function LearningPathPage() {
             return;
         }
         setIsLoading(true);
-        // Simulate AI generation
-        setTimeout(() => {
-            setLearningPath(sampleLearningPath);
+        setLearningPath(null);
+
+        try {
+            const result = await personalizedLearningPath({ interests, goals });
+            setLearningPath(result);
+        } catch (error) {
+            console.error("Failed to generate learning path:", error);
+            toast({
+                variant: 'destructive',
+                title: 'Error Generating Path',
+                description: 'Could not create your learning path. Please try again.',
+            });
+        } finally {
             setIsLoading(false);
-        }, 1500);
+        }
     };
 
     return (
@@ -88,10 +90,11 @@ export default function LearningPathPage() {
                                 </div>
                             )}
                             {learningPath?.path ? (
-                                <ul>
+                                <ul className="space-y-4">
                                     {learningPath.path.map((module, index) => (
-                                        <li key={index}>
-                                            <strong>{module.title}</strong>: {module.description}
+                                        <li key={index} className="p-4 bg-muted/50 rounded-lg">
+                                            <p className="font-bold">{module.title}</p>
+                                            <p>{module.description}</p>
                                         </li>
                                     ))}
                                 </ul>
