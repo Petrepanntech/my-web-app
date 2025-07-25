@@ -56,9 +56,9 @@ function RoleSelector({ selectedRole, onRoleChange }: { selectedRole: Role, onRo
                 </Label>
             </div>
              <div>
-                <RadioGroupItem value="instructor" id="instructor" className="peer sr-only" />
-                <Label htmlFor="instructor" className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary">
-                    Instructor
+                <RadioGroupItem value="mentor" id="mentor" className="peer sr-only" />
+                <Label htmlFor="mentor" className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary">
+                    Mentor
                 </Label>
             </div>
              <div>

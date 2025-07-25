@@ -4,7 +4,6 @@ import React from 'react';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
@@ -69,7 +68,7 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
                         <CardHeader><CardTitle>Activity</CardTitle></CardHeader>
                         <CardContent className="space-y-4">
                            <p className="text-muted-foreground">There are currently <span className="font-bold text-foreground">{task.bids} bids</span> on this project.</p>
-                           <p className="text-sm text-muted-foreground">You must be logged in as a student or instructor to view bid details and place your own bid.</p>
+                           <p className="text-sm text-muted-foreground">You must be logged in as a student or mentor to view bid details and place your own bid.</p>
                         </CardContent>
                     </Card>
                 </div>
@@ -85,7 +84,7 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
                         </CardContent>
                     </Card>
                     
-                    {isAuthenticated && (user?.role === 'student' || user?.role === 'instructor') ? (
+                    {isAuthenticated && (user?.role === 'student' || user?.role === 'mentor') ? (
                          <Dialog>
                             <DialogTrigger asChild>
                                 <Button size="lg" className="w-full">Place Your Bid</Button>

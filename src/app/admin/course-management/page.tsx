@@ -9,31 +9,31 @@ import { Check, MoreVertical, Upload, X } from "lucide-react";
 const courses = [
     {
         title: "Advanced JavaScript for Professionals",
-        instructor: "Samuel Adebayo",
+        mentor: "Samuel Adebayo",
         category: "Web Development",
         status: "Pending Approval"
     },
     {
         title: "The Ultimate Figma Masterclass",
-        instructor: "Aisha Nwosu",
+        mentor: "Aisha Nwosu",
         category: "UI/UX Design",
         status: "Approved"
     },
     {
         title: "Startup 101: From Idea to IPO",
-        instructor: "Tunde Oladipo",
+        mentor: "Tunde Oladipo",
         category: "Business",
         status: "Approved"
     },
     {
         title: "Introduction to AI Ethics",
-        instructor: "Dr. Evelyn Reed",
+        mentor: "Dr. Evelyn Reed",
         category: "Data Science",
         status: "Rejected"
     },
      {
         title: "Content is King: Modern SEO",
-        instructor: "Tunde Oladipo",
+        mentor: "Tunde Oladipo",
         category: "Digital Marketing",
         status: "Pending Approval"
     }
@@ -72,7 +72,7 @@ export default function Page() {
                             <TableHeader>
                                 <TableRow>
                                     <TableHead>Title</TableHead>
-                                    <TableHead>Instructor</TableHead>
+                                    <TableHead>Mentor</TableHead>
                                     <TableHead>Category</TableHead>
                                     <TableHead>Status</TableHead>
                                     <TableHead className="text-right">Actions</TableHead>
@@ -82,7 +82,7 @@ export default function Page() {
                                 {courses.map((course) => (
                                     <TableRow key={course.title}>
                                         <TableCell className="font-medium">{course.title}</TableCell>
-                                        <TableCell>{course.instructor}</TableCell>
+                                        <TableCell>{course.mentor}</TableCell>
                                         <TableCell>{course.category}</TableCell>
                                         <TableCell>
                                             <Badge variant={statusVariant[course.status]}>{course.status}</Badge>

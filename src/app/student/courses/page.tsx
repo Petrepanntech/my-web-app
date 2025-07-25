@@ -35,7 +35,7 @@ export default function Page() {
                             />
                             <CardHeader>
                                 <CardTitle>{course.title}</CardTitle>
-                                <CardDescription>{course.instructor}</CardDescription>
+                                <CardDescription>{course.mentor}</CardDescription>
                             </CardHeader>
                             <CardContent>
                                 <Progress value={75} />

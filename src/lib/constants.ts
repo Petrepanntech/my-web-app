@@ -22,13 +22,13 @@ export const allDashboardNavItems: NavGroup[] = [
         ]
     },
     {
-        label: 'Instructor',
+        label: 'Mentor',
         items: [
-            { href: '/instructor/dashboard', label: 'Dashboard', roles: ['instructor'] },
-            { href: '/instructor/courses', label: 'My Courses', roles: ['instructor'] },
-            { href: '/instructor/students', label: 'My Students', roles: ['instructor'] },
-            { href: '/instructor/earnings', label: 'Earnings', roles: ['instructor'] },
-            { href: '/instructor/analytics', label: 'Analytics', roles: ['instructor'] },
+            { href: '/instructor/dashboard', label: 'Dashboard', roles: ['mentor'] },
+            { href: '/instructor/courses', label: 'My Courses', roles: ['mentor'] },
+            { href: '/instructor/students', label: 'My Students', roles: ['mentor'] },
+            { href: '/instructor/earnings', label: 'Earnings', roles: ['mentor'] },
+            { href: '/instructor/analytics', label: 'Analytics', roles: ['mentor'] },
         ]
     },
     {
@@ -37,7 +37,7 @@ export const allDashboardNavItems: NavGroup[] = [
             { href: '/admin/dashboard', label: 'Dashboard', roles: ['admin'] },
             { href: '/admin/course-management', label: 'Course Management', roles: ['admin'] },
             { href: '/admin/user-management', label: 'User Management', roles: ['admin'] },
-            { href: '/admin/instructor-marketplace', label: 'Instructor Marketplace', roles: ['admin'] },
+            { href: '/admin/instructor-marketplace', label: 'Mentor Marketplace', roles: ['admin'] },
             { href: '/admin/marketplace-admin', label: 'Marketplace Admin', roles: ['admin'] },
             { href: '/admin/analytics', label: 'Analytics', roles: ['admin'] },
             { href: '/admin/referrals', label: 'Referrals', roles: ['admin'] },

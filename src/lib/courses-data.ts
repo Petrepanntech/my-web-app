@@ -5,7 +5,7 @@ export interface Course {
     id: number;
     title: string;
     description: string;
-    instructor: string;
+    mentor: string;
     price: number;
     category: string;
     level: 'Beginner' | 'Intermediate' | 'Advanced';
@@ -71,7 +71,7 @@ export const allCourses: Course[] = [
         id: 1,
         title: 'Advanced React & Next.js',
         description: 'Master the most powerful features of React and Next.js to build enterprise-grade applications.',
-        instructor: 'Samuel Adebayo',
+        mentor: 'Samuel Adebayo',
         price: 15000,
         category: 'Web Development',
         level: 'Advanced',
@@ -82,7 +82,7 @@ export const allCourses: Course[] = [
         id: 2,
         title: 'UI/UX Design Fundamentals',
         description: 'Learn the principles of user-centered design, from wireframing to high-fidelity prototypes.',
-        instructor: 'Aisha Nwosu',
+        mentor: 'Aisha Nwosu',
         price: 12000,
         category: 'UI/UX Design',
         level: 'Beginner',
@@ -93,7 +93,7 @@ export const allCourses: Course[] = [
         id: 3,
         title: 'Node.js & Express Masterclass',
         description: 'Build scalable and efficient backend services and APIs with Node.js and the Express framework.',
-        instructor: 'Samuel Adebayo',
+        mentor: 'Samuel Adebayo',
         price: 15000,
         category: 'Web Development',
         level: 'Intermediate',

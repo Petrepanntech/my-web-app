@@ -4,7 +4,7 @@ export default function Page() {
     return (
         <DashboardAuthWrapper requiredRole="admin">
             <div className="container py-8">
-                <h1 className="text-3xl font-bold">Instructor Marketplace</h1>
+                <h1 className="text-3xl font-bold">Mentor Marketplace</h1>
             </div>
         </DashboardAuthWrapper>
     );

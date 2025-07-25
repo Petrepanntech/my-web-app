@@ -10,11 +10,11 @@ import { MoreVertical, Search } from "lucide-react";
 
 const users = [
     { name: "Student User", email: "student@example.com", role: "student", status: "Active", joined: "2024-01-15", avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=50&h=50&fit=crop" },
-    { name: "Instructor User", email: "instructor@example.com", role: "instructor", status: "Active", joined: "2024-01-20", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50&h=50&fit=crop" },
+    { name: "Mentor User", email: "mentor@example.com", role: "mentor", status: "Active", joined: "2024-01-20", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50&h=50&fit=crop" },
     { name: "Business User", email: "business@example.com", role: "business", status: "Active", joined: "2024-02-10", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=50&h=50&fit=crop" },
     { name: "Admin User", email: "admin@example.com", role: "admin", status: "Active", joined: "2024-01-01", avatar: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=50&h=50&fit=crop" },
     { name: "Adeola Peters", email: "adeola@example.com", role: "student", status: "Suspended", joined: "2024-03-05", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=50&h=50&fit=crop" },
-    { name: "Samuel Adebayo", email: "samuel@example.com", role: "instructor", status: "Active", joined: "2024-02-22", avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=50&h=50&fit=crop" },
+    { name: "Samuel Adebayo", email: "samuel@example.com", role: "mentor", status: "Active", joined: "2024-02-22", avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=50&h=50&fit=crop" },
 ];
 
 

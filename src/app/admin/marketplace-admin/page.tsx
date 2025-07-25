@@ -10,7 +10,7 @@ const flaggedTasks = [
         taskId: "#TASK582",
         title: "Urgent Logo Design - High Pay",
         reason: "Suspected Scam/Spam",
-        reportedBy: "Aisha Nwosu (Instructor)",
+        reportedBy: "Aisha Nwosu (Mentor)",
         date: "2024-08-01"
     },
     {

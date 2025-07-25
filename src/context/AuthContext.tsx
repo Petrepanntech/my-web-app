@@ -21,7 +21,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const mockUsers: { [key in NonNullable<Role>]: User } = {
     student: { id: "1", name: "Student User", email: "student@example.com", avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=50&h=50&fit=crop", role: "student" },
-    instructor: { id: "2", name: "Instructor User", email: "instructor@example.com", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50&h=50&fit=crop", role: "instructor" },
+    mentor: { id: "2", name: "Mentor User", email: "mentor@example.com", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50&h=50&fit=crop", role: "mentor" },
     business: { id: "3", name: "Business User", email: "business@example.com", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=50&h=50&fit=crop", role: "business" },
     admin: { id: "4", name: "Admin User", email: "admin@example.com", avatar: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=50&h=50&fit=crop", role: "admin" },
 };
