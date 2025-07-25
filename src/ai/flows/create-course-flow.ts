@@ -8,39 +8,12 @@
  */
 
 import { ai } from '@/ai/genkit';
-import { z } from 'genkit';
-
-export const PersonalizedLearningPathOutputSchema = z.object({
-  path: z.array(z.object({
-      title: z.string().describe("The title of the learning module."),
-      description: z.string().describe("A brief description of the module."),
-  })).describe("A structured learning path with modules.")
-});
-export type PersonalizedLearningPathOutput = z.infer<
-  typeof PersonalizedLearningPathOutputSchema
->;
-
-const CourseLessonSchema = z.object({
-    type: z.enum(['video', 'lecture']),
-    title: z.string().describe("The title of the lesson."),
-    url: z.string().url().optional().describe("The URL of the YouTube video, if applicable."),
-    description: z.string().describe("A short description of the lesson or video."),
-});
-
-const CourseModuleSchema = z.object({
-    title: z.string().describe("The title of the course module."),
-    lessons: z.array(CourseLessonSchema).describe("A list of lessons for the module."),
-});
-
-const CreateCourseOutputSchema = z.object({
-    id: z.string().describe("A unique ID for the course, perhaps using a slug of the title."),
-    title: z.string().describe("A compelling title for the entire course."),
-    instructor: z.string().describe("The instructor for this course, which should always be 'AI Curator'."),
-    image: z.string().url().describe("A placeholder image URL for the course. Use an Unsplash URL related to the course topic."),
-    aiHint: z.string().describe("A one or two-word hint for the AI to find a relevant image."),
-    curriculum: z.array(CourseModuleSchema).describe("The full curriculum for the course."),
-});
-export type CreateCourseOutput = z.infer<typeof CreateCourseOutputSchema>;
+import {
+  CreateCourseOutputSchema,
+  PersonalizedLearningPathOutputSchema,
+  type CreateCourseOutput,
+  type PersonalizedLearningPathOutput
+} from '@/types/ai-schemas';
 
 
 export async function createCourse(

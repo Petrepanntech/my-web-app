@@ -5,25 +5,10 @@
  * @fileOverview This file defines a Genkit flow for generating personalized learning paths.
  *
  * - personalizedLearningPath - A function that generates a personalized learning path based on user interests and goals.
- * - PersonalizedLearningPathInput - The input type for the personalizedLearningPath function.
- * - PersonalizedLearningPathOutput - The return type for the personalizedLearningPath function.
  */
 
 import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
-import type { PersonalizedLearningPathOutput } from './create-course-flow';
-import { PersonalizedLearningPathOutputSchema } from './create-course-flow';
-
-
-const PersonalizedLearningPathInputSchema = z.object({
-  interests: z
-    .string()
-    .describe('The interests of the student.'),
-  goals: z.string().describe('The goals of the student.'),
-});
-export type PersonalizedLearningPathInput = z.infer<
-  typeof PersonalizedLearningPathInputSchema
->;
+import { PersonalizedLearningPathInputSchema, PersonalizedLearningPathOutputSchema, type PersonalizedLearningPathInput, type PersonalizedLearningPathOutput } from '@/types/ai-schemas';
 
 export async function personalizedLearningPath(
   input: PersonalizedLearningPathInput
