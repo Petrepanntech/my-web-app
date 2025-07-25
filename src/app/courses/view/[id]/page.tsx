@@ -8,7 +8,7 @@ import { CheckCircle, Circle, PlayCircle, Type } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { BackButton } from '@/components/shared/BackButton';
 import type { CreateCourseOutput, CourseLesson } from '@/types/ai-schemas';
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 
@@ -42,10 +42,37 @@ export default function CourseViewPage() {
                 setCourse(parsedCourse);
             }
         }
+        
+        const storedProgress = localStorage.getItem(`courseProgress_${id}`);
+        if (storedProgress) {
+            setCompletedLessons(new Set(JSON.parse(storedProgress)));
+        }
+    }, [id]);
+
+    const updateProgress = useCallback((lessonTitle: string) => {
+        setCompletedLessons(prev => {
+            const newProgress = new Set(prev);
+            newProgress.add(lessonTitle);
+            localStorage.setItem(`courseProgress_${id}`, JSON.stringify(Array.from(newProgress)));
+            return newProgress;
+        });
     }, [id]);
     
+    useEffect(() => {
+        const handleLessonCompleted = (event: Event) => {
+            const customEvent = event as CustomEvent;
+            if (customEvent.detail.courseId === id) {
+                updateProgress(customEvent.detail.lessonTitle);
+            }
+        };
+
+        window.addEventListener('lessonCompleted', handleLessonCompleted);
+        return () => {
+            window.removeEventListener('lessonCompleted', handleLessonCompleted);
+        };
+    }, [id, updateProgress]);
+    
     const handleLessonClick = (lesson: CourseLesson, moduleIndex: number, lessonIndex: number) => {
-        setCompletedLessons(prev => new Set(prev).add(lesson.title));
         router.push(`/courses/view/${id}/lesson?module=${moduleIndex}&lesson=${lessonIndex}`);
     }
 
@@ -87,7 +114,9 @@ export default function CourseViewPage() {
                         <CardTitle>Course Overview</CardTitle>
                     </CardHeader>
                     <CardContent className="prose prose-sm max-w-none dark:prose-invert">
-                        <p>{course.overview}</p>
+                        {course.overview.split('\n').map((paragraph, index) => (
+                            <p key={index}>{paragraph}</p>
+                        ))}
                     </CardContent>
                 </Card>
                  <Card>

@@ -6,7 +6,6 @@ import { BackButton } from '@/components/shared/BackButton';
 import type { CreateCourseOutput, CourseLesson } from '@/types/ai-schemas';
 import { useEffect, useState } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Minimize2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export default function LessonPage() {
@@ -35,6 +34,21 @@ export default function LessonPage() {
         }
     }, [id, moduleIndex, lessonIndex, router]);
 
+    const handleMarkAsComplete = () => {
+        if (!lesson) return;
+        
+        // Dispatch a custom event to notify the parent page
+        const event = new CustomEvent('lessonCompleted', {
+            detail: {
+                courseId: id,
+                lessonTitle: lesson.title
+            }
+        });
+        window.dispatchEvent(event);
+
+        router.back();
+    };
+
     const getYouTubeEmbedUrl = (url: string) => {
         if (!url) return null;
         let videoId = null;
@@ -60,8 +74,7 @@ export default function LessonPage() {
                     <header className="p-4 border-b flex items-center justify-between bg-background z-10">
                         <Skeleton className="h-8 w-1/4" />
                         <div className="flex gap-2">
-                             <Skeleton className="h-10 w-24" />
-                             <Skeleton className="h-10 w-10" />
+                             <Skeleton className="h-10 w-40" />
                         </div>
                     </header>
                     <main className="flex-1 p-8">
@@ -79,10 +92,7 @@ export default function LessonPage() {
                     <BackButton />
                     <h1 className="text-lg font-semibold truncate px-4">{lesson.title}</h1>
                     <div className="flex items-center gap-2">
-                         <Button variant="outline">Mark as Complete</Button>
-                         <Button variant="ghost" size="icon">
-                            <Minimize2 className="h-5 w-5" />
-                         </Button>
+                         <Button variant="outline" onClick={handleMarkAsComplete}>Mark as Complete</Button>
                     </div>
                 </header>
                 <main className="flex-1 overflow-y-auto">
