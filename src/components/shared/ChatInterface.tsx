@@ -1,5 +1,7 @@
 
+
 "use client"
+import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -7,31 +9,89 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { cn } from "@/lib/utils"
 import { Search, Send, User } from "lucide-react"
 
-const conversations = [
-    { name: "Samuel Adebayo", lastMessage: "Yes, I can help with that. What's the deadline?", time: "2m", avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=50&h=50&fit=crop" },
-    { name: "Innovate Inc.", lastMessage: "The signed MOU has been uploaded.", time: "1h", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=50&h=50&fit=crop" },
-    { name: "Aisha Nwosu", lastMessage: "Great work on the last milestone!", time: "5h", avatar: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=50&h=50&fit=crop" },
-    { name: "Support Team", lastMessage: "Your payout has been processed.", time: "1d", avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=50&h=50&fit=crop" },
-    { name: "Chinedu Okoro", lastMessage: "I have a question about the React course.", time: "2d", avatar: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=50&h=50&fit=crop" },
-]
+const conversationData = {
+    "samuel-adebayo": {
+        id: "samuel-adebayo",
+        name: "Samuel Adebayo",
+        lastMessage: "Yes, I can help with that. What's the deadline?",
+        time: "2m",
+        avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=50&h=50&fit=crop",
+        messages: [
+            { sender: "other", text: "Hey! I'm your assigned mentor, Samuel. I saw you just started the React course. How's it going so far?", time: "10:00 AM", avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=50&h=50&fit=crop" },
+            { sender: "me", text: "Hi Samuel! Thanks for reaching out. It's going well, but I'm a bit confused about the `useEffect` hook.", time: "10:01 AM", avatar: "" },
+            { sender: "other", text: "That's a common sticking point. Think of it as a way to handle side effects, like fetching data or subscribing to events, after the component renders. Have you seen the curated video on it in Module 2?", time: "10:01 AM", avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=50&h=50&fit=crop" },
+            { sender: "me", text: "Oh, I haven't watched that yet. I'll check it out now. Thanks for the tip!", time: "10:02 AM", avatar: "" },
+        ]
+    },
+    "community-chat": {
+        id: "community-chat",
+        name: "Community Chat",
+        lastMessage: "The new CBT practice section is amazing!",
+        time: "5m",
+        avatar: "https://images.unsplash.com/photo-1543269865-cbf427effbad?w=50&h=50&fit=crop",
+        messages: [
+            { sender: "other", name: "Chinedu Okoro", text: "Just finished the advanced React module. It was challenging but so rewarding! Anyone else working on their final project?", time: "10:30 AM", avatar: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=50&h=50&fit=crop" },
+            { sender: "other", name: "Adeola Peters", text: "Looking for a collaborator on a freelance UI/UX project. It involves creating a mobile app for a local startup. DM me if interested!", time: "10:32 AM", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=50&h=50&fit=crop" },
+            { sender: "me", name: "You", text: "I'm interested in the UI/UX project! What's the scope?", time: "10:33 AM", avatar: "" },
+            { sender: "other", name: "Samuel Adebayo", text: "The new CBT practice section is amazing for JAMB prep. Highly recommend checking it out if you have exams coming up.", time: "10:35 AM", avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=50&h=50&fit=crop" },
+        ]
+    },
+    "innovate-inc": {
+        id: "innovate-inc",
+        name: "Innovate Inc.",
+        lastMessage: "The signed MOU has been uploaded.",
+        time: "1h",
+        avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=50&h=50&fit=crop",
+        messages: [
+            { sender: "other", text: "The signed MOU has been uploaded.", time: "9:15 AM", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=50&h=50&fit=crop" }
+        ]
+    },
+    "aisha-nwosu": {
+        id: "aisha-nwosu",
+        name: "Aisha Nwosu",
+        lastMessage: "Great work on the last milestone!",
+        time: "5h",
+        avatar: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=50&h=50&fit=crop",
+        messages: [
+             { sender: "other", text: "Great work on the last milestone!", time: "5:30 AM", avatar: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=50&h=50&fit=crop" }
+        ]
+    },
+};
 
-const messages = [
-    { sender: "other", text: "Hey! I'm your assigned mentor, Samuel. I saw you just started the React course. How's it going so far?", time: "10:00 AM", avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=50&h=50&fit=crop" },
-    { sender: "me", text: "Hi Samuel! Thanks for reaching out. It's going well, but I'm a bit confused about the `useEffect` hook.", time: "10:01 AM", avatar: "" },
-    { sender: "other", text: "That's a common sticking point. Think of it as a way to handle side effects, like fetching data or subscribing to events, after the component renders. Have you seen the curated video on it in Module 2?", time: "10:01 AM", avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=50&h=50&fit=crop" },
-    { sender: "me", text: "Oh, I haven't watched that yet. I'll check it out now. Thanks for the tip!", time: "10:02 AM", avatar: "" },
-]
-
-const communityMessages = [
-    { sender: "other", name: "Chinedu Okoro", text: "Just finished the advanced React module. It was challenging but so rewarding! Anyone else working on their final project?", time: "10:30 AM", avatar: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=50&h=50&fit=crop" },
-    { sender: "other", name: "Adeola Peters", text: "Looking for a collaborator on a freelance UI/UX project. It involves creating a mobile app for a local startup. DM me if interested!", time: "10:32 AM", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=50&h=50&fit=crop" },
-    { sender: "me", text: "I'm interested in the UI/UX project! What's the scope?", time: "10:33 AM", avatar: "" },
-    { sender: "other", name: "Samuel Adebayo", text: "The new CBT practice section is amazing for JAMB prep. Highly recommend checking it out if you have exams coming up.", time: "10:35 AM", avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=50&h=50&fit=crop" },
-]
+const conversationList = Object.values(conversationData);
 
 export function ChatInterface({ isCommunity = false }: { isCommunity?: boolean }) {
-    const currentMessages = isCommunity ? communityMessages : messages;
-    const currentTarget = isCommunity ? { name: "Community Chat", online: true, avatar: "https://images.unsplash.com/photo-1543269865-cbf427effbad?w=50&h=50&fit=crop"} : { name: "Samuel Adebayo (Your Mentor)", online: true, avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=50&h=50&fit=crop"}
+    const [chats, setChats] = useState(conversationData);
+    const [activeChatId, setActiveChatId] = useState(isCommunity ? "community-chat" : "samuel-adebayo");
+    const [newMessage, setNewMessage] = useState("");
+
+    const activeChat = chats[activeChatId];
+
+    const handleSendMessage = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!newMessage.trim()) return;
+
+        const messageToSend = {
+            sender: "me",
+            name: "You",
+            text: newMessage,
+            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            avatar: "" // Current user avatar can be added here
+        };
+
+        const updatedChat = {
+            ...activeChat,
+            messages: [...activeChat.messages, messageToSend]
+        };
+        
+        const updatedChats = {
+            ...chats,
+            [activeChatId]: updatedChat,
+        };
+
+        setChats(updatedChats);
+        setNewMessage("");
+    }
 
     return (
         <div className="h-[calc(100vh-4rem)] flex">
@@ -43,8 +103,12 @@ export function ChatInterface({ isCommunity = false }: { isCommunity?: boolean }
                     </div>
                 </div>
                 <ScrollArea className="flex-1">
-                    {conversations.map(convo => (
-                         <div key={convo.name} className="flex items-center gap-4 p-4 hover:bg-muted cursor-pointer">
+                    {conversationList.map(convo => (
+                         <div 
+                            key={convo.id} 
+                            className={cn("flex items-center gap-4 p-4 hover:bg-muted cursor-pointer", activeChatId === convo.id && "bg-muted")}
+                            onClick={() => setActiveChatId(convo.id)}
+                        >
                             <Avatar>
                                 <AvatarImage src={convo.avatar} alt={convo.name} />
                                 <AvatarFallback>{convo.name.charAt(0)}</AvatarFallback>
@@ -63,17 +127,17 @@ export function ChatInterface({ isCommunity = false }: { isCommunity?: boolean }
             <div className="flex-1 flex flex-col">
                 <div className="p-4 border-b flex items-center gap-4">
                      <Avatar>
-                        <AvatarImage src={currentTarget.avatar} alt={currentTarget.name} />
-                        <AvatarFallback>{currentTarget.name.charAt(0)}</AvatarFallback>
+                        <AvatarImage src={activeChat.avatar} alt={activeChat.name} />
+                        <AvatarFallback>{activeChat.name.charAt(0)}</AvatarFallback>
                     </Avatar>
                     <div>
-                        <p className="font-semibold">{currentTarget.name}</p>
-                        {currentTarget.online && <p className="text-sm text-muted-foreground">Online</p>}
+                        <p className="font-semibold">{activeChat.name}</p>
+                        <p className="text-sm text-muted-foreground">Online</p>
                     </div>
                 </div>
                 <ScrollArea className="flex-1 p-6">
                     <div className="space-y-6">
-                        {currentMessages.map((msg, index) => (
+                        {activeChat.messages.map((msg, index) => (
                              <div key={index} className={cn("flex items-end gap-2", msg.sender === 'me' ? 'justify-end' : '')}>
                                 {msg.sender === 'other' && (
                                     <Avatar className="h-8 w-8">
@@ -91,12 +155,17 @@ export function ChatInterface({ isCommunity = false }: { isCommunity?: boolean }
                     </div>
                 </ScrollArea>
                 <div className="p-4 border-t">
-                    <div className="relative">
-                        <Input placeholder="Type a message..." className="pr-12" />
-                        <Button size="icon" variant="ghost" className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8">
+                    <form onSubmit={handleSendMessage} className="relative">
+                        <Input 
+                            placeholder="Type a message..." 
+                            className="pr-12"
+                            value={newMessage}
+                            onChange={(e) => setNewMessage(e.target.value)}
+                        />
+                        <Button type="submit" size="icon" variant="ghost" className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8">
                             <Send className="h-5 w-5" />
                         </Button>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
