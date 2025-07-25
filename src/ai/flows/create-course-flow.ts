@@ -34,7 +34,7 @@ The learning path is provided below as a JSON object. Parse this JSON to underst
 
 Based on the learning path, you must generate the following:
 1.  A compelling overall title for the course.
-2.  A detailed, engaging, and encouraging course overview (at least 3-4 paragraphs). This should set the stage, explain what the student will learn, what they will be able to do after completion, and get them excited to start.
+2.  A detailed, engaging, and encouraging course overview (at least 3-4 paragraphs). This should set the stage, explain what the student will learn, what they will be able to do after completion, and get them excited to start. IMPORTANT: Ensure there is an empty line between each paragraph for readability.
 3.  A unique course ID, which should be a URL-friendly slug of the course title (e.g., "introduction-to-react-from-scratch").
 4.  A relevant placeholder image URL from Unsplash (e.g., https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=800&h=450&fit=crop).
 5.  A one or two-word aiHint for the image (e.g., "react logo").
@@ -42,14 +42,16 @@ Based on the learning path, you must generate the following:
 
 For the curriculum itself:
 For each module in the learning path, you must:
-1.  Create a mix of 'video' and 'lecture' lessons. Aim for 3-5 lessons per module to ensure comprehensive coverage.
+1.  Create a mix of 'video', 'lecture', 'quiz', and 'assignment' lessons. Aim for 3-5 lessons per module to ensure comprehensive coverage.
 2.  For 'video' lessons:
-    a. Find a real, high-quality, and relevant educational video from YouTube. Provide the full YouTube URL.
+    a. Find a real, high-quality, legitimate, and currently active educational video from YouTube. Provide the full, correct YouTube URL.
     b. Write a brief, one-sentence description for the video.
-    c. IMPORTANT: Generate a concise summary or a bulleted list of key takeaways from the video's content and add it to the 'notes' field. This should be detailed enough to serve as a study guide.
-3.  For 'lecture' lessons, write detailed, informative content of at least 3-5 paragraphs. This text will be the primary content for the lesson and should be thorough enough to be a standalone piece of learning material. It should not be a simple description but a proper lesson.
-4.  Ensure the lessons within each module build upon each other logically.
-5.  Assign the correct type ('video' or 'lecture') to each lesson.
+    c. IMPORTANT: Generate a highly detailed, refined, and well-structured summary of the video's content and add it to the 'notes' field. Use bullet points or numbered lists to break down key concepts, definitions, and examples. This should be comprehensive enough to serve as a detailed study guide.
+3.  For 'lecture' lessons, write detailed, informative content of at least 3-5 paragraphs. This text will be the primary content for the lesson and should be thorough enough to be a standalone piece of learning material.
+4.  For 'quiz' lessons, create a short, multiple-choice quiz with 3-5 questions to test the concepts from the preceding lessons. The description field should contain the quiz questions and options.
+5.  Strategically place one 'assignment' lesson at the end of each module. This should be a practical, hands-on task that requires the student to apply what they've learned in the module. The description should clearly outline the assignment requirements.
+6.  Ensure the lessons within each module build upon each other logically.
+7.  Assign the correct type ('video', 'lecture', 'quiz', or 'assignment') to each lesson.
 
 Respond with a single JSON object that matches the output schema. Ensure your response is a valid JSON.
 `,

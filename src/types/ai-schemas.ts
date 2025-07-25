@@ -19,11 +19,11 @@ export type PersonalizedLearningPathOutput = z.infer<typeof PersonalizedLearning
 
 // Schema for Create Course
 export const CourseLessonSchema = z.object({
-    type: z.enum(['video', 'lecture']).describe("The type of the lesson."),
+    type: z.enum(['video', 'lecture', 'quiz', 'assignment']).describe("The type of the lesson."),
     title: z.string().describe("The title of the lesson."),
     url: z.string().optional().describe("The URL of the YouTube video, required if type is 'video'."),
-    description: z.string().describe("For 'video', a short description. For 'lecture', the full text content of the lesson (at least 3-5 paragraphs)."),
-    notes: z.string().optional().describe("For 'video', a summary or key takeaways from the video content. For 'lecture', this can be null."),
+    description: z.string().describe("For 'video', a short description. For 'lecture', the full text content of the lesson (at least 3-5 paragraphs). For 'quiz' or 'assignment', a description of the task."),
+    notes: z.string().optional().describe("For 'video', a detailed, well-structured summary or bulleted list of key takeaways from the video content."),
 });
 export type CourseLesson = z.infer<typeof CourseLessonSchema>;
 
@@ -38,7 +38,7 @@ export const CreateCourseOutputSchema = z.object({
     instructor: z.string().describe("The instructor for this course, which should always be 'AI Curator'."),
     image: z.string().describe("A placeholder image URL for the course. Use an Unsplash URL related to the course topic."),
     aiHint: z.string().describe("A one or two-word hint for the AI to find a relevant image."),
-    overview: z.string().describe("A detailed course overview (at least 3-4 paragraphs)."),
+    overview: z.string().describe("A detailed course overview (at least 3-4 paragraphs, with an empty line between paragraphs)."),
     curriculum: z.array(CourseModuleSchema).describe("The full curriculum for the course."),
 });
 export type CreateCourseOutput = z.infer<typeof CreateCourseOutputSchema>;

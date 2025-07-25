@@ -7,6 +7,7 @@ import type { CreateCourseOutput, CourseLesson } from '@/types/ai-schemas';
 import { useEffect, useState } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
+import { FileQuestion, PencilRuler } from 'lucide-react';
 
 export default function LessonPage() {
     const params = useParams();
@@ -66,6 +67,21 @@ export default function LessonPage() {
             return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
         }
     };
+
+    const renderAssessment = (Icon: React.ElementType, type: string) => (
+        <div className="p-8 max-w-4xl mx-auto text-center">
+            <div className="flex justify-center mb-6">
+                <Icon className="h-16 w-16 text-primary" />
+            </div>
+            <h2 className="text-3xl font-bold mb-4">{lesson?.title}</h2>
+            <p className="text-lg text-muted-foreground mb-6 capitalize">{type}</p>
+            <div 
+                className="prose max-w-none dark:prose-invert text-left" 
+                dangerouslySetInnerHTML={{ __html: lesson?.description?.replace(/\n/g, '<br />') || '' }}
+            ></div>
+            <Button onClick={handleMarkAsComplete} className="mt-8">Mark as Complete and Continue</Button>
+        </div>
+    );
 
     if (!lesson) {
         return (
@@ -130,6 +146,8 @@ export default function LessonPage() {
                             <div className="prose max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: lesson.description?.replace(/\n/g, '<br />') || '' }}></div>
                         </div>
                     )}
+                    {lesson.type === 'quiz' && renderAssessment(FileQuestion, 'quiz')}
+                    {lesson.type === 'assignment' && renderAssessment(PencilRuler, 'assignment')}
                 </main>
             </div>
         </DashboardAuthWrapper>

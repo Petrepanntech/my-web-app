@@ -4,7 +4,7 @@ import { useParams, useRouter } from 'next/navigation';
 import DashboardAuthWrapper from "@/components/auth/DashboardAuthWrapper";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { CheckCircle, Circle, PlayCircle, Type } from 'lucide-react';
+import { CheckCircle, Circle, PlayCircle, Type, FileQuestion, PencilRuler } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { BackButton } from '@/components/shared/BackButton';
 import type { CreateCourseOutput, CourseLesson } from '@/types/ai-schemas';
@@ -14,7 +14,17 @@ import Image from 'next/image';
 
 
 const LessonItem = ({ lesson, isCompleted, onLessonClick }: { lesson: CourseLesson, isCompleted: boolean, onLessonClick: () => void }) => {
-    const LessonIcon = lesson.type === 'lecture' ? Type : PlayCircle;
+    const getLessonIcon = () => {
+        switch(lesson.type) {
+            case 'lecture': return Type;
+            case 'quiz': return FileQuestion;
+            case 'assignment': return PencilRuler;
+            case 'video':
+            default:
+                return PlayCircle;
+        }
+    }
+    const LessonIcon = getLessonIcon();
     const CompletionIcon = isCompleted ? CheckCircle : Circle;
     
     return (
@@ -114,7 +124,7 @@ export default function CourseViewPage() {
                         <CardTitle>Course Overview</CardTitle>
                     </CardHeader>
                     <CardContent className="prose prose-sm max-w-none dark:prose-invert">
-                        {course.overview.split('\n').map((paragraph, index) => (
+                        {course.overview.split('\n\n').map((paragraph, index) => (
                             <p key={index}>{paragraph}</p>
                         ))}
                     </CardContent>
