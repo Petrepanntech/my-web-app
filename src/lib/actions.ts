@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -21,6 +22,10 @@ import {
 import {
     createCourse as createCourseFlow,
 } from '@/ai/flows/create-course-flow';
+import {
+  aiTutor as aiTutorFlow,
+  type AITutorInput,
+} from '@/ai/flows/ai-tutor-flow';
 
 export async function personalizedLearningPath(
   input: PersonalizedLearningPathInput
@@ -38,4 +43,8 @@ export async function generateMOU(input: GenerateMOUInput) {
 
 export async function createCourse(input: PersonalizedLearningPathOutput) {
     return await createCourseFlow(input);
+}
+
+export async function aiTutor(input: AITutorInput) {
+    return await aiTutorFlow(input);
 }

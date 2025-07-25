@@ -40,13 +40,23 @@ export default function CourseViewPage() {
             const parsedCourse: CreateCourseOutput = JSON.parse(storedCourse);
             if (parsedCourse.id === id) {
                 setCourse(parsedCourse);
+                // Set the overview as the initial selected content
+                const initialContent: CourseLesson = {
+                    type: 'lecture',
+                    title: 'Course Overview',
+                    description: parsedCourse.overview,
+                };
+                setSelectedContent(initialContent);
             }
         }
     }, [id]);
 
     const handleLessonClick = (lesson: CourseLesson) => {
         setSelectedContent(lesson);
-        setCompletedLessons(prev => new Set(prev).add(lesson.title));
+        // Only mark actual lessons as completed, not the overview
+        if(lesson.title !== 'Course Overview') {
+            setCompletedLessons(prev => new Set(prev).add(lesson.title));
+        }
     }
 
     const totalLessons = useMemo(() => {
@@ -57,16 +67,20 @@ export default function CourseViewPage() {
 
     const getYouTubeEmbedUrl = (url: string) => {
         if (!url) return null;
+        let videoId = null;
         try {
             const urlObj = new URL(url);
-            let videoId = urlObj.searchParams.get('v');
-            if (urlObj.hostname === 'youtu.be') {
+            if (urlObj.hostname === 'www.youtube.com' || urlObj.hostname === 'youtube.com') {
+                videoId = urlObj.searchParams.get('v');
+            } else if (urlObj.hostname === 'youtu.be') {
                 videoId = urlObj.pathname.slice(1);
             }
             return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
         } catch (error) {
             console.error("Invalid YouTube URL:", url);
-            return null;
+            const match = url.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+            videoId = match && match[1];
+            return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
         }
     };
 
@@ -103,17 +117,24 @@ export default function CourseViewPage() {
                                 data-ai-hint={course.aiHint}
                             />
                         )}
-                        {selectedContent?.type === 'video' && selectedContent.url && (
+                        {selectedContent?.type === 'video' && selectedContent.url && getYouTubeEmbedUrl(selectedContent.url) && (
                              <iframe 
                                  key={selectedContent.title}
                                  width="100%" 
                                  height="100%" 
-                                 src={getYouTubeEmbedUrl(selectedContent.url) || ''}
+                                 src={getYouTubeEmbedUrl(selectedContent.url)!}
                                  title="YouTube video player" 
                                  frameBorder="0" 
                                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                                  allowFullScreen
                              ></iframe>
+                        )}
+                        {selectedContent?.type === 'video' && selectedContent.url && !getYouTubeEmbedUrl(selectedContent.url) && (
+                            <div className="p-6 h-full w-full bg-background overflow-y-auto text-center flex flex-col justify-center items-center">
+                                <h2 className="text-2xl font-bold mb-4">Video Unavailable</h2>
+                                <p className="text-muted-foreground">This video could not be embedded. The URL may be invalid or private.</p>
+                                <p className="text-muted-foreground text-sm mt-2">URL: {selectedContent.url}</p>
+                           </div>
                         )}
                          {selectedContent?.type === 'lecture' && (
                              <div className="p-6 h-full w-full bg-background overflow-y-auto">
