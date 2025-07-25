@@ -7,6 +7,9 @@ import { usePathname } from "next/navigation";
 import {
   Sheet,
   SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
 import AIBuddyPage from "@/app/student/ai-buddy/page";
@@ -29,6 +32,12 @@ export function FloatingChatButton({ href }: { href: string }) {
                 </Button>
             </SheetTrigger>
             <SheetContent className="w-full sm:w-3/4 lg:w-1/2 xl:w-1/3 p-0 border-none">
+                <SheetHeader className="sr-only">
+                  <SheetTitle>AI Buddy</SheetTitle>
+                  <SheetDescription>
+                    A chat interface with your personal AI assistant. You can ask questions and get help with your learning.
+                  </SheetDescription>
+                </SheetHeader>
                 <AIBuddyPage />
             </SheetContent>
         </Sheet>
