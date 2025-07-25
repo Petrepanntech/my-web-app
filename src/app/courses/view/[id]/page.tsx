@@ -1,16 +1,40 @@
 
 "use client"
 import { useParams } from 'next/navigation';
-import { allCourses } from '@/lib/courses-data';
 import Image from 'next/image';
 import DashboardAuthWrapper from "@/components/auth/DashboardAuthWrapper";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { CheckCircle, Circle, PlayCircle, Type } from 'lucide-react';
+import { Circle, PlayCircle, Type } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { BackButton } from '@/components/shared/BackButton';
-import type { CreateCourseOutput } from '@/types/ai-schemas';
+import type { CreateCourseOutput, CourseLesson } from '@/types/ai-schemas';
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
+
+const LessonItem = ({ lesson }: { lesson: CourseLesson }) => {
+    const LessonIcon = lesson.type === 'lecture' ? Type : PlayCircle;
+    
+    const content = (
+        <div className="flex items-center gap-3 text-muted-foreground hover:text-foreground cursor-pointer">
+            <Circle className="h-5 w-5 text-muted-foreground" />
+            <LessonIcon className="h-5 w-5" />
+            <span className="flex-1">{lesson.title}</span>
+        </div>
+    );
+
+    if (lesson.type === 'video' && lesson.url) {
+        return (
+            <a href={lesson.url} target="_blank" rel="noopener noreferrer">
+                {content}
+            </a>
+        );
+    }
+    
+    // For 'lecture' or other types, just render a non-interactive list item for now
+    return <div className="cursor-pointer">{content}</div>;
+};
+
 
 export default function CourseViewPage() {
     const params = useParams();
@@ -87,15 +111,11 @@ export default function CourseViewPage() {
                                     </AccordionTrigger>
                                     <AccordionContent>
                                         <ul className="space-y-3 pl-8">
-                                            {module.lessons.map(lesson => {
-                                                const LessonIcon = lesson.type === 'lecture' ? Type : PlayCircle;
-                                                return (
-                                                <li key={lesson.title} className="flex items-center gap-3 text-muted-foreground hover:text-foreground cursor-pointer">
-                                                    <Circle className="h-5 w-5 text-muted-foreground" />
-                                                    <LessonIcon className="h-5 w-5" />
-                                                    <span className="flex-1">{lesson.title}</span>
+                                            {module.lessons.map(lesson => (
+                                                <li key={lesson.title}>
+                                                    <LessonItem lesson={lesson} />
                                                 </li>
-                                            )})}
+                                            ))}
                                         </ul>
                                     </AccordionContent>
                                 </AccordionItem>
