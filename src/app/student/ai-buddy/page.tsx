@@ -21,7 +21,7 @@ type Message = {
 
 export default function AIBuddyPage() {
     const [messages, setMessages] = useState<Message[]>([
-        { role: 'model', text: 'Hello! I am your AI Buddy. How can I help you today? You can ask me questions, or upload an image for analysis.' }
+        { role: 'model', text: "Hello! I am P.L.I.H (Petrepann's Little Helper). How can I assist you today? You can ask me questions or upload an image for analysis." }
     ]);
     const [currentMessage, setCurrentMessage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -75,7 +75,7 @@ export default function AIBuddyPage() {
             toast({
                 variant: 'destructive',
                 title: 'Error',
-                description: 'The AI Buddy is currently unavailable. Please try again later.',
+                description: 'The AI assistant is currently unavailable. Please try again later.',
             });
             setMessages(messages);
         } finally {
@@ -88,11 +88,11 @@ export default function AIBuddyPage() {
             <div className="h-[calc(100vh-4rem)] flex flex-col">
                 <div className="p-4 border-b flex items-center gap-4">
                     <Avatar>
-                        <AvatarFallback>AI</AvatarFallback>
+                        <AvatarFallback>PLIH</AvatarFallback>
                     </Avatar>
                     <div>
-                        <p className="font-semibold">AI Buddy</p>
-                        <p className="text-sm text-muted-foreground">Your Personal Assistant</p>
+                        <p className="font-semibold">P.L.I.H</p>
+                        <p className="text-sm text-muted-foreground">Petrepann's Little Helper</p>
                     </div>
                 </div>
                 <ScrollArea className="flex-1 p-6">
@@ -101,7 +101,7 @@ export default function AIBuddyPage() {
                             <div key={index} className={cn("flex items-start gap-2", msg.role === 'user' ? 'justify-end' : '')}>
                                 {msg.role === 'model' && (
                                     <Avatar className="h-8 w-8">
-                                        <AvatarFallback>AI</AvatarFallback>
+                                        <AvatarFallback>PLIH</AvatarFallback>
                                     </Avatar>
                                 )}
                                 <div className={cn("rounded-lg p-3 max-w-xs lg:max-w-md", msg.role === 'user' ? 'bg-primary text-primary-foreground' : 'bg-muted')}>
@@ -113,7 +113,7 @@ export default function AIBuddyPage() {
                         {isLoading && (
                             <div className="flex items-start gap-2">
                                 <Avatar className="h-8 w-8">
-                                    <AvatarFallback>AI</AvatarFallback>
+                                    <AvatarFallback>PLIH</AvatarFallback>
                                 </Avatar>
                                 <div className="rounded-lg p-3 max-w-xs lg:max-w-md bg-muted flex items-center">
                                     <Loader2 className="h-5 w-5 animate-spin" />
@@ -133,7 +133,7 @@ export default function AIBuddyPage() {
                             </div>
                         )}
                         <Input
-                            placeholder="Message your AI Buddy..."
+                            placeholder="Message P.L.I.H..."
                             className="pr-20"
                             value={currentMessage}
                             onChange={(e) => setCurrentMessage(e.target.value)}

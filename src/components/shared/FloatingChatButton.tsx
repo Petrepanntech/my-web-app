@@ -32,10 +32,10 @@ export function FloatingChatButton({ href }: { href: string }) {
                 </Button>
             </SheetTrigger>
             <SheetContent className="w-full sm:w-3/4 lg:w-1/2 xl:w-1/3 p-0 border-none">
-                <SheetHeader className="sr-only">
-                  <SheetTitle>AI Buddy</SheetTitle>
+                <SheetHeader>
+                  <SheetTitle>P.L.I.H</SheetTitle>
                   <SheetDescription>
-                    A chat interface with your personal AI assistant. You can ask questions and get help with your learning.
+                    Chat with P.L.I.H (Petrepann's Little Helper), your personal AI assistant. You can ask questions and get help with your learning.
                   </SheetDescription>
                 </SheetHeader>
                 <AIBuddyPage />

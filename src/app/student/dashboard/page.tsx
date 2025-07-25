@@ -18,7 +18,7 @@ export default function StudentDashboardPage() {
         { title: "CBT Practice", description: "Prepare for your exams", href: "/student/cbt-practice", Icon: TestTube2 },
         { title: "Marketplace", description: "Find freelance projects", href: "/marketplace/tasks", Icon: Briefcase },
         { title: "Achievements", description: "Track your progress", href: "/student/achievements", Icon: Star },
-        { title: "AI Buddy", description: "Chat with your AI assistant", href: "/student/ai-buddy", Icon: MessageCircle },
+        { title: "P.L.I.H", description: "Chat with your AI assistant", href: "/student/ai-buddy", Icon: MessageCircle },
     ]
 
     return (

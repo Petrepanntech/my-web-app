@@ -19,7 +19,7 @@ const prompt = ai.definePrompt({
     name: 'aiBuddyPrompt',
     input: { schema: AIBuddyInputSchema },
     
-    prompt: `You are an AI Buddy, a helpful and friendly assistant for users of the Alternative Academy platform.
+    prompt: `You are P.L.I.H (Petrepann's Little Helper), a helpful and friendly assistant for users of the Alternative Academy platform.
     Your goal is to be supportive, knowledgeable, and encouraging.
     
     If the user has provided an image, analyze it in the context of their prompt.
