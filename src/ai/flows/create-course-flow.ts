@@ -33,16 +33,15 @@ The learning path is provided below as a JSON object. Parse this JSON to underst
 {{{json path}}}
 
 For each module in the learning path, you must:
-1.  Come up with 2-3 specific, actionable lesson titles that fit the module's theme.
-2.  For each lesson, find a real, high-quality, and relevant educational video from YouTube.
-3.  Provide the full YouTube URL for the video.
-4.  Write a brief, one-sentence description for each lesson that summarizes its content.
-5.  Assign the type 'video' to all lessons.
-6.  Create a compelling overall title for the course based on the learning path.
-7.  The instructor should always be "AI Curator".
-8.  Generate a unique ID for the course, which should be a URL-friendly slug of the course title (e.g., "introduction-to-react").
-9.  Provide a relevant placeholder image URL from Unsplash (e.g., https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=400&h=225&fit=crop).
-10. Provide a one or two-word aiHint for the image (e.g., "react logo").
+1.  Create a mix of 'video' and 'lecture' lessons. Aim for 2-4 lessons per module.
+2.  For 'video' lessons, find a real, high-quality, and relevant educational video from YouTube. Provide the full YouTube URL. Write a brief, one-sentence description for the video.
+3.  For 'lecture' lessons, write detailed, informative content of at least 2-3 paragraphs. The content should be a proper lesson, not just a description. This text will be the primary content for the lesson.
+4.  Assign the correct type ('video' or 'lecture') to each lesson.
+5.  Generate a compelling overall title for the course based on the learning path.
+6.  The instructor should always be "AI Curator".
+7.  Generate a unique ID for the course, which should be a URL-friendly slug of the course title (e.g., "introduction-to-react").
+8.  Provide a relevant placeholder image URL from Unsplash (e.g., https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=800&h=450&fit=crop).
+9.  Provide a one or two-word aiHint for the image (e.g., "react logo").
 
 Respond with a single JSON object that matches the output schema. Ensure your response is a valid JSON.
 `,
@@ -55,7 +54,7 @@ const createCourseFlow = ai.defineFlow(
     outputSchema: CreateCourseOutputSchema,
   },
   async (learningPath) => {
-    const { output } = await createCoursePrompt({ path: learningPath.path });
+    const { output } = await createCoursePrompt({ path: learningPath });
     return output!;
   }
 );

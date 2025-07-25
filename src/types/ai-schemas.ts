@@ -18,10 +18,10 @@ export type PersonalizedLearningPathOutput = z.infer<typeof PersonalizedLearning
 
 // Schema for Create Course
 export const CourseLessonSchema = z.object({
-    type: z.enum(['video', 'lecture']),
+    type: z.enum(['video', 'lecture']).describe("The type of the lesson."),
     title: z.string().describe("The title of the lesson."),
-    url: z.string().optional().describe("The URL of the YouTube video, if applicable."),
-    description: z.string().describe("A short description of the lesson or video."),
+    url: z.string().optional().describe("The URL of the YouTube video, required if type is 'video'."),
+    description: z.string().describe("For 'video', a short description. For 'lecture', the full text content of the lesson (at least 2-3 paragraphs)."),
 });
 export type CourseLesson = z.infer<typeof CourseLessonSchema>;
 
