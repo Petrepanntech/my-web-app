@@ -10,6 +10,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   login: (role: Role) => void;
   logout: () => void;
+  updateUser: (data: Partial<User>) => void;
   showAuthModal: boolean;
   setShowAuthModal: (show: boolean) => void;
   selectedRole: Role;
@@ -56,6 +57,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     router.push("/");
   };
   
+  const updateUser = (data: Partial<User>) => {
+    if (user) {
+        const updatedUser = { ...user, ...data };
+        setUser(updatedUser);
+        sessionStorage.setItem("user", JSON.stringify(updatedUser));
+    }
+  }
+
   // This is a mock function, so we don't need a real loading state
   if (loading) {
     return null; 
@@ -68,6 +77,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         isAuthenticated: !!user,
         login,
         logout,
+        updateUser,
         showAuthModal,
         setShowAuthModal,
         selectedRole,
