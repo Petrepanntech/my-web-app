@@ -22,11 +22,11 @@ const studentNavItems = [
   { href: "/student/cbt-practice", label: "CBT", icon: TestTube2 },
 ];
 
-const instructorNavItems = [
-    { href: "/instructor/dashboard", label: "Home", icon: LayoutDashboard },
-    { href: "/instructor/courses", label: "Courses", icon: BookOpen },
-    { href: "/instructor/students", label: "Students", icon: Users },
-    { href: "/instructor/earnings", label: "Earnings", icon: UserCircle },
+const mentorNavItems = [
+    { href: "/mentor/dashboard", label: "Home", icon: LayoutDashboard },
+    { href: "/mentor/courses", label: "Courses", icon: BookOpen },
+    { href: "/mentor/students", label: "Students", icon: Users },
+    { href: "/mentor/earnings", label: "Earnings", icon: UserCircle },
 ];
 
 const businessNavItems = [
@@ -47,7 +47,7 @@ const adminNavItems = [
 const navItemsByRole: Record<Role | 'public', typeof baseNavItems> = {
     public: baseNavItems,
     student: studentNavItems,
-    instructor: instructorNavItems,
+    mentor: mentorNavItems,
     business: businessNavItems,
     admin: adminNavItems,
     null: baseNavItems,
