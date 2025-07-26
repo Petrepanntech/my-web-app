@@ -37,7 +37,7 @@ export const allDashboardNavItems: NavGroup[] = [
             { href: '/admin/dashboard', label: 'Dashboard', roles: ['admin'] },
             { href: '/admin/course-management', label: 'Course Management', roles: ['admin'] },
             { href: '/admin/user-management', label: 'User Management', roles: ['admin'] },
-            { href: '/admin/instructor-marketplace', label: 'Mentor Marketplace', roles: ['admin'] },
+            { href: '/admin/mentor-marketplace', label: 'Mentor Marketplace', roles: ['admin'] },
             { href: '/admin/marketplace-admin', label: 'Marketplace Admin', roles: ['admin'] },
             { href: '/admin/analytics', label: 'Analytics', roles: ['admin'] },
             { href: '/admin/referrals', label: 'Referrals', roles: ['admin'] },
