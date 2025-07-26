@@ -25,7 +25,7 @@ const recentActivity = [
 export default function Page() {
     const { user } = useAuth();
     return (
-        <DashboardAuthWrapper requiredRole="instructor">
+        <DashboardAuthWrapper requiredRole="mentor">
             <div className="container p-4 sm:p-6 lg:p-8">
                 <div className="mb-12">
                     <h1 className="text-4xl font-extrabold tracking-tight">Welcome, Mentor {user?.name?.split(' ')[0]}!</h1>
@@ -115,7 +115,7 @@ export default function Page() {
                                         <p className="text-sm text-muted-foreground">{course.isDraft ? 'Draft' : `${course.students} students`}</p>
                                     </div>
                                     <Button asChild variant="secondary" size="icon">
-                                        <Link href="/instructor/courses"><ArrowRight/></Link>
+                                        <Link href="/mentor/courses"><ArrowRight/></Link>
                                     </Button>
                                 </div>
                             ))}
@@ -123,7 +123,7 @@ export default function Page() {
                     </Card>
                 </div>
             </div>
-            <FloatingChatButton href="/instructor/chat" />
+            <FloatingChatButton />
         </DashboardAuthWrapper>
     );
 }

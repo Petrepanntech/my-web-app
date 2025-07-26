@@ -19,7 +19,7 @@ const students = [
 
 export default function Page() {
     return (
-        <DashboardAuthWrapper requiredRole="instructor">
+        <DashboardAuthWrapper requiredRole="mentor">
             <div className="container p-4 sm:p-6 lg:p-8">
                  <div className="mb-12">
                     <h1 className="text-4xl font-extrabold tracking-tight">My Mentees</h1>

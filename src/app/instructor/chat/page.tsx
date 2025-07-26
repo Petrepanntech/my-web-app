@@ -3,7 +3,7 @@ import { ChatInterface } from "@/components/shared/ChatInterface";
 
 export default function Page() {
     return (
-        <DashboardAuthWrapper requiredRole="instructor">
+        <DashboardAuthWrapper requiredRole="mentor">
             <ChatInterface />
         </DashboardAuthWrapper>
     );

@@ -37,7 +37,7 @@ const statusVariant: { [key: string]: "default" | "secondary" | "outline" | "des
 
 export default function Page() {
     return (
-        <DashboardAuthWrapper requiredRole="instructor">
+        <DashboardAuthWrapper requiredRole="mentor">
             <div className="container p-4 sm:p-6 lg:p-8">
                  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-12">
                     <div className="text-center md:text-left">
@@ -48,7 +48,7 @@ export default function Page() {
                     </div>
                     <div className="text-center md:text-left shrink-0">
                          <Button asChild>
-                            <Link href="/instructor/courses/new">
+                            <Link href="/mentor/courses/new">
                                 <PlusCircle className="mr-2 h-4 w-4" />
                                 Create New Course
                             </Link>
@@ -82,7 +82,7 @@ export default function Page() {
                                     Edit
                                 </Button>
                                  <Button asChild variant="secondary">
-                                    <Link href={`/instructor/analytics?course=${course.title}`}>
+                                    <Link href={`/mentor/analytics?course=${course.title}`}>
                                         Analytics <ArrowRight className="ml-2 h-4 w-4" />
                                     </Link>
                                 </Button>
@@ -94,4 +94,3 @@ export default function Page() {
         </DashboardAuthWrapper>
     );
 }
-
