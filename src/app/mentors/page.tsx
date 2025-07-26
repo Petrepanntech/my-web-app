@@ -3,7 +3,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
-const featuredInstructors = [
+const featuredMentors = [
   {
     name: "Dr. Evelyn Reed",
     title: "Lead Data Scientist",
@@ -48,24 +48,24 @@ export default function MentorsPage() {
         </div>
         
         <div className="grid gap-8 md:grid-cols-2">
-            {featuredInstructors.map(instructor => (
-                <Card key={instructor.name}>
+            {featuredMentors.map(mentor => (
+                <Card key={mentor.name}>
                     <CardHeader>
                        <div className="flex items-start gap-6">
                             <Avatar className="h-24 w-24">
-                                <AvatarImage src={instructor.avatar} alt={instructor.name} />
-                                <AvatarFallback>{instructor.name.split(" ").map(n => n[0]).join("")}</AvatarFallback>
+                                <AvatarImage src={mentor.avatar} alt={mentor.name} />
+                                <AvatarFallback>{mentor.name.split(" ").map(n => n[0]).join("")}</AvatarFallback>
                             </Avatar>
                             <div>
-                                <CardTitle>{instructor.name}</CardTitle>
-                                <CardDescription className="mt-1">{instructor.title}</CardDescription>
+                                <CardTitle>{mentor.name}</CardTitle>
+                                <CardDescription className="mt-1">{mentor.title}</CardDescription>
                             </div>
                        </div>
                     </CardHeader>
                     <CardContent>
-                        <p className="text-sm text-muted-foreground mb-4">{instructor.bio}</p>
+                        <p className="text-sm text-muted-foreground mb-4">{mentor.bio}</p>
                         <div className="flex flex-wrap gap-2">
-                            {instructor.specialties.map(spec => <Badge key={spec} variant="secondary">{spec}</Badge>)}
+                            {mentor.specialties.map(spec => <Badge key={spec} variant="secondary">{spec}</Badge>)}
                         </div>
                     </CardContent>
                 </Card>

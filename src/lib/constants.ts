@@ -3,7 +3,7 @@ import type { NavItem, NavGroup } from '@/types';
 
 export const publicNavItems: NavItem[] = [
   { href: '/courses', label: 'Courses', roles: null },
-  { href: '/instructors', label: 'Mentors', roles: null },
+  { href: '/mentors', label: 'Mentors', roles: null },
   { href: '/marketplace/tasks', label: 'Jobs', roles: null },
   { href: '/community', label: 'Community', roles: null },
   { href: '/about', label: 'About', roles: null },
@@ -24,11 +24,11 @@ export const allDashboardNavItems: NavGroup[] = [
     {
         label: 'Mentor',
         items: [
-            { href: '/instructor/dashboard', label: 'Dashboard', roles: ['mentor'] },
-            { href: '/instructor/courses', label: 'My Courses', roles: ['mentor'] },
-            { href: '/instructor/students', label: 'My Students', roles: ['mentor'] },
-            { href: '/instructor/earnings', label: 'Earnings', roles: ['mentor'] },
-            { href: '/instructor/analytics', label: 'Analytics', roles: ['mentor'] },
+            { href: '/mentor/dashboard', label: 'Dashboard', roles: ['mentor'] },
+            { href: '/mentor/courses', label: 'My Courses', roles: ['mentor'] },
+            { href: '/mentor/students', label: 'My Students', roles: ['mentor'] },
+            { href: '/mentor/earnings', label: 'Earnings', roles: ['mentor'] },
+            { href: '/mentor/analytics', label: 'Analytics', roles: ['mentor'] },
         ]
     },
     {
