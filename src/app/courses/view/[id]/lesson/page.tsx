@@ -3,11 +3,74 @@
 import { useParams, useSearchParams, useRouter } from 'next/navigation';
 import DashboardAuthWrapper from "@/components/auth/DashboardAuthWrapper";
 import { BackButton } from '@/components/shared/BackButton';
-import type { CreateCourseOutput, CourseLesson } from '@/types/ai-schemas';
+import type { CreateCourseOutput, CourseLesson, PopQuizQuestion } from '@/types/ai-schemas';
 import { useEffect, useState } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
-import { FileQuestion, PencilRuler } from 'lucide-react';
+import { FileQuestion, PencilRuler, CheckCircle, XCircle } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Label } from '@/components/ui/label';
+import { cn } from '@/lib/utils';
+
+
+const QuizComponent = ({ quiz }: { quiz: PopQuizQuestion[] }) => {
+    const [selectedAnswers, setSelectedAnswers] = useState<Record<number, string>>({});
+    const [submitted, setSubmitted] = useState(false);
+
+    const handleAnswerSelect = (questionIndex: number, answer: string) => {
+        setSelectedAnswers(prev => ({ ...prev, [questionIndex]: answer }));
+    };
+
+    const handleSubmit = () => {
+        setSubmitted(true);
+    };
+
+    return (
+        <Card className="mt-8">
+            <CardHeader>
+                <CardTitle>Pop Quiz!</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+                {quiz.map((q, index) => {
+                    const userAnswer = selectedAnswers[index];
+                    const isCorrect = userAnswer === q.answer;
+
+                    return (
+                        <div key={index}>
+                            <p className="font-semibold mb-2">{index + 1}. {q.question}</p>
+                            <RadioGroup
+                                value={userAnswer}
+                                onValueChange={(value) => handleAnswerSelect(index, value)}
+                                disabled={submitted}
+                                className="space-y-2"
+                            >
+                                {q.options.map(option => (
+                                    <Label key={option} className={cn(
+                                        "flex items-center gap-3 p-3 border rounded-md cursor-pointer has-[:checked]:border-primary",
+                                        submitted && option === q.answer && "border-green-500 bg-green-500/10",
+                                        submitted && userAnswer === option && !isCorrect && "border-red-500 bg-red-500/10"
+                                    )}>
+                                        <RadioGroupItem value={option} />
+                                        <span>{option}</span>
+                                        {submitted && option === q.answer && <CheckCircle className="ml-auto h-5 w-5 text-green-500" />}
+                                        {submitted && userAnswer === option && !isCorrect && <XCircle className="ml-auto h-5 w-5 text-red-500" />}
+                                    </Label>
+                                ))}
+                            </RadioGroup>
+                        </div>
+                    );
+                })}
+                {!submitted && <Button onClick={handleSubmit}>Submit Quiz</Button>}
+                 {submitted && (
+                    <div className="text-center font-bold">
+                        You scored {quiz.filter((q, i) => selectedAnswers[i] === q.answer).length} out of {quiz.length}!
+                    </div>
+                )}
+            </CardContent>
+        </Card>
+    )
+}
 
 export default function LessonPage() {
     const params = useParams();
@@ -113,11 +176,11 @@ export default function LessonPage() {
                 </header>
                 <main className="flex-1 overflow-y-auto">
                     {lesson.type === 'video' && lesson.url && getYouTubeEmbedUrl(lesson.url) && (
-                         <div className="w-full max-w-4xl mx-auto">
-                            <div className="aspect-video mt-4">
+                         <div className="w-full max-w-4xl mx-auto py-8 px-4">
+                            <div className="aspect-video">
                                 <iframe 
                                     key={lesson.title}
-                                    className="w-full h-full"
+                                    className="w-full h-full rounded-lg"
                                     src={getYouTubeEmbedUrl(lesson.url)!}
                                     title="YouTube video player" 
                                     frameBorder="0" 
@@ -131,6 +194,10 @@ export default function LessonPage() {
                                     <div className="prose max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: lesson.notes.replace(/\n/g, '<br />') }}></div>
                                 </div>
                             )}
+                            {lesson.popQuiz && lesson.popQuiz.length > 0 && <QuizComponent quiz={lesson.popQuiz} />}
+                            <div className="text-center mt-12">
+                                <Button size="lg" onClick={handleMarkAsComplete}>Mark as Complete and Continue</Button>
+                            </div>
                          </div>
                     )}
                     {lesson.type === 'video' && lesson.url && !getYouTubeEmbedUrl(lesson.url) && (
@@ -153,5 +220,3 @@ export default function LessonPage() {
         </DashboardAuthWrapper>
     )
 }
-
-    

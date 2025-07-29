@@ -59,7 +59,8 @@ For each module in the learning path, you must:
 2.  For 'video' lessons:
     a. Find a real, high-quality, legitimate, and currently active educational video from YouTube. Provide the full, correct YouTube URL.
     b. Write a brief, one-sentence description for the video.
-    c. IMPORTANT: Generate a highly detailed, refined, and well-structured summary of the video's content and add it to the 'notes' field. Use bullet points or numbered lists to break down key concepts, definitions, and examples. This should be comprehensive enough to serve as a detailed study guide.
+    c. IMPORTANT: Generate a highly detailed, refined, and well-structured summary of the video's content and add it to the 'notes' field. This must be significantly more detailed than a simple list. Use multiple paragraphs, bullet points, numbered lists, and bold text to break down key concepts, definitions, and examples. This should be comprehensive enough to serve as a detailed study guide.
+    d. IMPORTANT: Create a 'popQuiz' array containing 5 multiple-choice questions based on the video content. Each question object must have a 'question' string, an 'options' array of 4 strings, and an 'answer' string that is one of the options.
 3.  For 'lecture' lessons, write detailed, informative content of at least 3-5 paragraphs. This text will be the primary content for the lesson and should be thorough enough to be a standalone piece of learning material.
 4.  For 'quiz' lessons, create a short, multiple-choice quiz with 3-5 questions to test the concepts from the preceding lessons. The description field should contain the quiz questions and options.
 5.  Strategically place one 'assignment' lesson at the end of each module. This should be a practical, hands-on task that requires the student to apply what they've learned in the module. The description should clearly outline the assignment requirements.

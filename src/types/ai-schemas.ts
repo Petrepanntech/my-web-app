@@ -18,12 +18,20 @@ export type PersonalizedLearningPathOutput = z.infer<typeof PersonalizedLearning
 
 
 // Schema for Create Course
+export const PopQuizQuestionSchema = z.object({
+    question: z.string().describe("The question text."),
+    options: z.array(z.string()).length(4).describe("An array of 4 possible answers."),
+    answer: z.string().describe("The correct answer, which must be one of the strings in the options array."),
+});
+export type PopQuizQuestion = z.infer<typeof PopQuizQuestionSchema>;
+
 export const CourseLessonSchema = z.object({
     type: z.enum(['video', 'lecture', 'quiz', 'assignment']).describe("The type of the lesson."),
     title: z.string().describe("The title of the lesson."),
     url: z.string().optional().describe("The URL of the YouTube video, required if type is 'video'."),
     description: z.string().describe("For 'video', a short description. For 'lecture', the full text content of the lesson (at least 3-5 paragraphs). For 'quiz' or 'assignment', a description of the task."),
-    notes: z.string().optional().describe("For 'video', a detailed, well-structured summary or bulleted list of key takeaways from the video content."),
+    notes: z.string().optional().describe("For 'video', a highly detailed, well-structured summary of the video content. Use multiple paragraphs, bullet points, and bold text for clarity."),
+    popQuiz: z.array(PopQuizQuestionSchema).optional().describe("For 'video' lessons, a pop quiz with 5 multiple-choice questions based on the video."),
 });
 export type CourseLesson = z.infer<typeof CourseLessonSchema>;
 
