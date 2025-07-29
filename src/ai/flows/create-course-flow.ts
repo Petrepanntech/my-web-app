@@ -14,7 +14,20 @@ import {
   type CreateCourseOutput,
   type PersonalizedLearningPathOutput
 } from '@/types/ai-schemas';
+import { z } from 'zod';
 
+
+const searchTool = ai.defineTool(
+    {
+      name: 'search',
+      description: 'A tool for searching the web for a given query',
+      input: { schema: z.string() },
+      output: { schema: z.string() },
+    },
+    async (query) => {
+      //
+    }
+  );
 
 export async function createCourse(
   input: PersonalizedLearningPathOutput
@@ -52,6 +65,8 @@ For each module in the learning path, you must:
 5.  Strategically place one 'assignment' lesson at the end of each module. This should be a practical, hands-on task that requires the student to apply what they've learned in the module. The description should clearly outline the assignment requirements.
 6.  Ensure the lessons within each module build upon each other logically.
 7.  Assign the correct type ('video', 'lecture', 'quiz', or 'assignment') to each lesson.
+
+You have a tool called 'search' that can be used to find relevant YouTube videos. To use it, provide a search query. For example: "search('best beginner tutorial for react native')".
 
 Respond with a single JSON object that matches the output schema. Ensure your response is a valid JSON.
 `,

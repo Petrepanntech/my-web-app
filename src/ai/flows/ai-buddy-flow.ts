@@ -11,10 +11,6 @@ import { AIBuddyInputSchema } from '@/types/ai-schemas';
 import type { AIBuddyInput } from '@/types/ai-schemas';
 import { z } from 'zod';
 
-export async function aiBuddy(input: AIBuddyInput): Promise<string> {
-    return aiBuddyFlow(input);
-}
-
 const prompt = ai.definePrompt({
     name: 'aiBuddyPrompt',
     input: { schema: AIBuddyInputSchema },
@@ -34,14 +30,16 @@ const prompt = ai.definePrompt({
     `,
 });
 
-const aiBuddyFlow = ai.defineFlow(
+export const aiBuddyFlow = ai.defineFlow(
     {
         name: 'aiBuddyFlow',
         inputSchema: AIBuddyInputSchema,
         outputSchema: z.string(),
     },
-    async (input) => {
+    async (input: AIBuddyInput): Promise<string> => {
         const { text } = await prompt(input);
         return text;
     }
 );
+
+export const aiBuddy = aiBuddyFlow;

@@ -4,17 +4,11 @@
 /**
  * @fileOverview This file defines a Genkit flow for generating personalized learning paths.
  *
- * - personalizedLearningPath - A function that generates a personalized learning path based on user interests and goals.
+ * - personalizedLearningPathFlow - A function that generates a personalized learning path based on user interests and goals.
  */
 
 import {ai} from '@/ai/genkit';
 import { PersonalizedLearningPathInputSchema, PersonalizedLearningPathOutputSchema, type PersonalizedLearningPathInput, type PersonalizedLearningPathOutput } from '@/types/ai-schemas';
-
-export async function personalizedLearningPath(
-  input: PersonalizedLearningPathInput
-): Promise<PersonalizedLearningPathOutput> {
-  return personalizedLearningPathFlow(input);
-}
 
 const prompt = ai.definePrompt({
   name: 'personalizedLearningPathPrompt',
@@ -33,13 +27,13 @@ Respond with a JSON object containing a "path" array, where each object in the a
 `,
 });
 
-const personalizedLearningPathFlow = ai.defineFlow(
+export const personalizedLearningPathFlow = ai.defineFlow(
   {
     name: 'personalizedLearningPathFlow',
     inputSchema: PersonalizedLearningPathInputSchema,
     outputSchema: PersonalizedLearningPathOutputSchema,
   },
-  async input => {
+  async (input: PersonalizedLearningPathInput): Promise<PersonalizedLearningPathOutput> => {
     const {output} = await prompt(input);
     return output!;
   }

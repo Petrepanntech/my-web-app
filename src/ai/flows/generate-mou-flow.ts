@@ -16,13 +16,6 @@ import {
     type GenerateMOUOutput,
 } from '@/types/ai-schemas';
 
-
-export async function generateMOU(
-  input: GenerateMOUInput
-): Promise<GenerateMOUOutput> {
-  return generateMOUFlow(input);
-}
-
 const prompt = ai.definePrompt({
   name: 'generateMOUbPrompt',
   input: { schema: GenerateMOUInputSchema },
@@ -51,13 +44,13 @@ Format the output as a single string of text for the 'mou' field. Use Markdown f
 `,
 });
 
-const generateMOUFlow = ai.defineFlow(
+export const generateMOUFlow = ai.defineFlow(
   {
     name: 'generateMOUFlow',
     inputSchema: GenerateMOUInputSchema,
     outputSchema: GenerateMOUOutputSchema,
   },
-  async (input) => {
+  async (input:GenerateMOUInput ): Promise<GenerateMOUOutput> => {
     const { output } = await prompt(input);
     return output!;
   }
