@@ -6,17 +6,17 @@
  * This provides a clear boundary between the AI flow definitions and their usage in the application.
  */
 
-import { personalizedLearningPathFlow as personalizedLearningPathFlow } from '@/ai/flows/personalized-learning-path';
+import { personalizedLearningPathFlow } from '@/ai/flows/personalized-learning-path';
 import { moderateText as moderateTextFlow } from '@/ai/flows/moderate-text-flow';
-import { generateMOU as generateMOUFlow } from '@/ai/flows/generate-mou-flow';
+import { generateMOUFlow } from '@/ai/flows/generate-mou-flow';
 import { createCourse as createCourseFlow } from '@/ai/flows/create-course-flow';
-import { aiBuddy as aiBuddyFlow, type AIBuddyInput } from '@/ai/flows/ai-buddy-flow';
-import {
+import { aiBuddy as aiBuddyFlow } from '@/ai/flows/ai-buddy-flow';
+import type {
     PersonalizedLearningPathInput,
     PersonalizedLearningPathOutput,
     ModerateTextInput,
     GenerateMOUInput,
-    AIBuddyInput
+    AIBuddyInput,
 } from '@/types/ai-schemas';
 
 
