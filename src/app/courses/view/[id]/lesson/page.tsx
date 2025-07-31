@@ -7,7 +7,7 @@ import type { CreateCourseOutput, CourseLesson, PopQuizQuestion } from '@/types/
 import { useEffect, useState } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
-import { FileQuestion, PencilRuler, CheckCircle, XCircle, BookOpen, Link as LinkIcon, Lightbulb, HelpCircle } from 'lucide-react';
+import { FileQuestion, PencilRuler, CheckCircle, XCircle, BookOpen, Link as LinkIcon, Lightbulb } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
@@ -59,6 +59,12 @@ const QuizComponent = ({ quiz }: { quiz: PopQuizQuestion[] }) => {
                                     </Label>
                                 ))}
                             </RadioGroup>
+                             {submitted && q.insight && (
+                                <div className="mt-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-md">
+                                    <p className="font-semibold text-sm">Insight</p>
+                                    <p className="text-sm text-muted-foreground">{q.insight}</p>
+                                </div>
+                            )}
                         </div>
                     );
                 })}
@@ -102,14 +108,10 @@ export default function LessonPage() {
     const handleMarkAsComplete = () => {
         if (!lesson) return;
         
-        // Dispatch a custom event to notify the parent page
-        const event = new CustomEvent('lessonCompleted', {
-            detail: {
-                courseId: id,
-                lessonTitle: lesson.title
-            }
-        });
-        window.dispatchEvent(event);
+        const storedProgress = localStorage.getItem(`courseProgress_${id}`);
+        const progress = storedProgress ? new Set<string>(JSON.parse(storedProgress)) : new Set<string>();
+        progress.add(lesson.title);
+        localStorage.setItem(`courseProgress_${id}`, JSON.stringify(Array.from(progress)));
 
         router.back();
     };
@@ -147,7 +149,6 @@ export default function LessonPage() {
                 className="prose max-w-none dark:prose-invert text-left" 
                 dangerouslySetInnerHTML={{ __html: lesson?.primaryActivity?.description?.replace(/\n/g, '<br />') || '' }}
             ></div>
-            <Button onClick={handleMarkAsComplete} className="mt-8">Mark as Complete and Continue</Button>
         </div>
     );
 
@@ -172,12 +173,10 @@ export default function LessonPage() {
     return (
         <DashboardAuthWrapper requiredRole="student">
             <div className="flex flex-col h-screen bg-background">
-                <header className="p-4 border-b flex items-center justify-between z-10 shrink-0">
+                <header className="p-4 border-b flex items-center justify-between bg-background z-10 shrink-0">
                     <BackButton />
                     <h1 className="text-lg font-semibold truncate px-4">{lesson.title}</h1>
-                    <div className="flex items-center gap-2">
-                         <Button variant="outline" onClick={handleMarkAsComplete}>Mark as Complete</Button>
-                    </div>
+                    <div className="w-24"></div>
                 </header>
                 <main className="flex-1 overflow-y-auto">
                     {lesson.primaryActivity.type === 'Video' && embedUrl && (
@@ -241,10 +240,6 @@ export default function LessonPage() {
                             </div>
                            
                             {lesson.popQuiz && lesson.popQuiz.length > 0 && <QuizComponent quiz={lesson.popQuiz} />}
-                            
-                            <div className="text-center mt-12">
-                                <Button size="lg" onClick={handleMarkAsComplete}>Mark as Complete and Continue</Button>
-                            </div>
                          </div>
                     )}
                     {lesson.primaryActivity.type === 'Video' && !embedUrl && (
@@ -262,6 +257,10 @@ export default function LessonPage() {
                     )}
                     {lesson.primaryActivity.type === 'Quiz' && renderAssessment(FileQuestion, 'quiz')}
                     {lesson.primaryActivity.type === 'Assignment' && renderAssessment(PencilRuler, 'assignment')}
+                    
+                    <div className="text-center py-12 px-4">
+                        <Button size="lg" onClick={handleMarkAsComplete}>Mark as Complete and Continue</Button>
+                    </div>
                 </main>
             </div>
         </DashboardAuthWrapper>

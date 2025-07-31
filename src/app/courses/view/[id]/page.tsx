@@ -88,7 +88,6 @@ export default function CourseViewPage() {
     }, [id]);
 
     useEffect(() => {
-        // Load course data
         const storedCourse = localStorage.getItem('newlyCreatedCourse');
         if (storedCourse) {
             const parsedCourse: CreateCourseOutput = JSON.parse(storedCourse);
@@ -98,47 +97,40 @@ export default function CourseViewPage() {
         }
         
         loadProgress();
+        
+        const handleVisibilityChange = () => {
+            if (document.visibilityState === 'visible') {
+                loadProgress();
+            }
+        };
+        
+        window.addEventListener('visibilitychange', handleVisibilityChange);
+        window.addEventListener('focus', loadProgress);
 
-        // Restore scroll position
         const savedScrollPosition = sessionStorage.getItem(`scrollPos_${id}`);
         if (savedScrollPosition && scrollRef.current) {
             scrollRef.current.scrollTop = parseInt(savedScrollPosition, 10);
-            sessionStorage.removeItem(`scrollPos_${id}`); // Clean up
+            sessionStorage.removeItem(`scrollPos_${id}`);
         }
 
+        return () => {
+            window.removeEventListener('visibilitychange', handleVisibilityChange);
+            window.removeEventListener('focus', loadProgress);
+        };
     }, [id, loadProgress]);
-
-    const updateLessonProgress = useCallback((lessonTitle: string) => {
-        setCompletedLessons(prev => {
-            const newProgress = new Set(prev);
-            newProgress.add(lessonTitle);
-            localStorage.setItem(`courseProgress_${id}`, JSON.stringify(Array.from(newProgress)));
-            return newProgress;
-        });
-    }, [id]);
     
     useEffect(() => {
-        const handleLessonCompleted = (event: Event) => {
-            const customEvent = event as CustomEvent;
-            if (customEvent.detail.courseId === id) {
-                updateLessonProgress(customEvent.detail.lessonTitle);
-            }
-        };
-
         const handleModuleCompleted = (event: Event) => {
             const customEvent = event as CustomEvent;
             if (customEvent.detail.courseId === id) {
                 loadProgress();
             }
         }
-
-        window.addEventListener('lessonCompleted', handleLessonCompleted);
         window.addEventListener('moduleCompleted', handleModuleCompleted);
         return () => {
-            window.removeEventListener('lessonCompleted', handleLessonCompleted);
             window.removeEventListener('moduleCompleted', handleModuleCompleted);
         };
-    }, [id, updateLessonProgress, loadProgress]);
+    }, [id, loadProgress]);
     
     const handleLessonClick = (moduleIndex: number, lessonIndex: number) => {
         if (scrollRef.current) {
