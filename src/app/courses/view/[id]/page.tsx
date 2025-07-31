@@ -4,22 +4,25 @@ import { useParams, useRouter } from 'next/navigation';
 import DashboardAuthWrapper from "@/components/auth/DashboardAuthWrapper";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { CheckCircle, Circle, PlayCircle, Type, FileQuestion, PencilRuler } from 'lucide-react';
+import { CheckCircle, Circle, PlayCircle, Type, FileQuestion, PencilRuler, Code, Book, TestTube, Briefcase, Award } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { BackButton } from '@/components/shared/BackButton';
 import type { CreateCourseOutput, CourseLesson } from '@/types/ai-schemas';
 import { useEffect, useState, useMemo, useCallback, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
+import { Button } from '@/components/ui/button';
 
 
 const LessonItem = ({ lesson, isCompleted, onLessonClick }: { lesson: CourseLesson, isCompleted: boolean, onLessonClick: () => void }) => {
     const getLessonIcon = () => {
-        switch(lesson.type) {
-            case 'lecture': return Type;
-            case 'quiz': return FileQuestion;
-            case 'assignment': return PencilRuler;
-            case 'video':
+        switch(lesson.primaryActivity.type) {
+            case 'Reading': return Book;
+            case 'Interactive Exercise': return Code;
+            case 'Code-Along': return Code;
+            case 'Quiz': return FileQuestion;
+            case 'Mini-Project': return Briefcase;
+            case 'Video':
             default:
                 return PlayCircle;
         }
@@ -139,9 +142,21 @@ export default function CourseViewPage() {
                         <CardTitle>Course Overview</CardTitle>
                     </CardHeader>
                     <CardContent className="prose prose-sm max-w-none dark:prose-invert">
-                        {course.overview.split('\n').filter(p => p.trim() !== '').map((paragraph, index) => (
+                        {course.description.split('\n').filter(p => p.trim() !== '').map((paragraph, index) => (
                             <p key={index}>{paragraph}</p>
                         ))}
+                    </CardContent>
+                </Card>
+                <Card className="mb-8">
+                    <CardHeader>
+                        <CardTitle>Learning Objectives</CardTitle>
+                    </CardHeader>
+                     <CardContent>
+                        <ul className="grid md:grid-cols-2 gap-x-8 gap-y-2 list-disc pl-5">
+                            {course.learningObjectives.map((objective, index) => (
+                                <li key={index} className="text-muted-foreground">{objective}</li>
+                            ))}
+                        </ul>
                     </CardContent>
                 </Card>
                  <Card>
@@ -158,8 +173,9 @@ export default function CourseViewPage() {
                             {course.curriculum.map((module, moduleIndex) => (
                                 <AccordionItem key={module.title} value={`item-${moduleIndex}`}>
                                     <AccordionTrigger>
-                                        <div className='flex items-center gap-4 text-left'>
-                                            <span>{module.title}</span>
+                                        <div className='flex flex-col text-left'>
+                                            <span className="font-bold text-lg">{module.title}</span>
+                                            <span className="text-sm text-muted-foreground font-normal">{module.objective}</span>
                                         </div>
                                     </AccordionTrigger>
                                     <AccordionContent>
@@ -180,6 +196,29 @@ export default function CourseViewPage() {
                         </Accordion>
                     </CardContent>
                 </Card>
+
+                {course.capstoneProject && (
+                    <Card className="mt-8">
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2"><Award /> Capstone Project</CardTitle>
+                        </CardHeader>
+                        <CardContent className="prose prose-sm max-w-none dark:prose-invert">
+                            <h3 className="not-prose font-semibold">Goal</h3>
+                            <p>{course.capstoneProject.goal}</p>
+                            <h3 className="not-prose font-semibold">Key Requirements</h3>
+                            <ul>
+                                {course.capstoneProject.requirements.map((req, i) => <li key={i}>{req}</li>)}
+                            </ul>
+                            <h3 className="not-prose font-semibold">Evaluation Criteria</h3>
+                             <ul>
+                                {course.capstoneProject.evaluationCriteria.map((crit, i) => <li key={i}>{crit}</li>)}
+                            </ul>
+                            <div className="text-center mt-6">
+                                <Button>Submit Your Project</Button>
+                            </div>
+                        </CardContent>
+                    </Card>
+                )}
             </div>
         </DashboardAuthWrapper>
     )

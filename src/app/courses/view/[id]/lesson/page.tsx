@@ -7,11 +7,12 @@ import type { CreateCourseOutput, CourseLesson, PopQuizQuestion } from '@/types/
 import { useEffect, useState } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
-import { FileQuestion, PencilRuler, CheckCircle, XCircle } from 'lucide-react';
+import { FileQuestion, PencilRuler, CheckCircle, XCircle, BookOpen, Link as LinkIcon, Lightbulb, HelpCircle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
+import Link from 'next/link';
 
 
 const QuizComponent = ({ quiz }: { quiz: PopQuizQuestion[] }) => {
@@ -130,6 +131,10 @@ export default function LessonPage() {
             return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
         }
     };
+    
+    const primaryVideoUrl = lesson?.learningResources?.videos?.[0]?.url;
+    const embedUrl = primaryVideoUrl ? getYouTubeEmbedUrl(primaryVideoUrl) : null;
+
 
     const renderAssessment = (Icon: React.ElementType, type: string) => (
         <div className="p-8 max-w-4xl mx-auto text-center">
@@ -140,7 +145,7 @@ export default function LessonPage() {
             <p className="text-lg text-muted-foreground mb-6 capitalize">{type}</p>
             <div 
                 className="prose max-w-none dark:prose-invert text-left" 
-                dangerouslySetInnerHTML={{ __html: lesson?.description?.replace(/\n/g, '<br />') || '' }}
+                dangerouslySetInnerHTML={{ __html: lesson?.primaryActivity?.description?.replace(/\n/g, '<br />') || '' }}
             ></div>
             <Button onClick={handleMarkAsComplete} className="mt-8">Mark as Complete and Continue</Button>
         </div>
@@ -175,46 +180,88 @@ export default function LessonPage() {
                     </div>
                 </header>
                 <main className="flex-1 overflow-y-auto">
-                    {lesson.type === 'video' && lesson.url && getYouTubeEmbedUrl(lesson.url) && (
+                    {lesson.primaryActivity.type === 'Video' && embedUrl && (
                          <div className="w-full max-w-4xl mx-auto py-8 px-4">
                             <div className="aspect-video">
                                 <iframe 
                                     key={lesson.title}
                                     className="w-full h-full rounded-lg"
-                                    src={getYouTubeEmbedUrl(lesson.url)!}
+                                    src={embedUrl}
                                     title="YouTube video player" 
                                     frameBorder="0" 
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                                     allowFullScreen
                                 ></iframe>
                             </div>
-                            {lesson.notes && (
-                                <div className="p-4 md:p-8">
-                                    <h2 className="text-2xl font-bold mb-4">Key Takeaways</h2>
-                                    <div className="prose max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: lesson.notes.replace(/\n/g, '<br />') }}></div>
+                            
+                            <div className="p-4 md:p-8 space-y-8">
+                                <Card>
+                                    <CardHeader><CardTitle>Key Concepts</CardTitle></CardHeader>
+                                    <CardContent>
+                                        <ul className="list-disc pl-5 space-y-2 text-muted-foreground">
+                                            {lesson.keyConcepts?.map((concept, i) => <li key={i}>{concept}</li>)}
+                                        </ul>
+                                    </CardContent>
+                                </Card>
+
+                                <div className="grid md:grid-cols-2 gap-8">
+                                    <Card>
+                                        <CardHeader><CardTitle className="flex items-center gap-2"><BookOpen /> Learning Resources</CardTitle></CardHeader>
+                                        <CardContent className="space-y-3">
+                                            {lesson.learningResources?.articles?.map(article => (
+                                                <Button asChild variant="outline" className="w-full justify-start" key={article.url}>
+                                                    <Link href={article.url} target="_blank">
+                                                        <LinkIcon className="mr-2 h-4 w-4" /> {article.title}
+                                                    </Link>
+                                                </Button>
+                                            ))}
+                                             {lesson.learningResources?.videos?.map(video => (
+                                                <Button asChild variant="outline" className="w-full justify-start" key={video.url}>
+                                                    <Link href={video.url} target="_blank">
+                                                        <LinkIcon className="mr-2 h-4 w-4" /> {video.title}
+                                                    </Link>
+                                                </Button>
+                                            ))}
+                                        </CardContent>
+                                    </Card>
+                                     <Card>
+                                        <CardHeader><CardTitle className="flex items-center gap-2"><Lightbulb /> AI Tutor Guidance</CardTitle></CardHeader>
+                                        <CardContent>
+                                            <p className="font-semibold text-sm mb-2">Common Sticking Points</p>
+                                             <ul className="list-disc pl-5 space-y-1 text-sm text-muted-foreground mb-4">
+                                                {lesson.tutorGuidance?.commonStickingPoints?.map((point, i) => <li key={i}>{point}</li>)}
+                                            </ul>
+                                             <p className="font-semibold text-sm mb-2">Clarification Prompts</p>
+                                              <ul className="list-disc pl-5 space-y-1 text-sm text-muted-foreground">
+                                                {lesson.tutorGuidance?.clarificationPrompts?.map((prompt, i) => <li key={i}>{prompt}</li>)}
+                                            </ul>
+                                        </CardContent>
+                                    </Card>
                                 </div>
-                            )}
+                            </div>
+                           
                             {lesson.popQuiz && lesson.popQuiz.length > 0 && <QuizComponent quiz={lesson.popQuiz} />}
+                            
                             <div className="text-center mt-12">
                                 <Button size="lg" onClick={handleMarkAsComplete}>Mark as Complete and Continue</Button>
                             </div>
                          </div>
                     )}
-                    {lesson.type === 'video' && lesson.url && !getYouTubeEmbedUrl(lesson.url) && (
+                    {lesson.primaryActivity.type === 'Video' && !embedUrl && (
                         <div className="p-8 text-center flex flex-col justify-center items-center h-full">
                             <h2 className="text-2xl font-bold mb-4">Video Unavailable</h2>
                             <p className="text-muted-foreground">This video could not be embedded. The URL may be invalid or private.</p>
-                            <p className="text-muted-foreground text-sm mt-2">URL: {lesson.url}</p>
+                            <p className="text-muted-foreground text-sm mt-2">URL: {primaryVideoUrl}</p>
                        </div>
                     )}
-                     {lesson.type === 'lecture' && (
+                     {(lesson.primaryActivity.type === 'Reading' || lesson.primaryActivity.type === 'Code-Along' || lesson.primaryActivity.type === 'Interactive Exercise' || lesson.primaryActivity.type === 'Mini-Project') && (
                          <div className="p-8 max-w-4xl mx-auto">
                             <h2 className="text-3xl font-bold mb-6">{lesson.title}</h2>
-                            <div className="prose max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: lesson.description?.replace(/\n/g, '<br />') || '' }}></div>
+                            <div className="prose max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: lesson.primaryActivity.description?.replace(/\n/g, '<br />') || '' }}></div>
                         </div>
                     )}
-                    {lesson.type === 'quiz' && renderAssessment(FileQuestion, 'quiz')}
-                    {lesson.type === 'assignment' && renderAssessment(PencilRuler, 'assignment')}
+                    {lesson.primaryActivity.type === 'Quiz' && renderAssessment(FileQuestion, 'quiz')}
+                    {lesson.primaryActivity.type === 'Assignment' && renderAssessment(PencilRuler, 'assignment')}
                 </main>
             </div>
         </DashboardAuthWrapper>

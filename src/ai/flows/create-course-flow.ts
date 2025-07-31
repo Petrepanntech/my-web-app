@@ -10,9 +10,9 @@
 import { ai } from '@/ai/genkit';
 import {
   CreateCourseOutputSchema,
-  PersonalizedLearningPathOutputSchema,
+  PersonalizedLearningPathInputSchema,
   type CreateCourseOutput,
-  type PersonalizedLearningPathOutput
+  type PersonalizedLearningPathInput
 } from '@/types/ai-schemas';
 import { z } from 'zod';
 
@@ -20,54 +20,75 @@ import { z } from 'zod';
 const searchTool = ai.defineTool(
     {
       name: 'search',
-      description: 'A tool for searching the web for a given query',
+      description: 'A tool for searching the web for a given query to find articles and videos.',
       input: { schema: z.string() },
       output: { schema: z.string() },
     },
     async (query) => {
-      //
+      // In a real implementation, this would call a search API.
+      // For now, we'll return a placeholder string.
+      return JSON.stringify([
+          { title: `Search result for ${query}`, url: `https://example.com/search?q=${query}` }
+      ]);
     }
   );
 
 export async function createCourse(
-  input: PersonalizedLearningPathOutput
+  input: PersonalizedLearningPathInput
 ): Promise<CreateCourseOutput> {
   return createCourseFlow(input);
 }
 
 const createCoursePrompt = ai.definePrompt({
   name: 'createCoursePrompt',
-  input: { schema: PersonalizedLearningPathOutputSchema },
+  input: { schema: PersonalizedLearningPathInputSchema },
   output: { schema: CreateCourseOutputSchema },
-  prompt: `You are an expert curriculum designer for the online learning platform "Alternative Academy".
-Your task is to take a structured learning path and transform it into a full, detailed course curriculum designed to take a student from a novice to a professional level.
+  tools: [searchTool],
+  prompt: `You are an expert curriculum designer and AI-native instructional strategist. Your task is to generate a comprehensive, structured, and app-ready course outline that anticipates learner needs.
 
-The learning path is provided below as a JSON object. Parse this JSON to understand the student's learning goals.
-{{{json path}}}
+Primary Goal: To teach a complete beginner skills related to their interests and goals.
+Interests: {{{interests}}}
+Goals: {{{goals}}}
 
-Based on the learning path, you must generate the following:
-1.  A compelling overall title for the course.
-2.  A detailed, engaging, and encouraging course overview (at least 3-4 paragraphs). This should set the stage, explain what the student will learn, what they will be able to do after completion, and get them excited to start. IMPORTANT: Ensure there is an empty line between each paragraph for readability.
-3.  A unique course ID, which should be a URL-friendly slug of the course title (e.g., "introduction-to-react-from-scratch").
-4.  A relevant placeholder image URL from Unsplash (e.g., https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=800&h=450&fit=crop).
-5.  A one or two-word aiHint for the image (e.g., "react logo").
-6.  The instructor should always be "AI Curator".
+Target Audience: Absolute beginners with no prior experience in the subject. They are likely visual learners, motivated by seeing tangible results, and may be intimidated by complex jargon. They need step-by-step guidance.
 
-For the curriculum itself:
-For each module in the learning path, you must:
-1.  Create a mix of 'video', 'lecture', 'quiz', and 'assignment' lessons. Aim for 3-5 lessons per module to ensure comprehensive coverage.
-2.  For 'video' lessons:
-    a. Find a real, high-quality, legitimate, and currently active educational video from YouTube. Provide the full, correct YouTube URL.
-    b. Write a brief, one-sentence description for the video.
-    c. IMPORTANT: Generate a highly detailed, refined, and well-structured summary of the video's content and add it to the 'notes' field. This must be significantly more detailed than a simple list. Use multiple paragraphs, bullet points, numbered lists, and bold text to break down key concepts, definitions, and examples. This should be comprehensive enough to serve as a detailed study guide.
-    d. IMPORTANT: Create a 'popQuiz' array containing 5 multiple-choice questions based on the video content. Each question object must have a 'question' string, an 'options' array of 4 strings, and an 'answer' string that is one of the options.
-3.  For 'lecture' lessons, write detailed, informative content of at least 3-5 paragraphs. This text will be the primary content for the lesson and should be thorough enough to be a standalone piece of learning material.
-4.  For 'quiz' lessons, create a short, multiple-choice quiz with 3-5 questions to test the concepts from the preceding lessons. The description field should contain the quiz questions and options.
-5.  Strategically place one 'assignment' lesson at the end of each module. This should be a practical, hands-on task that requires the student to apply what they've learned in the module. The description should clearly outline the assignment requirements.
-6.  Ensure the lessons within each module build upon each other logically.
-7.  Assign the correct type ('video', 'lecture', 'quiz', or 'assignment') to each lesson.
+Course Generation Directives:
+1. High-Level Course Information:
+    - Course Title: Generate a creative and descriptive title.
+    - Course Description (Elevator Pitch): Write a compelling 100-word description that outlines the key benefit and transformation a student will experience.
+    - Learning Objectives: List 5-7 specific, measurable, and action-oriented learning objectives for the entire course.
+    - A unique course ID, which should be a URL-friendly slug of the course title (e.g., "introduction-to-react-from-scratch").
+    - A relevant placeholder image URL from Unsplash (e.g., https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=800&h=450&fit=crop).
+    - A one or two-word aiHint for the image (e.g., "react logo").
+    - The instructor should always be "AI Curator".
 
-You have a tool called 'search' that can be used to find relevant YouTube videos. To use it, provide a search query. For example: "search('best beginner tutorial for react native')".
+2. Detailed Modular Breakdown:
+    - Generate a course structure divided into 4-6 modules.
+    - For each module, provide a clear title and a 1-2 sentence objective.
+    - Within each module, generate 3-5 lessons. For each lesson, provide the following details in a structured format:
+        - Lesson Title: A concise and descriptive title.
+        - Lesson Objective: A single sentence explaining what the student will be able to do after this lesson.
+        - Key Concepts: A bulleted list of the core theories or skills to be covered.
+        - Primary Activity:
+            - Type: Choose one from: [Reading, Video, Interactive Exercise, Code-Along, Quiz, Mini-Project].
+            - Description: A detailed explanation of the activity. For video lessons, this should be a short, one-sentence description.
+        - Learning Resources:
+            - Use the 'search' tool to find real, high-quality resources.
+            - Articles: Find and list 1-2 high-quality articles. For each, provide {"title": "Article Title", "url": "Direct URL"}.
+            - Videos: Find and list 1-2 relevant YouTube videos. For each, provide {"title": "Video Title", "url": "Shareable URL"}.
+        - Tutor Guidance (For AI Tutors):
+            - Common Sticking Points: A bulleted list of 2-3 potential challenges or misunderstandings a student might face in this lesson.
+            - Clarification Prompts: A bulleted list of 2-3 questions an AI tutor could ask to check for understanding or guide a struggling student (e.g., "Can you explain in your own words why we use a <div> here?").
+        - Pop Quiz: For video lessons, create a pop quiz with 5 multiple-choice questions based on the video content.
+
+3. Capstone Project:
+    - Design a comprehensive final project that requires students to integrate skills from all modules.
+    - Provide a detailed project brief, including a goal, key requirements, and evaluation criteria.
+
+4. Output Format and Constraints:
+    - Tone: Maintain an encouraging, clear, and professional tone.
+    - Structure: The output must be a single, valid JSON object that matches the output schema.
+    - Resource Quality: Prioritize resources from reputable sources (e.g., MDN for web development, established educational YouTube channels).
 
 Respond with a single JSON object that matches the output schema. Ensure your response is a valid JSON.
 `,
@@ -76,11 +97,11 @@ Respond with a single JSON object that matches the output schema. Ensure your re
 const createCourseFlow = ai.defineFlow(
   {
     name: 'createCourseFlow',
-    inputSchema: PersonalizedLearningPathOutputSchema,
+    inputSchema: PersonalizedLearningPathInputSchema,
     outputSchema: CreateCourseOutputSchema,
   },
   async (learningPath) => {
-    const { output } = await createCoursePrompt({ path: learningPath });
+    const { output } = await createCoursePrompt(learningPath);
     return output!;
   }
 );

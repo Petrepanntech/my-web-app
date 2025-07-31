@@ -10,7 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from '@/hooks/use-toast';
 import { ArrowRight, Loader2 } from 'lucide-react';
 import { createCourse, personalizedLearningPath } from '@/lib/actions';
-import type { PersonalizedLearningPathOutput } from '@/types/ai-schemas';
+import type { PersonalizedLearningPathInput, PersonalizedLearningPathOutput } from '@/types/ai-schemas';
 import { useRouter } from 'next/navigation';
 
 export default function LearningPathPage() {
@@ -55,11 +55,11 @@ export default function LearningPathPage() {
     };
 
     const handleCreateCourse = async () => {
-        if (!learningPath) return;
+        if (!interests || !goals) return;
 
         setIsCreatingCourse(true);
         try {
-            const course = await createCourse(learningPath);
+            const course = await createCourse({ interests, goals });
             toast({
                 title: 'Course Created!',
                 description: 'Your new course is ready. Redirecting you now...'
@@ -106,10 +106,17 @@ export default function LearningPathPage() {
                                     <Label htmlFor="goals">Your Goals</Label>
                                     <Textarea id="goals" value={goals} onChange={e => setGoals(e.target.value)} placeholder="e.g., Get a job as a frontend developer, start my own tech company" />
                                 </div>
-                                <Button type="submit" className="w-full" disabled={isLoading}>
+                                <Button type="submit" className="w-full" disabled={isLoading || isCreatingCourse}>
                                     {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                                     Generate My Path
                                 </Button>
+                                {learningPath && (
+                                     <Button onClick={handleCreateCourse} className="w-full mt-6" disabled={isCreatingCourse}>
+                                         {isCreatingCourse && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                                        Start Your AI-Curated Course
+                                        <ArrowRight className="ml-2 h-4 w-4" />
+                                    </Button>
+                                )}
                             </form>
                         </CardContent>
                     </Card>
@@ -133,11 +140,6 @@ export default function LearningPathPage() {
                                             </li>
                                         ))}
                                     </ul>
-                                    <Button onClick={handleCreateCourse} className="w-full mt-6" disabled={isCreatingCourse}>
-                                         {isCreatingCourse && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                                        Start Your AI-Curated Course
-                                        <ArrowRight className="ml-2 h-4 w-4" />
-                                    </Button>
                                 </div>
                             ) : (
                                 !isLoading && <p>Your generated learning path will appear here.</p>

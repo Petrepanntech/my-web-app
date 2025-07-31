@@ -25,29 +25,57 @@ export const PopQuizQuestionSchema = z.object({
 });
 export type PopQuizQuestion = z.infer<typeof PopQuizQuestionSchema>;
 
+const LearningResourceSchema = z.object({
+    title: z.string().describe("The title of the resource."),
+    url: z.string().url().describe("The direct URL to the resource."),
+});
+
+const TutorGuidanceSchema = z.object({
+    commonStickingPoints: z.array(z.string()).describe("A list of potential challenges or misunderstandings."),
+    clarificationPrompts: z.array(z.string()).describe("A list of questions an AI tutor could ask to check for understanding."),
+});
+
+const PrimaryActivitySchema = z.object({
+    type: z.enum(['Reading', 'Video', 'Interactive Exercise', 'Code-Along', 'Quiz', 'Mini-Project']).describe("The type of the primary activity."),
+    description: z.string().describe("A detailed explanation of the activity."),
+});
+
 export const CourseLessonSchema = z.object({
-    type: z.enum(['video', 'lecture', 'quiz', 'assignment']).describe("The type of the lesson."),
-    title: z.string().describe("The title of the lesson."),
-    url: z.string().optional().describe("The URL of the YouTube video, required if type is 'video'."),
-    description: z.string().describe("For 'video', a short description. For 'lecture', the full text content of the lesson (at least 3-5 paragraphs). For 'quiz' or 'assignment', a description of the task."),
-    notes: z.string().optional().describe("For 'video', a highly detailed, well-structured summary of the video content. Use multiple paragraphs, bullet points, and bold text for clarity."),
-    popQuiz: z.array(PopQuizQuestionSchema).optional().describe("For 'video' lessons, a pop quiz with 5 multiple-choice questions based on the video."),
+    title: z.string().describe("A concise and descriptive title for the lesson."),
+    objective: z.string().describe("A single sentence explaining what the student will be able to do after this lesson."),
+    keyConcepts: z.array(z.string()).describe("A bulleted list of the core theories or skills to be covered."),
+    primaryActivity: PrimaryActivitySchema,
+    learningResources: z.object({
+        articles: z.array(LearningResourceSchema).optional().describe("A list of high-quality articles."),
+        videos: z.array(LearningResourceSchema).optional().describe("A list of relevant YouTube videos."),
+    }).optional(),
+    tutorGuidance: TutorGuidanceSchema.optional(),
+    popQuiz: z.array(PopQuizQuestionSchema).optional().describe("For video lessons, a pop quiz with 5 multiple-choice questions."),
 });
 export type CourseLesson = z.infer<typeof CourseLessonSchema>;
 
 const CourseModuleSchema = z.object({
-    title: z.string().describe("The title of the course module."),
+    title: z.string().describe("The clear title of the course module."),
+    objective: z.string().describe("A 1-2 sentence objective for the module."),
     lessons: z.array(CourseLessonSchema).describe("A list of lessons for the module."),
 });
 
+const CapstoneProjectSchema = z.object({
+    goal: z.string().describe("The main goal of the final project."),
+    requirements: z.array(z.string()).describe("A list of key requirements for the project."),
+    evaluationCriteria: z.array(z.string()).describe("A list of criteria for evaluating the project."),
+});
+
 export const CreateCourseOutputSchema = z.object({
-    id: z.string().describe("A unique ID for the course, perhaps using a slug of the title."),
-    title: z.string().describe("A compelling title for the entire course."),
-    instructor: z.string().describe("The instructor for this course, which should always be 'AI Curator'."),
-    image: z.string().describe("A placeholder image URL for the course. Use an Unsplash URL related to the course topic."),
+    id: z.string().describe("A unique ID for the course, which is a URL-friendly slug of the course title."),
+    title: z.string().describe("A creative and descriptive title for the course."),
+    description: z.string().describe("A compelling 100-word description (elevator pitch) of the course."),
+    learningObjectives: z.array(z.string()).describe("5-7 specific, measurable, and action-oriented learning objectives."),
+    instructor: z.literal("AI Curator").describe("The instructor for this course."),
+    image: z.string().url().describe("A placeholder image URL for the course from Unsplash."),
     aiHint: z.string().describe("A one or two-word hint for the AI to find a relevant image."),
-    overview: z.string().describe("A detailed course overview (at least 3-4 paragraphs, with an empty line between paragraphs)."),
-    curriculum: z.array(CourseModuleSchema).describe("The full curriculum for the course."),
+    curriculum: z.array(CourseModuleSchema).describe("The full curriculum for the course, broken into modules."),
+    capstoneProject: CapstoneProjectSchema.optional().describe("A comprehensive final project."),
 });
 export type CreateCourseOutput = z.infer<typeof CreateCourseOutputSchema>;
 

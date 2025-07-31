@@ -34,7 +34,7 @@ export async function generateMOU(input: GenerateMOUInput) {
     return await generateMOUFlow(input);
 }
 
-export async function createCourse(input: PersonalizedLearningPathOutput) {
+export async function createCourse(input: PersonalizedLearningPathInput) {
     return await createCourseFlow(input);
 }
 
