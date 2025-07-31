@@ -63,9 +63,9 @@ Course Generation Directives:
     - The instructor should always be "AI Curator".
 
 2. Detailed Modular Breakdown:
-    - Generate a course structure divided into 4-6 modules.
+    - Generate a course structure divided into 10-15 modules.
     - For each module, provide a clear title and a 1-2 sentence objective.
-    - Within each module, generate 3-5 lessons. For each lesson, provide the following details in a structured format:
+    - Within each module, generate 6-10 lessons. For each lesson, provide the following details in a structured format:
         - Lesson Title: A concise and descriptive title.
         - Lesson Objective: A single sentence explaining what the student will be able to do after this lesson.
         - Key Concepts: A bulleted list of the core theories or skills to be covered.
