@@ -98,64 +98,66 @@ export default function AIBuddyPage() {
     };
 
     return (
-        <div className="h-full flex flex-col bg-background">
-            <ScrollArea className="flex-1 p-6">
-                <div className="space-y-6">
-                    {messages.map((msg, index) => (
-                        <div key={index} className={cn("flex items-start gap-2", msg.role === 'user' ? 'justify-end' : '')}>
-                            {msg.role === 'model' && (
+         <DashboardAuthWrapper requiredRole="student">
+            <div className="h-full flex flex-col bg-background">
+                <ScrollArea className="flex-1 p-6">
+                    <div className="space-y-6">
+                        {messages.map((msg, index) => (
+                            <div key={index} className={cn("flex items-start gap-2", msg.role === 'user' ? 'justify-end' : '')}>
+                                {msg.role === 'model' && (
+                                    <Avatar className="h-8 w-8">
+                                        <AvatarFallback>PLIH</AvatarFallback>
+                                    </Avatar>
+                                )}
+                                <div className={cn("rounded-lg p-3 max-w-xs lg:max-w-md", msg.role === 'user' ? 'bg-primary text-primary-foreground' : 'bg-muted')}>
+                                    {msg.photoDataUri && <Image src={msg.photoDataUri} alt="Uploaded content" width={200} height={200} className="rounded-md mb-2" />}
+                                    <p className="text-sm whitespace-pre-wrap">{msg.text}</p>
+                                </div>
+                            </div>
+                        ))}
+                        {isLoading && (
+                            <div className="flex items-start gap-2">
                                 <Avatar className="h-8 w-8">
                                     <AvatarFallback>PLIH</AvatarFallback>
                                 </Avatar>
-                            )}
-                            <div className={cn("rounded-lg p-3 max-w-xs lg:max-w-md", msg.role === 'user' ? 'bg-primary text-primary-foreground' : 'bg-muted')}>
-                                {msg.photoDataUri && <Image src={msg.photoDataUri} alt="Uploaded content" width={200} height={200} className="rounded-md mb-2" />}
-                                <p className="text-sm whitespace-pre-wrap">{msg.text}</p>
+                                <div className="rounded-lg p-3 max-w-xs lg:max-w-md bg-muted flex items-center">
+                                    <Loader2 className="h-5 w-5 animate-spin" />
+                                </div>
                             </div>
-                        </div>
-                    ))}
-                    {isLoading && (
-                        <div className="flex items-start gap-2">
-                            <Avatar className="h-8 w-8">
-                                <AvatarFallback>PLIH</AvatarFallback>
-                            </Avatar>
-                            <div className="rounded-lg p-3 max-w-xs lg:max-w-md bg-muted flex items-center">
-                                <Loader2 className="h-5 w-5 animate-spin" />
+                        )}
+                    </div>
+                </ScrollArea>
+                <div className="p-4 border-t bg-background">
+                    <form onSubmit={handleSendMessage} className="relative">
+                        {preview && (
+                            <div className="relative w-24 h-24 mb-2 p-2 border rounded-md">
+                                <Image src={preview} alt="File preview" layout="fill" objectFit="cover" className="rounded-md" />
+                                <Button size="icon" variant="destructive" className="absolute -top-2 -right-2 h-6 w-6 rounded-full" onClick={removeFile}>
+                                    <X className="h-4 w-4" />
+                                </Button>
                             </div>
-                        </div>
-                    )}
-                </div>
-            </ScrollArea>
-            <div className="p-4 border-t bg-background">
-                <form onSubmit={handleSendMessage} className="relative">
-                    {preview && (
-                        <div className="relative w-24 h-24 mb-2 p-2 border rounded-md">
-                            <Image src={preview} alt="File preview" layout="fill" objectFit="cover" className="rounded-md" />
-                            <Button size="icon" variant="destructive" className="absolute -top-2 -right-2 h-6 w-6 rounded-full" onClick={removeFile}>
-                                <X className="h-4 w-4" />
+                        )}
+                        <Input
+                            placeholder="Message P.L.I.H..."
+                            className="pr-20"
+                            value={currentMessage}
+                            onChange={(e) => setCurrentMessage(e.target.value)}
+                            disabled={isLoading}
+                        />
+                        <div className="absolute right-1 top-1/2 -translate-y-1/2 flex items-center">
+                            <Button type="button" size="icon" variant="ghost" asChild>
+                                <label htmlFor="file-upload" className="cursor-pointer">
+                                    <Paperclip className="h-5 w-5" />
+                                </label>
+                            </Button>
+                            <input id="file-upload" type="file" className="hidden" onChange={handleFileChange} accept="image/*" />
+                            <Button type="submit" size="icon" variant="ghost" disabled={isLoading}>
+                                <Send className="h-5 w-5" />
                             </Button>
                         </div>
-                    )}
-                    <Input
-                        placeholder="Message P.L.I.H..."
-                        className="pr-20"
-                        value={currentMessage}
-                        onChange={(e) => setCurrentMessage(e.target.value)}
-                        disabled={isLoading}
-                    />
-                    <div className="absolute right-1 top-1/2 -translate-y-1/2 flex items-center">
-                         <Button type="button" size="icon" variant="ghost" asChild>
-                            <label htmlFor="file-upload" className="cursor-pointer">
-                                <Paperclip className="h-5 w-5" />
-                            </label>
-                        </Button>
-                        <input id="file-upload" type="file" className="hidden" onChange={handleFileChange} accept="image/*" />
-                        <Button type="submit" size="icon" variant="ghost" disabled={isLoading}>
-                            <Send className="h-5 w-5" />
-                        </Button>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
-        </div>
+        </DashboardAuthWrapper>
     );
 }
