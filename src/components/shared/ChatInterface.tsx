@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { cn } from "@/lib/utils"
-import { Search, Send, Bot, Users, Sparkles, LifeBuoy, Paperclip, ChevronDown } from "lucide-react"
+import { Search, Send, Bot, Users, Sparkles, LifeBuoy, Paperclip, ChevronDown, MessageSquare } from "lucide-react"
 import { useAuth } from "@/context/AuthContext";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "../ui/command";
@@ -20,7 +20,7 @@ const conversationData = {
         icon: Bot,
         lastMessage: "Hi! I'm Leo, your AI learning buddy.",
         time: "Now",
-        avatar: "/logo.svg", // Using a placeholder for Leo's custom logo
+        avatar: "/logo.svg",
         messages: [
             { sender: "other", text: "Hi! I'm Leo, your AI learning buddy. How can I help you conquer your goals today?", time: "10:00 AM", avatar: "/logo.svg" },
         ]
@@ -71,11 +71,11 @@ const conversationData = {
 
 const conversationList = Object.values(conversationData);
 const channelTypes = [
-    { name: "AI Buddy", icon: Bot },
-    { name: "Community", icon: Users },
-    { name: "Mentors", icon: Sparkles },
-    { name: "Support", icon: LifeBuoy },
-]
+    { name: "AI Buddy", icon: Bot, id: "ai-buddy" },
+    { name: "Community", icon: Users, id: "community-chat" },
+    { name: "Mentors", icon: Sparkles, id: "samuel-adebayo" },
+    { name: "Support", icon: LifeBuoy, id: "support" },
+];
 
 export function ChatInterface({ initialActiveChatId }: { initialActiveChatId?: string }) {
     const { user } = useAuth();
@@ -147,8 +147,6 @@ export function ChatInterface({ initialActiveChatId }: { initialActiveChatId?: s
     
     const handleQuickAction = (text: string) => {
         setNewMessage(text);
-        // We can optionally auto-send it here
-        // handleSendMessage(new Event('submit') as any);
     }
     
     const [open, setOpen] = React.useState(false)
@@ -156,149 +154,198 @@ export function ChatInterface({ initialActiveChatId }: { initialActiveChatId?: s
     const filteredConversations = conversationList.filter(c => c.type === activeTab);
 
     return (
-        <div className="h-full flex bg-background text-sm">
-             <div className="h-full flex flex-col w-full">
-                 <div className="flex-1 flex overflow-hidden">
-                    <div className="w-[300px] border-r flex flex-col">
-                        <div className="p-3 border-b flex items-center justify-between">
-                             <Popover open={open} onOpenChange={setOpen}>
-                                <PopoverTrigger asChild>
-                                    <Button
-                                    variant="outline"
-                                    role="combobox"
-                                    aria-expanded={open}
-                                    className="w-full justify-between"
-                                    >
-                                    {activeTab}
-                                    <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                                    </Button>
-                                </PopoverTrigger>
-                                <PopoverContent className="w-[200px] p-0">
-                                    <Command>
-                                        <CommandList>
-                                            {channelTypes.map((channel) => (
-                                                <CommandItem
-                                                    key={channel.name}
-                                                    value={channel.name}
-                                                    onSelect={(currentValue) => {
-                                                        const firstChatOfNewType = conversationList.find(c => c.type === currentValue);
-                                                        if (firstChatOfNewType) {
-                                                            setActiveChatId(firstChatOfNewType.id);
-                                                        }
-                                                        setOpen(false);
-                                                    }}
-                                                >
-                                                <channel.icon className={cn("mr-2 h-4 w-4")} />
-                                                {channel.name}
-                                                </CommandItem>
-                                            ))}
-                                        </CommandList>
-                                    </Command>
-                                </PopoverContent>
-                            </Popover>
-                        </div>
-                        <div className="p-3 border-b">
-                             <div className="relative">
-                                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                                <Input placeholder="Search..." className="pl-8 h-9" />
-                            </div>
-                        </div>
-                         <ScrollArea className="flex-1">
-                            {filteredConversations.map(convo => (
-                                <div 
-                                    key={convo.id} 
-                                    className={cn(
-                                        "flex items-center gap-3 p-3 hover:bg-muted cursor-pointer border-l-2", 
-                                        activeChatId === convo.id ? "bg-muted border-primary" : "border-transparent"
-                                    )}
-                                    onClick={() => setActiveChatId(convo.id)}
+        <div className="h-full flex flex-col bg-background text-sm">
+            {/* Desktop Sidebar */}
+            <div className="hidden md:flex flex-1 overflow-hidden">
+                <div className="w-[300px] border-r flex flex-col">
+                    <div className="p-3 border-b flex items-center justify-between">
+                         <Popover open={open} onOpenChange={setOpen}>
+                            <PopoverTrigger asChild>
+                                <Button
+                                variant="outline"
+                                role="combobox"
+                                aria-expanded={open}
+                                className="w-full justify-between"
                                 >
-                                    <Avatar className="h-10 w-10">
-                                        <AvatarImage src={convo.avatar} alt={convo.name} />
-                                        <AvatarFallback>{convo.name.slice(0, 2)}</AvatarFallback>
-                                    </Avatar>
-                                    <div className="flex-1 overflow-hidden">
-                                        <div className="flex justify-between items-center">
-                                            <p className="font-semibold text-sm truncate">{convo.name}</p>
-                                            <p className="text-xs text-muted-foreground shrink-0">{convo.time}</p>
-                                        </div>
-                                        <p className="text-xs text-muted-foreground truncate">{convo.lastMessage}</p>
-                                    </div>
-                                </div>
-                            ))}
-                        </ScrollArea>
+                                {activeTab}
+                                <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-[200px] p-0">
+                                <Command>
+                                    <CommandList>
+                                        {channelTypes.map((channel) => (
+                                            <CommandItem
+                                                key={channel.name}
+                                                value={channel.name}
+                                                onSelect={(currentValue) => {
+                                                    const firstChatOfNewType = conversationList.find(c => c.type === currentValue);
+                                                    if (firstChatOfNewType) {
+                                                        setActiveChatId(firstChatOfNewType.id);
+                                                    }
+                                                    setOpen(false);
+                                                }}
+                                            >
+                                            <channel.icon className={cn("mr-2 h-4 w-4")} />
+                                            {channel.name}
+                                            </CommandItem>
+                                        ))}
+                                    </CommandList>
+                                </Command>
+                            </PopoverContent>
+                        </Popover>
                     </div>
-                    <div className="flex-1 flex flex-col bg-muted/30">
-                        <div className="p-3 border-b flex items-center gap-3 bg-background">
-                            <Avatar className="h-9 w-9">
-                                <AvatarImage src={activeChat.avatar} />
-                                <AvatarFallback>{activeChat.name.slice(0,2)}</AvatarFallback>
-                            </Avatar>
-                            <h2 className="font-semibold">{activeChat.name}</h2>
+                    <div className="p-3 border-b">
+                         <div className="relative">
+                            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                            <Input placeholder="Search..." className="pl-8 h-9" />
                         </div>
-                        <ScrollArea className="flex-1 p-4" ref={scrollAreaRef}>
-                            <div className="space-y-6">
-                                {activeChat.messages.map((msg, index) => (
-                                    <div key={index} className={cn("flex items-end gap-2", msg.sender === 'me' ? 'justify-end' : 'justify-start')}>
-                                        {msg.sender === 'other' && (
-                                            <Avatar className="h-8 w-8">
-                                                <AvatarImage src={msg.avatar} />
-                                                <AvatarFallback>{(msg as any).name?.charAt(0) || 'U'}</AvatarFallback>
-                                            </Avatar>
-                                        )}
-                                        <div className={cn(
-                                            "rounded-lg p-3 max-w-xs lg:max-w-md shadow-sm relative", 
-                                            msg.sender === 'me' ? 'bg-primary text-primary-foreground rounded-br-none' : 'bg-background rounded-bl-none'
-                                        )}>
-                                            {activeChat.type === 'Community' && msg.sender === 'other' && <p className="text-xs font-bold mb-1 text-primary">{(msg as any).name}</p>}
-                                            <p className="text-sm whitespace-pre-wrap">{msg.text}</p>
-                                            <p className="text-[10px] text-right mt-1 opacity-70">{msg.time}</p>
-                                        </div>
-                                    </div>
-                                ))}
-                                {isTyping && (
-                                     <div className="flex items-end gap-2 justify-start">
-                                         <Avatar className="h-8 w-8">
-                                            <AvatarImage src="/logo.svg" />
-                                            <AvatarFallback>L</AvatarFallback>
-                                        </Avatar>
-                                        <div className="rounded-lg p-3 bg-background rounded-bl-none shadow-sm flex items-center gap-1">
-                                            <span className="h-2 w-2 rounded-full bg-muted-foreground animate-pulse delay-0"></span>
-                                            <span className="h-2 w-2 rounded-full bg-muted-foreground animate-pulse delay-150"></span>
-                                            <span className="h-2 w-2 rounded-full bg-muted-foreground animate-pulse delay-300"></span>
-                                        </div>
-                                     </div>
+                    </div>
+                     <ScrollArea className="flex-1">
+                        {filteredConversations.map(convo => (
+                            <div 
+                                key={convo.id} 
+                                className={cn(
+                                    "flex items-center gap-3 p-3 hover:bg-muted cursor-pointer border-l-2", 
+                                    activeChatId === convo.id ? "bg-muted border-primary" : "border-transparent"
                                 )}
+                                onClick={() => setActiveChatId(convo.id)}
+                            >
+                                <Avatar className="h-10 w-10">
+                                    <AvatarImage src={convo.avatar} alt={convo.name} />
+                                    <AvatarFallback>{convo.name.slice(0, 2)}</AvatarFallback>
+                                </Avatar>
+                                <div className="flex-1 overflow-hidden">
+                                    <div className="flex justify-between items-center">
+                                        <p className="font-semibold text-sm truncate">{convo.name}</p>
+                                        <p className="text-xs text-muted-foreground shrink-0">{convo.time}</p>
+                                    </div>
+                                    <p className="text-xs text-muted-foreground truncate">{convo.lastMessage}</p>
+                                </div>
                             </div>
-                        </ScrollArea>
-                        {activeChatId === 'ai-buddy' && (
-                            <div className="p-2 border-t bg-background flex gap-2 overflow-x-auto">
-                                <Button size="sm" variant="outline" onClick={() => handleQuickAction("Summarize this lesson")}>Summarize lesson</Button>
-                                <Button size="sm" variant="outline" onClick={() => handleQuickAction("Explain key concepts")}>Explain concepts</Button>
-                                <Button size="sm" variant="outline" onClick={() => handleQuickAction("Quiz me on this module")}>Quiz me</Button>
-                            </div>
-                        )}
-                        <div className="p-4 border-t bg-background">
-                            <form onSubmit={handleSendMessage} className="relative flex items-center gap-2">
-                                 <Button type="button" size="icon" variant="ghost">
-                                    <Paperclip className="h-5 w-5" />
-                                </Button>
-                                <Input 
-                                    placeholder="Type a message..." 
-                                    className="pr-12"
-                                    value={newMessage}
-                                    onChange={(e) => setNewMessage(e.target.value)}
-                                />
-                                <Button type="submit" size="icon" className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8">
-                                    <Send className="h-4 w-4" />
-                                </Button>
-                            </form>
-                        </div>
-                    </div>
+                        ))}
+                    </ScrollArea>
                 </div>
+                <div className="flex-1 flex flex-col bg-muted/30">
+                    <ChatContent
+                        activeChat={activeChat}
+                        isTyping={isTyping}
+                        scrollAreaRef={scrollAreaRef}
+                        newMessage={newMessage}
+                        setNewMessage={setNewMessage}
+                        handleSendMessage={handleSendMessage}
+                        handleQuickAction={handleQuickAction}
+                    />
+                </div>
+            </div>
+
+             {/* Mobile View */}
+            <div className="md:hidden flex flex-col h-full">
+                <ChatContent
+                    activeChat={activeChat}
+                    isTyping={isTyping}
+                    scrollAreaRef={scrollAreaRef}
+                    newMessage={newMessage}
+                    setNewMessage={setNewMessage}
+                    handleSendMessage={handleSendMessage}
+                    handleQuickAction={handleQuickAction}
+                    isMobile
+                />
+                 <nav className="border-t bg-background flex justify-around">
+                    {channelTypes.map(channel => (
+                        <button 
+                            key={channel.name}
+                            onClick={() => {
+                                const firstChatOfNewType = conversationList.find(c => c.type === channel.name);
+                                if (firstChatOfNewType) {
+                                    setActiveChatId(firstChatOfNewType.id);
+                                }
+                            }}
+                            className={cn(
+                                "flex flex-col items-center justify-center p-2 w-full",
+                                activeTab === channel.name ? "text-primary" : "text-muted-foreground"
+                            )}
+                        >
+                            <channel.icon className="h-6 w-6" />
+                            <span className="text-xs">{channel.name}</span>
+                        </button>
+                    ))}
+                </nav>
             </div>
         </div>
     )
 }
 
-    
+const ChatContent = ({ activeChat, isTyping, scrollAreaRef, newMessage, setNewMessage, handleSendMessage, handleQuickAction, isMobile }: any) => {
+    return (
+        <>
+            {!isMobile && (
+                 <div className="p-3 border-b flex items-center gap-3 bg-background">
+                    <Avatar className="h-9 w-9">
+                        <AvatarImage src={activeChat.avatar} />
+                        <AvatarFallback>{activeChat.name.slice(0,2)}</AvatarFallback>
+                    </Avatar>
+                    <h2 className="font-semibold">{activeChat.name}</h2>
+                </div>
+            )}
+            <ScrollArea className="flex-1 p-4" ref={scrollAreaRef}>
+                <div className="space-y-6">
+                    {activeChat.messages.map((msg: any, index: number) => (
+                        <div key={index} className={cn("flex items-end gap-2", msg.sender === 'me' ? 'justify-end' : 'justify-start')}>
+                            {msg.sender === 'other' && (
+                                <Avatar className="h-8 w-8">
+                                    <AvatarImage src={msg.avatar} />
+                                    <AvatarFallback>{(msg as any).name?.charAt(0) || 'U'}</AvatarFallback>
+                                </Avatar>
+                            )}
+                            <div className={cn(
+                                "rounded-lg p-3 max-w-xs lg:max-w-md shadow-sm relative", 
+                                msg.sender === 'me' ? 'bg-primary text-primary-foreground rounded-br-none' : 'bg-background rounded-bl-none'
+                            )}>
+                                {activeChat.type === 'Community' && msg.sender === 'other' && <p className="text-xs font-bold mb-1 text-primary">{(msg as any).name}</p>}
+                                <p className="text-sm whitespace-pre-wrap">{msg.text}</p>
+                                <p className="text-[10px] text-right mt-1 opacity-70">{msg.time}</p>
+                            </div>
+                        </div>
+                    ))}
+                    {isTyping && (
+                         <div className="flex items-end gap-2 justify-start">
+                             <Avatar className="h-8 w-8">
+                                <AvatarImage src="/logo.svg" />
+                                <AvatarFallback>L</AvatarFallback>
+                            </Avatar>
+                            <div className="rounded-lg p-3 bg-background rounded-bl-none shadow-sm flex items-center gap-1">
+                                <span className="h-2 w-2 rounded-full bg-muted-foreground animate-pulse delay-0"></span>
+                                <span className="h-2 w-2 rounded-full bg-muted-foreground animate-pulse delay-150"></span>
+                                <span className="h-2 w-2 rounded-full bg-muted-foreground animate-pulse delay-300"></span>
+                            </div>
+                         </div>
+                    )}
+                </div>
+            </ScrollArea>
+            {activeChat.id === 'ai-buddy' && (
+                <div className="p-2 border-t bg-background flex gap-2 overflow-x-auto">
+                    <Button size="sm" variant="outline" onClick={() => handleQuickAction("Summarize this lesson")}>Summarize lesson</Button>
+                    <Button size="sm" variant="outline" onClick={() => handleQuickAction("Explain key concepts")}>Explain concepts</Button>
+                    <Button size="sm" variant="outline" onClick={() => handleQuickAction("Quiz me on this module")}>Quiz me</Button>
+                </div>
+            )}
+            <div className="p-4 border-t bg-background">
+                <form onSubmit={handleSendMessage} className="relative flex items-center gap-2">
+                     <Button type="button" size="icon" variant="ghost">
+                        <Paperclip className="h-5 w-5" />
+                    </Button>
+                    <Input 
+                        placeholder="Type a message..." 
+                        className="pr-12"
+                        value={newMessage}
+                        onChange={(e) => setNewMessage(e.target.value)}
+                    />
+                    <Button type="submit" size="icon" className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8">
+                        <Send className="h-4 w-4" />
+                    </Button>
+                </form>
+            </div>
+        </>
+    )
+}
