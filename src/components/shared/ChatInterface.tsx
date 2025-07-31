@@ -1,14 +1,16 @@
 
 "use client"
-import { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { cn } from "@/lib/utils"
-import { Search, Send, Bot, Users, Sparkles, LifeBuoy } from "lucide-react"
+import { Search, Send, Bot, Users, Sparkles, LifeBuoy, Paperclip, ChevronDown } from "lucide-react"
 import { useAuth } from "@/context/AuthContext";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "../ui/command";
+
 
 const conversationData = {
     "ai-buddy": {
@@ -18,9 +20,9 @@ const conversationData = {
         icon: Bot,
         lastMessage: "Hi! I'm Leo, your AI learning buddy.",
         time: "Now",
-        avatar: "https://placehold.co/50x50.png",
+        avatar: "/logo.svg", // Using a placeholder for Leo's custom logo
         messages: [
-            { sender: "other", text: "Hi! I'm Leo, your AI learning buddy. How can I help you conquer your goals today?", time: "10:00 AM", avatar: "https://placehold.co/50x50.png" },
+            { sender: "other", text: "Hi! I'm Leo, your AI learning buddy. How can I help you conquer your goals today?", time: "10:00 AM", avatar: "/logo.svg" },
         ]
     },
     "community-chat": {
@@ -67,31 +69,40 @@ const conversationData = {
     },
 };
 
-
 const conversationList = Object.values(conversationData);
-const channelTypes = ["AI Buddy", "Community", "Mentors", "Support"];
-const icons: { [key: string]: React.ElementType } = {
-    "AI Buddy": Bot,
-    "Community": Users,
-    "Mentors": Sparkles,
-    "Support": LifeBuoy,
-}
+const channelTypes = [
+    { name: "AI Buddy", icon: Bot },
+    { name: "Community", icon: Users },
+    { name: "Mentors", icon: Sparkles },
+    { name: "Support", icon: LifeBuoy },
+]
 
 export function ChatInterface({ initialActiveChatId }: { initialActiveChatId?: string }) {
     const { user } = useAuth();
     const [chats, setChats] = useState(conversationData);
     const [activeChatId, setActiveChatId] = useState(initialActiveChatId || "ai-buddy");
     const [newMessage, setNewMessage] = useState("");
-    const [activeTab, setActiveTab] = useState(conversationData[activeChatId]?.type || "AI Buddy");
+    const [isTyping, setIsTyping] = useState(false);
+    const scrollAreaRef = useRef<HTMLDivElement>(null);
 
     const activeChat = chats[activeChatId];
+    const activeTab = activeChat?.type || "AI Buddy";
+
+    useEffect(() => {
+        if (scrollAreaRef.current) {
+            scrollAreaRef.current.scrollTo({
+                top: scrollAreaRef.current.scrollHeight,
+                behavior: 'smooth'
+            });
+        }
+    }, [activeChat?.messages]);
     
     const handleSendMessage = (e: React.FormEvent) => {
         e.preventDefault();
         if (!newMessage.trim()) return;
 
         const messageToSend = {
-            sender: "me",
+            sender: "me" as const,
             name: user?.name || "You",
             text: newMessage,
             time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
@@ -112,41 +123,80 @@ export function ChatInterface({ initialActiveChatId }: { initialActiveChatId?: s
 
         setChats(updatedChats);
         setNewMessage("");
+
+        if (activeChat.type === "AI Buddy") {
+            setIsTyping(true);
+            setTimeout(() => {
+                const aiResponse = {
+                    sender: "other" as const,
+                    text: `This is an AI response related to: "${newMessage}". In a real application, Genkit would provide a contextual answer here.`,
+                    time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                    avatar: "/logo.svg"
+                };
+                 setChats(prev => ({
+                    ...prev,
+                    [activeChatId]: {
+                        ...prev[activeChatId],
+                        messages: [...prev[activeChatId].messages, aiResponse]
+                    }
+                }));
+                setIsTyping(false);
+            }, 1500);
+        }
     }
+    
+    const handleQuickAction = (text: string) => {
+        setNewMessage(text);
+        // We can optionally auto-send it here
+        // handleSendMessage(new Event('submit') as any);
+    }
+    
+    const [open, setOpen] = React.useState(false)
 
     const filteredConversations = conversationList.filter(c => c.type === activeTab);
 
     return (
         <div className="h-full flex bg-background text-sm">
              <div className="h-full flex flex-col w-full">
-                <div className="p-2 border-b">
-                    <div className="flex justify-around">
-                        {channelTypes.map(tab => {
-                            const Icon = icons[tab];
-                            return (
-                                <TooltipProvider key={tab}>
-                                    <Tooltip>
-                                        <TooltipTrigger asChild>
-                                             <Button 
-                                                variant={activeTab === tab ? "secondary" : "ghost"} 
-                                                size="icon" 
-                                                onClick={() => setActiveTab(tab)}
-                                                className="h-9 w-9"
-                                            >
-                                                <Icon className="h-5 w-5" />
-                                            </Button>
-                                        </TooltipTrigger>
-                                        <TooltipContent>
-                                            <p>{tab}</p>
-                                        </TooltipContent>
-                                    </Tooltip>
-                                </TooltipProvider>
-                            )
-                        })}
-                    </div>
-                </div>
-                <div className="flex-1 flex overflow-hidden">
-                    <div className="w-[40%] border-r flex flex-col">
+                 <div className="flex-1 flex overflow-hidden">
+                    <div className="w-[300px] border-r flex flex-col">
+                        <div className="p-3 border-b flex items-center justify-between">
+                             <Popover open={open} onOpenChange={setOpen}>
+                                <PopoverTrigger asChild>
+                                    <Button
+                                    variant="outline"
+                                    role="combobox"
+                                    aria-expanded={open}
+                                    className="w-full justify-between"
+                                    >
+                                    {activeTab}
+                                    <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                    </Button>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-[200px] p-0">
+                                    <Command>
+                                        <CommandList>
+                                            {channelTypes.map((channel) => (
+                                                <CommandItem
+                                                    key={channel.name}
+                                                    value={channel.name}
+                                                    onSelect={(currentValue) => {
+                                                        const firstChatOfNewType = conversationList.find(c => c.type === currentValue);
+                                                        if (firstChatOfNewType) {
+                                                            setActiveChatId(firstChatOfNewType.id);
+                                                        }
+                                                        setOpen(false);
+                                                    }}
+                                                >
+                                                <channel.icon className={cn("mr-2 h-4 w-4")} />
+                                                {channel.name}
+                                                </CommandItem>
+                                            ))}
+                                        </CommandList>
+                                    </Command>
+                                </PopoverContent>
+                            </Popover>
+                        </div>
                         <div className="p-3 border-b">
                              <div className="relative">
                                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -158,8 +208,8 @@ export function ChatInterface({ initialActiveChatId }: { initialActiveChatId?: s
                                 <div 
                                     key={convo.id} 
                                     className={cn(
-                                        "flex items-center gap-3 p-3 hover:bg-muted cursor-pointer border-l-2 border-transparent", 
-                                        activeChatId === convo.id && "bg-muted border-primary"
+                                        "flex items-center gap-3 p-3 hover:bg-muted cursor-pointer border-l-2", 
+                                        activeChatId === convo.id ? "bg-muted border-primary" : "border-transparent"
                                     )}
                                     onClick={() => setActiveChatId(convo.id)}
                                 >
@@ -178,7 +228,7 @@ export function ChatInterface({ initialActiveChatId }: { initialActiveChatId?: s
                             ))}
                         </ScrollArea>
                     </div>
-                    <div className="w-[60%] flex flex-col bg-muted/30">
+                    <div className="flex-1 flex flex-col bg-muted/30">
                         <div className="p-3 border-b flex items-center gap-3 bg-background">
                             <Avatar className="h-9 w-9">
                                 <AvatarImage src={activeChat.avatar} />
@@ -186,8 +236,8 @@ export function ChatInterface({ initialActiveChatId }: { initialActiveChatId?: s
                             </Avatar>
                             <h2 className="font-semibold">{activeChat.name}</h2>
                         </div>
-                        <ScrollArea className="flex-1 p-4">
-                            <div className="space-y-4">
+                        <ScrollArea className="flex-1 p-4" ref={scrollAreaRef}>
+                            <div className="space-y-6">
                                 {activeChat.messages.map((msg, index) => (
                                     <div key={index} className={cn("flex items-end gap-2", msg.sender === 'me' ? 'justify-end' : 'justify-start')}>
                                         {msg.sender === 'other' && (
@@ -197,19 +247,42 @@ export function ChatInterface({ initialActiveChatId }: { initialActiveChatId?: s
                                             </Avatar>
                                         )}
                                         <div className={cn(
-                                            "rounded-lg p-2 px-3 max-w-xs lg:max-w-md shadow-sm", 
+                                            "rounded-lg p-3 max-w-xs lg:max-w-md shadow-sm relative", 
                                             msg.sender === 'me' ? 'bg-primary text-primary-foreground rounded-br-none' : 'bg-background rounded-bl-none'
                                         )}>
                                             {activeChat.type === 'Community' && msg.sender === 'other' && <p className="text-xs font-bold mb-1 text-primary">{(msg as any).name}</p>}
                                             <p className="text-sm whitespace-pre-wrap">{msg.text}</p>
-                                            <p className="text-xs text-right mt-1 opacity-70">{msg.time}</p>
+                                            <p className="text-[10px] text-right mt-1 opacity-70">{msg.time}</p>
                                         </div>
                                     </div>
                                 ))}
+                                {isTyping && (
+                                     <div className="flex items-end gap-2 justify-start">
+                                         <Avatar className="h-8 w-8">
+                                            <AvatarImage src="/logo.svg" />
+                                            <AvatarFallback>L</AvatarFallback>
+                                        </Avatar>
+                                        <div className="rounded-lg p-3 bg-background rounded-bl-none shadow-sm flex items-center gap-1">
+                                            <span className="h-2 w-2 rounded-full bg-muted-foreground animate-pulse delay-0"></span>
+                                            <span className="h-2 w-2 rounded-full bg-muted-foreground animate-pulse delay-150"></span>
+                                            <span className="h-2 w-2 rounded-full bg-muted-foreground animate-pulse delay-300"></span>
+                                        </div>
+                                     </div>
+                                )}
                             </div>
                         </ScrollArea>
+                        {activeChatId === 'ai-buddy' && (
+                            <div className="p-2 border-t bg-background flex gap-2 overflow-x-auto">
+                                <Button size="sm" variant="outline" onClick={() => handleQuickAction("Summarize this lesson")}>Summarize lesson</Button>
+                                <Button size="sm" variant="outline" onClick={() => handleQuickAction("Explain key concepts")}>Explain concepts</Button>
+                                <Button size="sm" variant="outline" onClick={() => handleQuickAction("Quiz me on this module")}>Quiz me</Button>
+                            </div>
+                        )}
                         <div className="p-4 border-t bg-background">
-                            <form onSubmit={handleSendMessage} className="relative">
+                            <form onSubmit={handleSendMessage} className="relative flex items-center gap-2">
+                                 <Button type="button" size="icon" variant="ghost">
+                                    <Paperclip className="h-5 w-5" />
+                                </Button>
                                 <Input 
                                     placeholder="Type a message..." 
                                     className="pr-12"
@@ -227,3 +300,5 @@ export function ChatInterface({ initialActiveChatId }: { initialActiveChatId?: s
         </div>
     )
 }
+
+    
