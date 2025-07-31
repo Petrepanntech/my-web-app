@@ -4,10 +4,10 @@ import { useParams, useRouter } from 'next/navigation';
 import DashboardAuthWrapper from "@/components/auth/DashboardAuthWrapper";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { CheckCircle, Circle, PlayCircle, Type, FileQuestion, PencilRuler, Code, Book, TestTube, Briefcase, Award } from 'lucide-react';
+import { CheckCircle, Circle, PlayCircle, Book, Code, FileQuestion, Briefcase, Award, Check } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { BackButton } from '@/components/shared/BackButton';
-import type { CreateCourseOutput, CourseLesson } from '@/types/ai-schemas';
+import type { CreateCourseOutput, CourseLesson, CourseModule } from '@/types/ai-schemas';
 import { useEffect, useState, useMemo, useCallback, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
@@ -39,6 +39,33 @@ const LessonItem = ({ lesson, isCompleted, onLessonClick }: { lesson: CourseLess
     );
 };
 
+const ModuleCompletion = ({ module, courseId, moduleIndex, completedLessons, onModuleCompleteClick }: {
+    module: CourseModule;
+    courseId: string;
+    moduleIndex: number;
+    completedLessons: Set<string>;
+    onModuleCompleteClick: (moduleIndex: number) => void;
+}) => {
+    const isModuleComplete = module.lessons.every(lesson => completedLessons.has(lesson.title));
+    
+    return (
+        <div className="mt-4 p-4 bg-muted/50 rounded-md text-center">
+            <Button
+                disabled={!isModuleComplete}
+                onClick={() => onModuleCompleteClick(moduleIndex)}
+            >
+                <Check className="mr-2 h-4 w-4" />
+                Mark Module as Complete & Start Checkpoint
+            </Button>
+            {!isModuleComplete && (
+                <p className="text-xs text-muted-foreground mt-2">
+                    Complete all lessons in this module to unlock the checkpoint.
+                </p>
+            )}
+        </div>
+    );
+};
+
 
 export default function CourseViewPage() {
     const params = useParams();
@@ -46,7 +73,19 @@ export default function CourseViewPage() {
     const id = Array.isArray(params.id) ? params.id[0] : params.id;
     const [course, setCourse] = useState<CreateCourseOutput | null>(null);
     const [completedLessons, setCompletedLessons] = useState<Set<string>>(new Set());
+    const [completedModules, setCompletedModules] = useState<Set<number>>(new Set());
     const scrollRef = useRef<HTMLDivElement>(null);
+
+    const loadProgress = useCallback(() => {
+        const storedLessonProgress = localStorage.getItem(`courseProgress_${id}`);
+        if (storedLessonProgress) {
+            setCompletedLessons(new Set(JSON.parse(storedLessonProgress)));
+        }
+        const storedModuleProgress = localStorage.getItem(`moduleProgress_${id}`);
+        if (storedModuleProgress) {
+            setCompletedModules(new Set(JSON.parse(storedModuleProgress)));
+        }
+    }, [id]);
 
     useEffect(() => {
         // Load course data
@@ -58,11 +97,7 @@ export default function CourseViewPage() {
             }
         }
         
-        // Load progress
-        const storedProgress = localStorage.getItem(`courseProgress_${id}`);
-        if (storedProgress) {
-            setCompletedLessons(new Set(JSON.parse(storedProgress)));
-        }
+        loadProgress();
 
         // Restore scroll position
         const savedScrollPosition = sessionStorage.getItem(`scrollPos_${id}`);
@@ -71,9 +106,9 @@ export default function CourseViewPage() {
             sessionStorage.removeItem(`scrollPos_${id}`); // Clean up
         }
 
-    }, [id]);
+    }, [id, loadProgress]);
 
-    const updateProgress = useCallback((lessonTitle: string) => {
+    const updateLessonProgress = useCallback((lessonTitle: string) => {
         setCompletedLessons(prev => {
             const newProgress = new Set(prev);
             newProgress.add(lessonTitle);
@@ -86,22 +121,37 @@ export default function CourseViewPage() {
         const handleLessonCompleted = (event: Event) => {
             const customEvent = event as CustomEvent;
             if (customEvent.detail.courseId === id) {
-                updateProgress(customEvent.detail.lessonTitle);
+                updateLessonProgress(customEvent.detail.lessonTitle);
             }
         };
 
+        const handleModuleCompleted = (event: Event) => {
+            const customEvent = event as CustomEvent;
+            if (customEvent.detail.courseId === id) {
+                loadProgress();
+            }
+        }
+
         window.addEventListener('lessonCompleted', handleLessonCompleted);
+        window.addEventListener('moduleCompleted', handleModuleCompleted);
         return () => {
             window.removeEventListener('lessonCompleted', handleLessonCompleted);
+            window.removeEventListener('moduleCompleted', handleModuleCompleted);
         };
-    }, [id, updateProgress]);
+    }, [id, updateLessonProgress, loadProgress]);
     
     const handleLessonClick = (moduleIndex: number, lessonIndex: number) => {
-        // Save current scroll position before navigating
         if (scrollRef.current) {
             sessionStorage.setItem(`scrollPos_${id}`, scrollRef.current.scrollTop.toString());
         }
         router.push(`/courses/view/${id}/lesson?module=${moduleIndex}&lesson=${lessonIndex}`);
+    }
+
+    const handleModuleCompleteClick = (moduleIndex: number) => {
+        if (scrollRef.current) {
+            sessionStorage.setItem(`scrollPos_${id}`, scrollRef.current.scrollTop.toString());
+        }
+        router.push(`/courses/view/${id}/checkpoint?module=${moduleIndex}`);
     }
 
     const totalLessons = useMemo(() => {
@@ -170,8 +220,11 @@ export default function CourseViewPage() {
                              <p className="text-center mt-2 text-xs text-muted-foreground">{Math.round(progressPercentage)}% Complete ({completedLessons.size}/{totalLessons})</p>
                         </div>
                         <Accordion type="single" collapsible className="w-full" defaultValue="item-0">
-                            {course.curriculum.map((module, moduleIndex) => (
-                                <AccordionItem key={module.title} value={`item-${moduleIndex}`}>
+                            {course.curriculum.map((module, moduleIndex) => {
+                                const isModuleUnlocked = moduleIndex === 0 || completedModules.has(moduleIndex - 1);
+                                const isThisModuleCompleted = completedModules.has(moduleIndex);
+                                return (
+                                <AccordionItem key={module.title} value={`item-${moduleIndex}`} disabled={!isModuleUnlocked}>
                                     <AccordionTrigger>
                                         <div className='flex flex-col text-left'>
                                             <span className="font-bold text-lg">{module.title}</span>
@@ -190,9 +243,18 @@ export default function CourseViewPage() {
                                                 </li>
                                             ))}
                                         </ul>
+                                        {!isThisModuleCompleted && (
+                                            <ModuleCompletion 
+                                                module={module}
+                                                courseId={id}
+                                                moduleIndex={moduleIndex}
+                                                completedLessons={completedLessons}
+                                                onModuleCompleteClick={handleModuleCompleteClick}
+                                            />
+                                        )}
                                     </AccordionContent>
                                 </AccordionItem>
-                            ))}
+                            )})}
                         </Accordion>
                     </CardContent>
                 </Card>

@@ -22,6 +22,7 @@ export const PopQuizQuestionSchema = z.object({
     question: z.string().describe("The question text."),
     options: z.array(z.string()).length(4).describe("An array of 4 possible answers."),
     answer: z.string().describe("The correct answer, which must be one of the strings in the options array."),
+    insight: z.string().optional().describe("A brief explanation of why the answer is correct."),
 });
 export type PopQuizQuestion = z.infer<typeof PopQuizQuestionSchema>;
 
@@ -50,15 +51,18 @@ export const CourseLessonSchema = z.object({
         videos: z.array(LearningResourceSchema).optional().describe("A list of relevant YouTube videos."),
     }).optional(),
     tutorGuidance: TutorGuidanceSchema.optional(),
-    popQuiz: z.array(PopQuizQuestionSchema).optional().describe("For video lessons, a pop quiz with 5 multiple-choice questions."),
+    popQuiz: z.array(PopQuizQuestionSchema).optional().describe("For video lessons, a pop quiz with multiple-choice questions."),
 });
 export type CourseLesson = z.infer<typeof CourseLessonSchema>;
 
-const CourseModuleSchema = z.object({
+export const CourseModuleSchema = z.object({
     title: z.string().describe("The clear title of the course module."),
     objective: z.string().describe("A 1-2 sentence objective for the module."),
     lessons: z.array(CourseLessonSchema).describe("A list of lessons for the module."),
+    quickRevision: z.string().describe("A concise summary of the module's key concepts for the end-of-module checkpoint."),
+    checkpointQuiz: z.array(PopQuizQuestionSchema).min(3).max(5).describe("A quiz of 3-5 questions for the end-of-module checkpoint."),
 });
+export type CourseModule = z.infer<typeof CourseModuleSchema>;
 
 const CapstoneProjectSchema = z.object({
     goal: z.string().describe("The main goal of the final project."),
@@ -122,3 +126,14 @@ export const AITutorResponseSchema = z.object({
     response: z.string().describe("The AI tutor's response to the user's message."),
 });
 export type AITutorResponse = z.infer<typeof AITutorResponseSchema>;
+// Schema for Text Moderation
+export const ModerateTextInputSchema = z.object({
+  text: z.string().describe('The text to moderate.'),
+});
+export type ModerateTextInput = z.infer<typeof ModerateTextInputSchema>;
+
+export const ModerateTextOutputSchema = z.object({
+  isSafe: z.boolean().describe('Whether the text is safe or not.'),
+  reason: z.string().optional().describe('The reason why the text is not safe, if applicable.'),
+});
+export type ModerateTextOutput = z.infer<typeof ModerateTextOutputSchema>;

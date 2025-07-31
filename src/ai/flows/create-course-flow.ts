@@ -79,13 +79,18 @@ Course Generation Directives:
         - Tutor Guidance (For AI Tutors):
             - Common Sticking Points: A bulleted list of 2-3 potential challenges or misunderstandings a student might face in this lesson.
             - Clarification Prompts: A bulleted list of 2-3 questions an AI tutor could ask to check for understanding or guide a struggling student (e.g., "Can you explain in your own words why we use a <div> here?").
-        - Pop Quiz: For video lessons, create a pop quiz with 5 multiple-choice questions based on the video content.
+        - Pop Quiz (for video lessons): Create a pop quiz with 4-5 multiple-choice questions based on the video content. For each question, provide an "insight" explaining the correct answer.
 
-3. Capstone Project:
+3. End-of-Module Checkpoint:
+    - For each module, you must generate content for an end-of-module checkpoint. This includes:
+    - Quick Revision: A concise summary of the module's key concepts. This should be a single string of text, using Markdown for formatting if needed.
+    - Checkpoint Quiz: A quiz of 3-5 multiple-choice questions that test the main concepts of the module. Each question must include an "insight" field explaining the correct answer.
+
+4. Capstone Project:
     - Design a comprehensive final project that requires students to integrate skills from all modules.
     - Provide a detailed project brief, including a goal, key requirements, and evaluation criteria.
 
-4. Output Format and Constraints:
+5. Output Format and Constraints:
     - Tone: Maintain an encouraging, clear, and professional tone.
     - Structure: The output must be a single, valid JSON object that matches the output schema.
     - Resource Quality: Prioritize resources from reputable sources (e.g., MDN for web development, established educational YouTube channels).
