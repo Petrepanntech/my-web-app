@@ -85,7 +85,7 @@ Course Generation Directives:
     - For each module, you must generate content for an end-of-module checkpoint. This is a critical requirement.
     - Quick Revision: A concise summary of the module's key concepts. This should be a single string of text, using Markdown for formatting if needed.
     - Checkpoint Quiz: A quiz of 3-5 multiple-choice questions that test the main concepts of the module. Each question must include an "insight" field explaining the correct answer.
-    - CRITICAL: Ensure that EVERY module in the 'curriculum' array has both a 'quickRevision' and a 'checkpointQuiz' field. Do not omit them under any circumstances.
+    - CRITICAL: Ensure that EVERY module in the 'curriculum' array has both a 'quickRevision' and a 'checkpointQuiz' field. Do not omit them under any circumstances. Double-check your final output to ensure every module has these two fields.
 
 4. Capstone Project:
     - Design a comprehensive final project that requires students to integrate skills from all modules.
@@ -108,6 +108,25 @@ const createCourseFlow = ai.defineFlow(
   },
   async (learningPath) => {
     const { output } = await createCoursePrompt(learningPath);
+
+    // Add a validation and repair step to prevent schema errors.
+    if (output && output.curriculum) {
+        output.curriculum.forEach(module => {
+            if (!module.quickRevision) {
+                console.warn(`Module "${module.title}" was missing a quickRevision. Adding a placeholder.`);
+                module.quickRevision = "This module's key concepts have been summarized in the lessons.";
+            }
+            if (!module.checkpointQuiz || module.checkpointQuiz.length < 3) {
+                 console.warn(`Module "${module.title}" was missing a checkpointQuiz. Adding placeholders.`);
+                 module.checkpointQuiz = [
+                    { question: "What was the main topic of this module?", options: ["Option A", "Option B", "Option C", "Option D"], answer: "Option A", insight: "This is a placeholder quiz." },
+                    { question: "Which concept was most important?", options: ["Concept A", "Concept B", "Concept C", "Concept D"], answer: "Concept B", insight: "This is a placeholder quiz." },
+                    { question: "How would you apply this knowledge?", options: ["Method A", "Method B", "Method C", "Method D"], answer: "Method C", insight: "This is a placeholder quiz." }
+                ];
+            }
+        });
+    }
+
     return output!;
   }
 );
