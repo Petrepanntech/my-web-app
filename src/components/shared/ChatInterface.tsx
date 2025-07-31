@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { cn } from "@/lib/utils"
-import { Search, Send, User, Bot, Users, LifeBuoy, Sparkles } from "lucide-react"
+import { Search, Send, Bot, Users, Sparkles, LifeBuoy } from "lucide-react"
 import { useAuth } from "@/context/AuthContext";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
 
@@ -117,7 +117,7 @@ export function ChatInterface({ initialActiveChatId }: { initialActiveChatId?: s
     const filteredConversations = conversationList.filter(c => c.type === activeTab);
 
     return (
-        <div className="h-full flex bg-background">
+        <div className="h-full flex bg-background text-sm">
              <div className="h-full flex flex-col w-full">
                 <div className="p-2 border-b">
                     <div className="flex justify-around">
@@ -131,6 +131,7 @@ export function ChatInterface({ initialActiveChatId }: { initialActiveChatId?: s
                                                 variant={activeTab === tab ? "secondary" : "ghost"} 
                                                 size="icon" 
                                                 onClick={() => setActiveTab(tab)}
+                                                className="h-9 w-9"
                                             >
                                                 <Icon className="h-5 w-5" />
                                             </Button>
@@ -145,42 +146,61 @@ export function ChatInterface({ initialActiveChatId }: { initialActiveChatId?: s
                     </div>
                 </div>
                 <div className="flex-1 flex overflow-hidden">
-                    <div className="w-1/3 border-r flex flex-col">
+                    <div className="w-[40%] border-r flex flex-col">
+                        <div className="p-3 border-b">
+                             <div className="relative">
+                                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                                <Input placeholder="Search..." className="pl-8 h-9" />
+                            </div>
+                        </div>
                          <ScrollArea className="flex-1">
                             {filteredConversations.map(convo => (
                                 <div 
                                     key={convo.id} 
-                                    className={cn("flex items-center gap-4 p-4 hover:bg-muted cursor-pointer", activeChatId === convo.id && "bg-muted")}
+                                    className={cn(
+                                        "flex items-center gap-3 p-3 hover:bg-muted cursor-pointer border-l-2 border-transparent", 
+                                        activeChatId === convo.id && "bg-muted border-primary"
+                                    )}
                                     onClick={() => setActiveChatId(convo.id)}
                                 >
-                                    <Avatar>
+                                    <Avatar className="h-10 w-10">
                                         <AvatarImage src={convo.avatar} alt={convo.name} />
                                         <AvatarFallback>{convo.name.slice(0, 2)}</AvatarFallback>
                                     </Avatar>
                                     <div className="flex-1 overflow-hidden">
-                                        <div className="flex justify-between">
+                                        <div className="flex justify-between items-center">
                                             <p className="font-semibold text-sm truncate">{convo.name}</p>
                                             <p className="text-xs text-muted-foreground shrink-0">{convo.time}</p>
                                         </div>
-                                        <p className="text-sm text-muted-foreground truncate">{convo.lastMessage}</p>
+                                        <p className="text-xs text-muted-foreground truncate">{convo.lastMessage}</p>
                                     </div>
                                 </div>
                             ))}
                         </ScrollArea>
                     </div>
-                    <div className="w-2/3 flex flex-col">
-                        <ScrollArea className="flex-1 p-6">
-                            <div className="space-y-6">
+                    <div className="w-[60%] flex flex-col bg-muted/30">
+                        <div className="p-3 border-b flex items-center gap-3 bg-background">
+                            <Avatar className="h-9 w-9">
+                                <AvatarImage src={activeChat.avatar} />
+                                <AvatarFallback>{activeChat.name.slice(0,2)}</AvatarFallback>
+                            </Avatar>
+                            <h2 className="font-semibold">{activeChat.name}</h2>
+                        </div>
+                        <ScrollArea className="flex-1 p-4">
+                            <div className="space-y-4">
                                 {activeChat.messages.map((msg, index) => (
-                                    <div key={index} className={cn("flex items-end gap-2", msg.sender === 'me' ? 'justify-end' : '')}>
+                                    <div key={index} className={cn("flex items-end gap-2", msg.sender === 'me' ? 'justify-end' : 'justify-start')}>
                                         {msg.sender === 'other' && (
                                             <Avatar className="h-8 w-8">
                                                 <AvatarImage src={msg.avatar} />
                                                 <AvatarFallback>{(msg as any).name?.charAt(0) || 'U'}</AvatarFallback>
                                             </Avatar>
                                         )}
-                                        <div className={cn("rounded-lg p-3 max-w-xs lg:max-w-md", msg.sender === 'me' ? 'bg-primary text-primary-foreground' : 'bg-muted')}>
-                                            {activeChat.type === 'Community' && msg.sender === 'other' && <p className="text-xs font-bold mb-1">{(msg as any).name}</p>}
+                                        <div className={cn(
+                                            "rounded-lg p-2 px-3 max-w-xs lg:max-w-md shadow-sm", 
+                                            msg.sender === 'me' ? 'bg-primary text-primary-foreground rounded-br-none' : 'bg-background rounded-bl-none'
+                                        )}>
+                                            {activeChat.type === 'Community' && msg.sender === 'other' && <p className="text-xs font-bold mb-1 text-primary">{(msg as any).name}</p>}
                                             <p className="text-sm whitespace-pre-wrap">{msg.text}</p>
                                             <p className="text-xs text-right mt-1 opacity-70">{msg.time}</p>
                                         </div>
@@ -188,7 +208,7 @@ export function ChatInterface({ initialActiveChatId }: { initialActiveChatId?: s
                                 ))}
                             </div>
                         </ScrollArea>
-                        <div className="p-4 border-t">
+                        <div className="p-4 border-t bg-background">
                             <form onSubmit={handleSendMessage} className="relative">
                                 <Input 
                                     placeholder="Type a message..." 
@@ -196,8 +216,8 @@ export function ChatInterface({ initialActiveChatId }: { initialActiveChatId?: s
                                     value={newMessage}
                                     onChange={(e) => setNewMessage(e.target.value)}
                                 />
-                                <Button type="submit" size="icon" variant="ghost" className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8">
-                                    <Send className="h-5 w-5" />
+                                <Button type="submit" size="icon" className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8">
+                                    <Send className="h-4 w-4" />
                                 </Button>
                             </form>
                         </div>
