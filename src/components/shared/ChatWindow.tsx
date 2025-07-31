@@ -12,12 +12,10 @@ export function ChatWindow() {
     if (!isOpen) return null;
 
     return (
-        <Card className="fixed bottom-4 right-4 w-[calc(100%-2rem)] h-[calc(100%-6rem)] md:w-[700px] md:h-[600px] md:bottom-8 md:right-8 shadow-2xl rounded-lg flex flex-col z-50">
+        <Card className="fixed bottom-4 right-4 w-[calc(100%-2rem)] h-[calc(100%-6rem)] md:w-[700px] md:h-[600px] md:bottom-24 md:right-8 shadow-2xl rounded-lg flex flex-col z-50 animate-in slide-in-from-bottom-5 fade-in-50 duration-300">
             <CardHeader className="flex flex-row items-center justify-between p-4 border-b">
-                <div className="flex items-center gap-3">
-                    <div>
-                        <CardTitle className="text-lg">Messenger</CardTitle>
-                    </div>
+                <div>
+                    <CardTitle className="text-lg">Connect Hub</CardTitle>
                 </div>
                 <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => setIsOpen(false)}>
                     <X className="h-4 w-4" />
