@@ -58,7 +58,7 @@ Course Generation Directives:
     - Course Description (Elevator Pitch): Write a compelling 100-word description that outlines the key benefit and transformation a student will experience.
     - Learning Objectives: List 5-7 specific, measurable, and action-oriented learning objectives for the entire course.
     - A unique course ID, which should be a URL-friendly slug of the course title (e.g., "introduction-to-react-from-scratch").
-    - A relevant placeholder image URL from Unsplash (e.g., https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=800&h=450&fit=crop).
+    - A relevant placeholder image URL from an image service like Unsplash or Pexels (e.g., https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=800&h=450&fit=crop).
     - A one or two-word aiHint for the image (e.g., "react logo").
     - The instructor should always be "AI Curator".
 
@@ -82,9 +82,10 @@ Course Generation Directives:
         - Pop Quiz (for video lessons): Create a pop quiz with 4-5 multiple-choice questions based on the video content. For each question, provide an "insight" explaining the correct answer.
 
 3. End-of-Module Checkpoint:
-    - For each module, you must generate content for an end-of-module checkpoint. This includes:
+    - For each module, you must generate content for an end-of-module checkpoint. This is a critical requirement.
     - Quick Revision: A concise summary of the module's key concepts. This should be a single string of text, using Markdown for formatting if needed.
     - Checkpoint Quiz: A quiz of 3-5 multiple-choice questions that test the main concepts of the module. Each question must include an "insight" field explaining the correct answer.
+    - CRITICAL: Ensure that EVERY module in the 'curriculum' array has both a 'quickRevision' and a 'checkpointQuiz' field. Do not omit them under any circumstances.
 
 4. Capstone Project:
     - Design a comprehensive final project that requires students to integrate skills from all modules.
