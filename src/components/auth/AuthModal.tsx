@@ -48,6 +48,7 @@ function RoleSelector({ selectedRole, onRoleChange }: { selectedRole: Role, onRo
             value={selectedRole || ''} 
             onValueChange={(value) => onRoleChange(value as Role)} 
             className="grid grid-cols-2 gap-4"
+            aria-label="Select role"
         >
             <div>
                 <RadioGroupItem value="student" id="student" className="peer sr-only" />

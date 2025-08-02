@@ -97,7 +97,7 @@ export function ChatInterface({ initialActiveChatId }: { initialActiveChatId?: s
         }
     }, [activeChat?.messages]);
     
-    const handleSendMessage = (e: React.FormEvent) => {
+    const handleSendMessage = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!newMessage.trim()) return;
 
@@ -126,22 +126,30 @@ export function ChatInterface({ initialActiveChatId }: { initialActiveChatId?: s
 
         if (activeChat.type === "AI Buddy") {
             setIsTyping(true);
-            setTimeout(() => {
-                const aiResponse = {
-                    sender: "other" as const,
-                    text: `This is an AI response related to: "${newMessage}". In a real application, Genkit would provide a contextual answer here.`,
-                    time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-                    avatar: "/logo.svg"
-                };
-                 setChats(prev => ({
-                    ...prev,
-                    [activeChatId]: {
-                        ...prev[activeChatId],
-                        messages: [...prev[activeChatId].messages, aiResponse]
-                    }
-                }));
+            try {
+                // Simulate async AI response with a timeout
+                setTimeout(async () => {
+                    // Replace this with your actual AI call
+                    const response = await aiBuddy({ prompt: newMessage });
+                    const aiResponse = {
+                        sender: "other" as const,
+                        text: response,
+                        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                        avatar: "/logo.svg"
+                    };
+                    setChats(prev => ({
+                        ...prev,
+                        [activeChatId]: {
+                            ...prev[activeChatId],
+                            messages: [...prev[activeChatId].messages, aiResponse]
+                        }
+                    }));
+                    setIsTyping(false);
+                }, 1500);
+            } catch (error) {
                 setIsTyping(false);
-            }, 1500);
+                // Optionally handle error here
+            }
         }
     }
     
@@ -162,13 +170,14 @@ export function ChatInterface({ initialActiveChatId }: { initialActiveChatId?: s
                          <Popover open={open} onOpenChange={setOpen}>
                             <PopoverTrigger asChild>
                                 <Button
-                                variant="outline"
+                                type="button"
+                                variant="ghost"
                                 role="combobox"
                                 aria-expanded={open}
-                                className="w-full justify-between"
+                                className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground h-10 w-10"
                                 >
                                 {activeTab}
-                                <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                <ChevronDown className="h-4 w-4 shrink-0 opacity-50" />
                                 </Button>
                             </PopoverTrigger>
                             <PopoverContent className="w-[200px] p-0">
@@ -198,7 +207,7 @@ export function ChatInterface({ initialActiveChatId }: { initialActiveChatId?: s
                     <div className="p-3 border-b">
                          <div className="relative">
                             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                            <Input placeholder="Search..." className="pl-8 h-9" />
+                            <Input placeholder="Search..." className="pl-8 h-9" aria-label="Search conversations" />
                         </div>
                     </div>
                      <ScrollArea className="flex-1">
@@ -332,16 +341,17 @@ const ChatContent = ({ activeChat, isTyping, scrollAreaRef, newMessage, setNewMe
             )}
             <div className="p-4 border-t bg-background">
                 <form onSubmit={handleSendMessage} className="relative flex items-center gap-2">
-                     <Button type="button" size="icon" variant="ghost">
+                     <Button type="button" size="icon" variant="ghost" aria-label="Attach file">
                         <Paperclip className="h-5 w-5" />
                     </Button>
                     <Input 
                         placeholder="Type a message..." 
+                        aria-label="Type a message"
                         className="pr-12"
                         value={newMessage}
                         onChange={(e) => setNewMessage(e.target.value)}
                     />
-                    <Button type="submit" size="icon" className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8">
+                    <Button type="submit" size="icon" className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8" aria-label="Send message">
                         <Send className="h-4 w-4" />
                     </Button>
                 </form>

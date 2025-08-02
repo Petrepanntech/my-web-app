@@ -8,8 +8,9 @@
  * - ModerateTextOutput - Output type for the moderateText function.
  */
 
-import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
+
+
+import { getCache, setCache, makeCacheKey } from '@/ai/lib/cache';
 
 const ModerateTextInputSchema = z.object({
   text: z.string().describe('The text to moderate.'),
@@ -26,21 +27,7 @@ export async function moderateText(input: ModerateTextInput): Promise<ModerateTe
   return moderateTextFlow(input);
 }
 
-const prompt = ai.definePrompt({
-  name: 'moderateTextPrompt',
-  input: {schema: ModerateTextInputSchema},
-  output: {schema: ModerateTextOutputSchema},
-  prompt: `You are a content moderator for a community hub. Your job is to determine whether the given text is safe for the community.
-
-Here's the text to evaluate:
-
-{{text}}
-
-Respond with a JSON object that contains two fields:
-- isSafe: a boolean value indicating whether the text is safe or not.
-- reason: a string value explaining why the text is not safe, if applicable. If the text is safe, this field should be omitted.
-`,
-});
+// ...prompt now imported from prompts/moderateTextPrompt
 
 const moderateTextFlow = ai.defineFlow(
   {
@@ -49,7 +36,24 @@ const moderateTextFlow = ai.defineFlow(
     outputSchema: ModerateTextOutputSchema,
   },
   async input => {
-    const {output} = await prompt(input);
-    return output!;
+    const cacheKey = makeCacheKey('moderateTextFlow', input);
+    const cached = getCache<ModerateTextOutput>(cacheKey);
+    if (cached) {
+      return cached;
+    }
+    try {
+      const { output } = await moderateTextPrompt(input);
+      if (output) {
+        setCache(cacheKey, output);
+        return output;
+      } else {
+        throw new Error('No output from AI');
+      }
+    } catch (err) {
+      return {
+        isSafe: false,
+        reason: 'Content moderation failed. Please try again later.'
+      };
+    }
   }
 );

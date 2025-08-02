@@ -12,6 +12,8 @@ import { ArrowRight, Loader2 } from 'lucide-react';
 import { createCourse, personalizedLearningPath } from '@/lib/actions';
 import type { PersonalizedLearningPathInput, PersonalizedLearningPathOutput } from '@/types/ai-schemas';
 import { useRouter } from 'next/navigation';
+import { auth } from '@/lib/firebase';
+import { saveLearningPath, saveCourse } from '@/lib/firebase/learning-paths';
 
 export default function LearningPathPage() {
     const [interests, setInterests] = useState('');
@@ -37,6 +39,12 @@ export default function LearningPathPage() {
 
         try {
             const result = await personalizedLearningPath({ interests, goals });
+            // Save to Firebase
+            const userId = auth.currentUser?.uid;
+            if (!userId) {
+                throw new Error('User not authenticated');
+            }
+            await saveLearningPath(userId, result);
             setLearningPath(result);
             toast({
                 title: 'Success!',
@@ -60,13 +68,16 @@ export default function LearningPathPage() {
         setIsCreatingCourse(true);
         try {
             const course = await createCourse({ interests, goals });
+            // Save to Firebase
+            const userId = auth.currentUser?.uid;
+            if (!userId) {
+                throw new Error('User not authenticated');
+            }
+            await saveCourse(userId, course);
             toast({
                 title: 'Course Created!',
                 description: 'Your new course is ready. Redirecting you now...'
             });
-            // In a real app, you would save the course to a database.
-            // For now, we'll pass it to the view page via localStorage.
-            localStorage.setItem('newlyCreatedCourse', JSON.stringify(course));
             router.push(`/courses/view/${course.id}`);
 
         } catch(error) {

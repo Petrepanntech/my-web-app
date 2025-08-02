@@ -55,6 +55,7 @@ export function AppHeader() {
             <Input
               type="search"
               placeholder="Search..."
+              aria-label="Search"
               className="pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px]"
             />
           </div>

@@ -1,0 +1,41 @@
+{
+  "curriculum": [
+    {
+      "checkpointQuiz": [
+        {
+          "question": "What is the purpose of cutting and trimming clips in video editing?",
+          "options": [
+            "To make the video shorter.",
+            "To remove unwanted footage and tighten the pacing.",
+            "To add special effects.",
+            "To change the aspect ratio of the video."
+          ],
+          "answer": "To remove unwanted footage and tighten the pacing.",
+          "insight": "Cutting and trimming helps keep viewers engaged by removing unnecessary content."
+        },
+        {
+          "question": "Which of the following is NOT a consideration when adding music to your video?",
+          "options": [
+            "The mood of the music.",
+            "The volume of the music.",
+            "Whether the music is royalty-free.",
+            "The color of the music."
+          ],
+          "answer": "The color of the music.",
+          "insight": "Color is not a relevant factor when selecting music for a video."
+        },
+        {
+          "question": "What is the main goal of color grading?",
+          "options": [
+            "To fix technical issues with footage",
+            "To create a specific mood or visual style",
+            "To make the video more saturated",
+            "To increase video resolution"
+          ],
+          "answer": "To create a specific mood or visual style",
+          "insight": "Color grading is primarily about creating a consistent visual style that enhances the emotional impact and storytelling of your video"
+        }
+      ]
+    }
+  ]
+}

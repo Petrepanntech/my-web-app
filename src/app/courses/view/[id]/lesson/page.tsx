@@ -8,6 +8,8 @@ import { useEffect, useState } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { FileQuestion, PencilRuler, CheckCircle, XCircle, BookOpen, Link as LinkIcon, Lightbulb } from 'lucide-react';
+import { getCourse } from '@/lib/firebase/learning-paths';
+import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
@@ -83,6 +85,7 @@ export default function LessonPage() {
     const params = useParams();
     const searchParams = useSearchParams();
     const router = useRouter();
+    const { toast } = useToast();
 
     const id = Array.isArray(params.id) ? params.id[0] : params.id;
     const moduleIndex = parseInt(searchParams.get('module') || '0', 10);
@@ -91,17 +94,28 @@ export default function LessonPage() {
     const [lesson, setLesson] = useState<CourseLesson | null>(null);
 
     useEffect(() => {
-        const storedCourse = localStorage.getItem('newlyCreatedCourse');
-        if (storedCourse) {
-            const parsedCourse: CreateCourseOutput = JSON.parse(storedCourse);
-            if (parsedCourse.id === id) {
-                const currentLesson = parsedCourse.curriculum?.[moduleIndex]?.lessons?.[lessonIndex];
+        const loadCourse = async () => {
+            try {
+                const course = await getCourse(id);
+                const currentLesson = course.curriculum?.[moduleIndex]?.lessons?.[lessonIndex];
                 if (currentLesson) {
                     setLesson(currentLesson);
                 } else {
                     router.back(); // Redirect if lesson not found
                 }
+            } catch (error) {
+                console.error('Error loading course:', error);
+                toast({
+                    variant: 'destructive',
+                    title: 'Error',
+                    description: 'Could not load the course. Please try again.',
+                });
+                router.back();
             }
+        };
+        
+        if (id) {
+            loadCourse();
         }
     }, [id, moduleIndex, lessonIndex, router]);
 
